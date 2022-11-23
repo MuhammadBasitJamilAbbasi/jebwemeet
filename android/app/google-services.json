@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "457207633660",
+    "project_id": "jawemeet",
+    "storage_bucket": "jawemeet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457207633660:android:0b201b46e141275fce6979",
+        "android_client_info": {
+          "package_name": "com.ajencia.jabwemeet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457207633660-kstr7dl6ro5p396a7h4bd5o4nh9hp08s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ajencia.jabwemeet",
+            "certificate_hash": "987dcae7af218bbc5a58dec7bb63ba3ea9af9222"
+          }
+        },
+        {
+          "client_id": "457207633660-1os9d1cmrnkf8f82fp3egk5eef0s4l3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtgZdB0JhNyqNKG5htqXQNrkJIDzLneRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457207633660-1os9d1cmrnkf8f82fp3egk5eef0s4l3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
