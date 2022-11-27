@@ -98,6 +98,7 @@ class Add_Caste extends StatelessWidget {
                       ),
                     ),
                   ),
+                  AppComponents().sizedBox30,
                   controller.selectedValue != "Select Caste"
                       ? Center(
                           child: kCustomButton(

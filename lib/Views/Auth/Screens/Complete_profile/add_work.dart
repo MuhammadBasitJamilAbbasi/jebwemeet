@@ -94,6 +94,7 @@ class Add_Work extends StatelessWidget {
                       ),
                     ),
                   ),
+                  AppComponents().sizedBox30,
                   controller.selectedwork != "Select Occupation Sector"
                       ? Center(
                           child: kCustomButton(

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
@@ -54,21 +55,28 @@ class Register_Password extends StatelessWidget {
                       : Center(
                           child: kCustomButton(
                             label: "Continue",
-                            ontap: () {
-                              if (controller.passwordController.value.text
-                                      .isNotEmpty &&
-                                  controller.passwordController.value.text
-                                          .length >=
-                                      6) {
+                            ontap: () async {
+                              if (FirebaseAuth.instance.currentUser == null) {
+                                if (controller.passwordController.value.text
+                                        .isNotEmpty &&
+                                    controller.passwordController.value.text
+                                            .length >=
+                                        6) {
+                                  Get.find<GetSTorageController>().box.write(
+                                      kPassword,
+                                      controller.passwordController.value.text);
+                                  controller.register(context);
+                                } else {
+                                  snackBar(
+                                      context,
+                                      "Please enter your 6 character password ",
+                                      Colors.pink);
+                                }
+                              } else {
                                 Get.find<GetSTorageController>().box.write(
                                     kPassword,
                                     controller.passwordController.value.text);
-                                controller.register(context);
-                              } else {
-                                snackBar(
-                                    context,
-                                    "Please enter your 6 character password ",
-                                    Colors.pink);
+                                await controller.addUserdetails();
                               }
                             },
                             isRegister: true,

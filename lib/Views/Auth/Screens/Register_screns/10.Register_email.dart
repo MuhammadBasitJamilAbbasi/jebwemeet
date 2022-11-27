@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -10,6 +11,7 @@ import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 class Register_email extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
     return GetBuilder<RegisterController>(builder: (controller) {
       return SingleChildScrollView(
         child: Padding(
@@ -22,21 +24,23 @@ class Register_email extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Text(
-                  "My email is",
+                  user == null ? "My email is" : "My Phone Number is",
                   style: k25styleblack,
                 ),
               ),
               AppComponents().sizedBox50,
-              Center(
-                  child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: kCustomTextField(
-                    hinttext: "Email",
-                    controller: controller.emailController,
-                    validator: (value) {
-                      return "";
-                    }),
-              )),
+              user == null
+                  ? Center(
+                      child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: kCustomTextField(
+                          hinttext: "Email",
+                          controller: controller.emailController,
+                          validator: (value) {
+                            return "";
+                          }),
+                    ))
+                  : SizedBox.shrink(),
               AppComponents().sizedBox15,
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -65,28 +69,41 @@ class Register_email extends StatelessWidget {
                     },
                   )),
               AppComponents().sizedBox15,
-              controller.emailController.value.text.isNotEmpty
-                  ? Center(
+              user == null
+                  ? controller.emailController.value.text.isNotEmpty
+                      ? Center(
+                          child: kCustomButton(
+                            label: "Continue",
+                            ontap: () {
+                              if (controller
+                                      .emailController.value.text.isNotEmpty &&
+                                  controller
+                                          .emailController.value.text.isEmail !=
+                                      false) {
+                                Get.find<GetSTorageController>().box.write(
+                                    kEmail,
+                                    controller.emailController.value.text);
+                                controller.setRegisterViewPage(
+                                    RegisterViewEnum.RegisterView11);
+                              } else {
+                                snackBar(context, "Please Enter Valid Email",
+                                    Colors.pink);
+                              }
+                            },
+                            isRegister: true,
+                          ),
+                        )
+                      : SizedBox.shrink()
+                  : Center(
                       child: kCustomButton(
                         label: "Continue",
                         ontap: () {
-                          if (controller
-                                  .emailController.value.text.isNotEmpty &&
-                              controller.emailController.value.text.isEmail !=
-                                  false) {
-                            Get.find<GetSTorageController>().box.write(
-                                kEmail, controller.emailController.value.text);
-                            controller.setRegisterViewPage(
-                                RegisterViewEnum.RegisterView11);
-                          } else {
-                            snackBar(context, "Please Enter Valid Email",
-                                Colors.pink);
-                          }
+                          controller.setRegisterViewPage(
+                              RegisterViewEnum.RegisterView11);
                         },
                         isRegister: true,
                       ),
                     )
-                  : SizedBox.shrink()
             ],
           ),
         ),

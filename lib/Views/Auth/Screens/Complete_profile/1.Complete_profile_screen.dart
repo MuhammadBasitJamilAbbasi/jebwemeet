@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/Dialouge_Boxes.dart';
 import 'package:jabwemeet/Utils/constants.dart';
@@ -21,7 +20,6 @@ class Complete_Profile1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ProfileConytroller>();
-
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
@@ -52,7 +50,7 @@ class Complete_Profile1 extends StatelessWidget {
                         AppComponents().sizedBox15,
                         InkWell(
                           onTap: () {
-                            controller.getImage(ImageSource.gallery);
+                            controller.getImage(context);
                           },
                           child: Container(
                             height: 270,
@@ -151,11 +149,20 @@ class Complete_Profile1 extends StatelessWidget {
                                         style: k14styleblackBold,
                                       ),
                                       Text(
-                                        "Add about me",
+                                        Get.find<GetSTorageController>()
+                                                    .box
+                                                    .read(kAbout) ==
+                                                null
+                                            ? "Add about me"
+                                            : Get.find<GetSTorageController>()
+                                                .box
+                                                .read(kAbout)
+                                                .toString(),
                                         style: TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFFB2ADAD),
                                             fontWeight: FontWeight.w300),
+                                        overflow: TextOverflow.ellipsis,
                                       )
                                     ],
                                   ),
@@ -287,7 +294,17 @@ class Complete_Profile1 extends StatelessWidget {
                               ),
                             ],
                           ),
-                        )
+                        ),
+                        AppComponents().sizedBox10,
+                        Center(
+                            child: controller.isLoader
+                                ? CircularProgressIndicator()
+                                : kCustomButton(
+                                    label: "Submit",
+                                    ontap: () async {
+                                      controller.submitProfile(context);
+                                    })),
+                        AppComponents().sizedBox10,
                       ]);
                 },
               ))),

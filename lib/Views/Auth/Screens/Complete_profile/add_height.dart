@@ -94,6 +94,7 @@ class Add_Height extends StatelessWidget {
                       ),
                     ),
                   ),
+                  AppComponents().sizedBox30,
                   controller.selectedHeight != "Select height"
                       ? Center(
                           child: kCustomButton(

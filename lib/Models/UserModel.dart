@@ -13,7 +13,7 @@ class UserModel {
   String? password;
   String? fcm_token;
   String? education;
-  String? hobbies;
+  dynamic hobbies;
   String? about;
   String? height;
   String? income;
@@ -22,6 +22,7 @@ class UserModel {
   String? imageUrl;
   String? phone_number;
   String? uid;
+  String? movies;
 
   UserModel({
     this.name,
@@ -47,6 +48,7 @@ class UserModel {
     this.imageUrl,
     this.phone_number,
     this.uid,
+    this.movies,
   });
 
   UserModel.fromMap(Map<String, dynamic> map) {
@@ -73,6 +75,7 @@ class UserModel {
     creativity = map['creativity'];
     phone_number = map['phone_number'];
     uid = map['uid'];
+    movies = map['movies'];
   }
 
   Map<String, dynamic> toMap() {
@@ -100,6 +103,7 @@ class UserModel {
       "smoking": smoking,
       "creativity": creativity,
       "uid": uid,
+      "movies": movies,
     };
   }
 }

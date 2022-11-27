@@ -118,7 +118,7 @@ class LoginScreen2 extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Don't have an account",
+                              "Don't have an account ",
                               style: TextStyle(
                                   fontFamily: "Gilroy-Regular",
                                   color: Colors.black,
@@ -150,95 +150,66 @@ class LoginScreen2 extends StatelessWidget {
                           ),
                           Text(
                             " or continue with ",
-                            style: k12styleblack,
+                            style: k14styleblack,
                           ),
                           Expanded(
                             child: Container(
                               height: 1,
-                                color: Colors.grey.shade300,
+                              color: Colors.grey.shade300,
                             ),
                           ),
                         ],
                       ),
                       AppComponents().sizedBox20,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 60,
-                            padding: EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(100),
+                      controller.isLoaderGoogle
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    controller.signInwithGoogle();
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 60,
+                                    padding: EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade200,
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: Image.asset(
+                                      "assets/google.png",
+                                      height: 40,
+                                      width: 40,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(() => SignUpPhoneScreen());
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade200,
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: Icon(
+                                      Icons.phone,
+                                      color: butoncolor,
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                            child: Image.asset(
-                              "assets/google.png",
-                              height: 40,
-                              width: 40,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Get.to(() => SignUpPhoneScreen());
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: Icon(
-                                Icons.phone,
-                                color: butoncolor,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
                       AppComponents().sizedBox20,
-
-                      /*  SizedBox(
-                        height: 200,
-                      ),
-                      SizedBox(
-                        height: 40,
-                        width: MediaQuery.of(context).size.width * 0.70,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                                side: const BorderSide(color: Colors.black),
-                              ),
-                            ),
-                            elevation: MaterialStateProperty.all(0.0),
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.grey.shade400),
-                          ),
-                          child: Row(
-                            children: [
-                              Image(
-                                  image:
-                                      Image.asset('assets/google.png').image),
-                              Expanded(child: Container()),
-                              const Text(
-                                "Sign in with Google",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Expanded(child: Container()),
-                            ],
-                          ),
-                        ),
-                      ),*/
                     ],
                   ),
                 ),

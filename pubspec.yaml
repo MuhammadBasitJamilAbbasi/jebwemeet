@@ -58,7 +58,8 @@ dependencies:
   cloud_firestore:
   encrypt:
   firebase_messaging:
-
+  firebase_storage:
+  google_sign_in:
 dev_dependencies:
   flutter_test:
     sdk: flutter

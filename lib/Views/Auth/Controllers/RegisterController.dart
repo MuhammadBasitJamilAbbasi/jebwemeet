@@ -13,6 +13,7 @@ import 'package:jabwemeet/Utils/enums.dart';
 import 'package:jabwemeet/Utils/locations.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/Password_encyption.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Forgot_password_screen/Forgot_pass_Otp.dart';
 import 'package:jabwemeet/Views/Auth/Screens/LoginScreen2.dart';
 
@@ -151,7 +152,7 @@ class RegisterController extends GetxController {
     if (value == null || value == '') {
       return "*Required";
     } else if (!value.isEmail) {
-      return 'Invalid Password';
+      return 'Invalid Email';
     }
     return null;
   }
@@ -296,7 +297,8 @@ class RegisterController extends GetxController {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user!.uid)
-        .set(userModel.toMap());
+        .set(userModel.toMap())
+        .then((value) => Get.offAll(() => Complete_Profile1()));
   }
 
   //sajawal

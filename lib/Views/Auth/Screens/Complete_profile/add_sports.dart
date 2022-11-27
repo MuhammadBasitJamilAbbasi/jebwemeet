@@ -94,6 +94,7 @@ class Add_Sports extends StatelessWidget {
                       ),
                     ),
                   ),
+                  AppComponents().sizedBox30,
                   controller.selectedSports != "Select Sports"
                       ? Center(
                           child: kCustomButton(

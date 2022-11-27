@@ -15,6 +15,7 @@ const String kPhone = "phone";
 const String kPassword = "Password";
 const String kEducation = "education";
 const String kWork = "work";
+const String kImageUrl = "imageUrl";
 const String kSports = "sports";
 const String kAbout = "about";
 const String kHeight = "height";
