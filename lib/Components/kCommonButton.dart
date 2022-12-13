@@ -24,11 +24,13 @@ class kCommonButton extends StatelessWidget {
               color: whitecolor),
         ),
         decoration: BoxDecoration(
-            /*  boxShadow: [
-          BoxShadow(color: Colors.grey.shade300, blurRadius: 10.0, spreadRadius: 5,offset: Offset(0,1)),
-        ], */
-            borderRadius: BorderRadius.circular(8),
-            color: primarycolor),
+          gradient: RadialGradient(colors: [
+            Color(0xFFEA7C4A),
+            Color(0xFFF1565A),
+          ]),
+          borderRadius: BorderRadius.circular(8),
+          // color: primarycolor
+        ),
       ),
     );
   }

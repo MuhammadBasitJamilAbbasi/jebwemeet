@@ -24,7 +24,7 @@ const String kHobbies = "hobby";
 const String kMovies = "movies";
 
 Color primarycolor = Color(0xfFf1565A);
-Color butoncolor = Color(0XFFF1565A);
+Color butoncolor = Color(0XFFFA2A39);
 Color secoundrycolor = Color(0XFFF36F21);
 Color kinputbgcolor = Color(0XFFD9D9D9);
 Color normaltextcolor = Color(0XFF7A7A7A);
@@ -32,6 +32,7 @@ Color whitecolor = Color(0XFFFFFFFF);
 Color blackcolor = Color(0XFF000000);
 Color dividercolor = Color(0XFFC4C4C4);
 Color selectedCategoryBackground = Color(0xFFF36F21);
+const Color kBaseGrey = Color(0XFFEBEBF0);
 
 TextStyle k14styleWhite =
     TextStyle(fontSize: 14, color: Colors.white, fontFamily: "Gilroy-Bold");
@@ -52,6 +53,27 @@ TextStyle k16styleblack =
     TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.black);
 TextStyle k18styleblack =
     TextStyle(fontSize: 18, color: Colors.black, fontFamily: "Gilroy-Bold");
+final body4StyleHeight = TextStyle(
+  fontFamily: "Gilroy-Regular",
+  fontWeight: FontWeight.w500,
+  height: 1.5,
+  fontSize: 14,
+  color: Colors.black,
+);
+final secondaryFontStyleWeight = TextStyle(
+  fontFamily: "Gilroy-Regular",
+  fontWeight: FontWeight.w400,
+  fontSize: 14,
+  color: Colors.black,
+);
+final unreadStyle = TextStyle(
+  fontWeight: FontWeight.w900,
+  fontFamily: "Gilroy-Regular",
+  height: 1.5,
+  fontSize: 14,
+  color: Colors.black,
+);
+
 TextStyle k18stylePrimary = TextStyle(
     fontSize: 18,
     color: butoncolor,
@@ -63,6 +85,8 @@ TextStyle k10styleWhite =
     TextStyle(fontSize: 10, color: Colors.white, fontFamily: "Gilroy-Bold");
 TextStyle k25styleblack =
     TextStyle(fontSize: 23, color: Colors.black, fontFamily: "Gilroy-Bold");
+TextStyle k20styleblack =
+    TextStyle(fontSize: 18, color: Colors.black, fontFamily: "Gilroy-Bold");
 TextStyle k14styleblackBold =
     TextStyle(fontFamily: "Gilroy-Regular", fontSize: 14, color: Colors.black);
 TextStyle k12styleblackBold =
@@ -78,7 +102,14 @@ List<String>? kIncomeList = [
   "80,000 - 90,000",
   ">100,000",
 ];
-
+List<String>? kReligionList = [
+  "Select Religion",
+  "Islam",
+  "Christianity",
+  "Judaisim",
+  "Hinduism",
+  "Prefer not to say",
+];
 List<String>? kSportsList = [
   "Select Sports",
   "Football",
@@ -190,6 +221,182 @@ List<String>? kstarList = [
   "Capricornus",
   "Aquarius",
   "Pisces",
+];
+List<String>? kMartial_StatusList = [
+  "Select Status",
+  "Never Married",
+  "Divorced",
+  "Widowed",
+  "Prefer not to say",
+];
+List<String>? kCityList = [
+  "Select City",
+  "Lahore",
+  "Karachi",
+  "Faisalabad",
+  "Rawalpindi",
+  "Gujranwala",
+  "Peshawar",
+  "Multan",
+  "Hyderabad",
+  "Islamabad",
+  "Quetta",
+  "Bahawalpur",
+  "Sargodha",
+  "Sialkot",
+  "Sukkur",
+  "Larkana",
+  "Rahim Yar Khan",
+  "Sheikhupura",
+  "Jhang",
+  "Dera Ghazi Khan",
+  "Gujrat",
+  "Sahiwal",
+  "Wah Cantonment",
+  "Mardan",
+  "Kasur",
+  "Okara",
+  "Mingora",
+  "Nawabshah",
+  "Chiniot",
+  "Kotri",
+  "Kāmoke",
+  "Hafizabad",
+  "Sadiqabad",
+  "Mirpur Khas",
+  "Burewala",
+  "Kohat",
+  "Khanewal",
+  "Dera Ismail Khan",
+  "Turbat",
+  "Muzaffargarh",
+  "Abbotabad",
+  "Mandi Bahauddin",
+  "Shikarpur",
+  "Jacobabad",
+  "Jhelum",
+  "Khanpur",
+  "Khairpur",
+  "Khuzdar",
+  "Pakpattan",
+  "Hub",
+  "Daska",
+  "Gojra",
+  "Dadu",
+  "Muridke",
+  "Bahawalnagar",
+  "Samundri",
+  "Tando Allahyar",
+  "Tando Adam",
+  "Jaranwala",
+  "Chishtian",
+  "Muzaffarabad",
+  "Attock",
+  "Vehari",
+  "Kot Abdul Malik",
+  "Ferozwala",
+  "Chakwal",
+  "Gujranwala Cantonment",
+  "Kamalia",
+  "Umerkot",
+  "Ahmedpur East",
+  "Kot Addu",
+  "Wazirabad",
+  "Mansehra",
+  "Layyah",
+  "Mirpur",
+  "Swabi",
+  "Chaman",
+  "Taxila",
+  "Nowshera",
+  "Khushab",
+  "Shahdadkot",
+  "Mianwali",
+  "Kabal",
+  "Lodhran",
+  "Hasilpur",
+  "Charsadda",
+  "Bhakkar",
+  "Badin",
+  "Arif Wala",
+  "Ghotki",
+  "Sambrial",
+  "Jatoi",
+  "Haroonabad",
+  "Daharki",
+  "Narowal",
+  "Tando Muhammad Khan",
+  "Kamber Ali Khan",
+  "Mirpur Mathelo",
+  "Kandhkot",
+  "Bhalwal",
+  "Gwadar",
+];
+List<String>? kAgeList = [
+  "Select Age",
+  "18",
+  "19",
+  "20",
+  "21",
+  "22",
+  "23",
+  "24",
+  "25",
+  "26",
+  "27",
+  "28",
+  "29",
+  "30",
+  "31",
+  "32",
+  "33",
+  "34",
+  "35",
+  "36",
+  "37",
+  "38",
+  "39",
+  "40",
+  "41",
+  "42",
+  "47",
+  "44",
+  "45",
+  "46",
+  "47",
+  "48",
+  "49",
+  "50",
+  "51",
+  "52",
+  "47",
+  "54",
+  "55",
+  "56",
+  "57",
+  "58",
+  "59",
+  "60",
+  "61",
+  "62",
+  "63",
+  "64",
+  "65",
+  "66",
+  "67",
+  "68",
+  "69",
+  "70",
+  "71",
+  "72",
+  "73",
+  "74",
+  "75",
+  "76",
+  "77",
+  "78",
+  "79",
+  "80",
 ];
 List<String>? kcasteList = [
   "Select Caste",

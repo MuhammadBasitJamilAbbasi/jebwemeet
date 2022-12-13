@@ -30,7 +30,7 @@ Future<bool> isNetworkAvailable() async {
   return false;
 }
 
-class Functions {
+class kFunctions {
   static String idGenerator() {
     //generate unique number
     final now = DateTime.now();

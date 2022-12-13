@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jabwemeet/Bindings/Bindings.dart';
-import 'package:jabwemeet/Views/Auth/Screens/JabWeMetScreen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Splash_Screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,8 +38,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.montserrat().fontFamily,
       ),
       debugShowCheckedModeBanner: false,
-      // home: HomePage(),
-      home: JabWeMet_Screen(),
+      home: Splash_Screen(),
     );
   }
 }

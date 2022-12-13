@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jabwemeet/Views/Auth/Screens/JabWeMetScreen.dart';
@@ -37,6 +38,7 @@ class GetSTorageController extends GetxController implements GetxService {
     log(box.getKeys().toString());
     log(box.getValues().toString());
     await box.erase().then((value) async {
+      FirebaseAuth.instance.signOut();
       ToggleIsHavingData(false);
       print("removeee storage");
       update();

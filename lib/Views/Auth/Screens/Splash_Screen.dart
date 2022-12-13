@@ -1,10 +1,15 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/JabWeMetScreen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
 
 class Splash_Screen extends StatefulWidget {
   @override
@@ -20,13 +25,37 @@ class _Splash_ScreenState extends State<Splash_Screen>
     // TODO: implement initState
     super.initState();
     // getposition();
-    Timer(Duration(seconds: 5), () {
-      if (getStorageControlller.box.read("isLogged").toString() == "isLogged") {
-        // Get.offAll(() => HomePage());
+    Timer(Duration(seconds: 5), () async {
+      if (getStorageControlller.box.read("loggedin").toString() == "loggedin") {
+        await initFunction();
       } else {
         Get.offAll(() => JabWeMet_Screen());
       }
     });
+  }
+
+  initFunction() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) async => {
+              if (value.exists)
+                {
+                  if (value.get("age") == null)
+                    {Get.offAll(() => Register_screen())}
+                  else
+                    {
+                      if (value.get("imageUrl") == null)
+                        {Get.offAll(() => Complete_Profile1())}
+                      else
+                        {Get.offAll(() => Home())}
+                    }
+                }
+              else
+                {Get.offAll(() => JabWeMet_Screen())}
+            });
   }
 
 /*

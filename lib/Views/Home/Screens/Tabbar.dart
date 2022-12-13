@@ -1,10 +1,13 @@
+import 'package:badges/badges.dart';
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Utils/constants.dart';
+import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
+import 'package:jabwemeet/Views/Home/Controllers/message_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Account/Account.dart';
-import 'package:jabwemeet/Views/Home/Screens/Chat/chat.dart';
+import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/message.view.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
 import 'package:jabwemeet/Views/Home/Screens/Likes/LIke.dart';
 
@@ -48,6 +51,7 @@ class _kCustomBottomNavBarState extends State<kCustomBottomNavBar> {
           CustomNavigationBarItem(
             icon: InkWell(
               onTap: () {
+                Get.find<Home_page_controller>().query();
                 Get.to(() => Home());
               },
               child: Container(
@@ -117,7 +121,7 @@ class _kCustomBottomNavBarState extends State<kCustomBottomNavBar> {
           CustomNavigationBarItem(
             icon: InkWell(
               onTap: () {
-                Get.to(() => Chat());
+                Get.to(() => MessageView());
               },
               child: Container(
                 height: 45,
@@ -131,18 +135,38 @@ class _kCustomBottomNavBarState extends State<kCustomBottomNavBar> {
                       color:
                           widget.index == 2 ? butoncolor : Colors.transparent,
                     ),
-                    widget.index == 2
-                        ? Container(
-                            child: Image.asset("assets/message.png",
-                                height: 35, width: 25, color: butoncolor),
-                          )
-                        : Container(
-                            child: Image.asset(
-                              "assets/message.png",
-                              height: 35,
-                              width: 25,
-                            ),
-                          ),
+                    // widget.index == 2
+                    //     ? Container(
+                    //         child: Image.asset("assets/message.png",
+                    //             height: 35, width: 25, color: butoncolor),
+                    //       )
+                    //     :
+                    // Container(
+                    //   child: Image.asset(
+                    //     "assets/message.png",
+                    //     height: 35,
+                    //     width: 25,
+                    //   ),
+                    // ),
+                    StreamBuilder(
+                        stream: Get.find<MessageController>().newMessages(),
+                        builder: (context, snapshot) {
+                          return GetBuilder<MessageController>(
+                            builder: (provider) {
+                              return Badge(
+                                showBadge: provider.unreadMessagesAvailable,
+                                child: Image.asset(
+                                  "assets/message.png",
+                                  // color: widget.index == 2
+                                  //     ? butoncolor
+                                  //     : Colors.transparent,
+                                  height: 35,
+                                  width: 25,
+                                ),
+                              );
+                            },
+                          );
+                        }),
                   ],
                 ),
               ),

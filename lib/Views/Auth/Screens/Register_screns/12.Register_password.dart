@@ -28,7 +28,7 @@ class Register_Password extends StatelessWidget {
               AppComponents().sizedBox50,
               Center(
                   child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 25),
                 child: Obx(() {
                   return kPasswordTextField(
                     isObsecure: controller.hidePassword.value,

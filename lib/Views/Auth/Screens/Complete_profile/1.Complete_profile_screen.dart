@@ -60,7 +60,7 @@ class Complete_Profile1 extends StatelessWidget {
                             child: Stack(
                               children: [
                                 Container(
-                                  height: 243,
+                                  height: 247,
                                   margin: EdgeInsets.only(top: 15, right: 5),
                                   width: MediaQuery.of(context).size.width,
                                   decoration: controller.selectedImagePath

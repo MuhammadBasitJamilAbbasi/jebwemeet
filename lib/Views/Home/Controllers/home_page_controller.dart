@@ -1,40 +1,87 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-//import 'package:marry_muslim/models/listing_custom_model.dart';
-import 'package:swipable_stack/swipable_stack.dart';
-import 'package:jabwemeet/Models/Listing_model.dart';
+import 'package:jabwemeet/Components/App_Components.dart';
 
-class home_page_controller extends GetxController {
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
+class Home_page_controller extends GetxController {
+  String? selectedMartialStatus = "Select Status";
+  String? selectedReligion = "Select Religion";
+  String? selectedCaste = "Select Caste";
+  String? selectedCity = "Select City";
+  var lowerValue = 18.0.obs;
+  var upperValue = 60.0.obs;
+  Stream<QuerySnapshot<Map<String, dynamic>>> queryValue = FirebaseFirestore
+      .instance
+      .collection("users")
+      .where("age", isGreaterThanOrEqualTo: 18)
+      .snapshots();
 
-    if (stackController.hasListeners) {
-      stackController.removeListener(() {});
-    }
-    stackController = SwipableStackController()
-      ..addListener(() {
-        update();
-      });
-    controller = PageController(initialPage: 0);
+  clearAll(BuildContext context) {
+    selectedMartialStatus = "Select Status";
+    selectedReligion = "Select Religion";
+    selectedCaste = "Select Caste";
+    selectedCity = "Select City";
+    lowerValue.value = 18.0;
+    upperValue.value = 60.0;
+    update();
+    snackBar(context, "Filters Clear", Colors.pink);
   }
 
-  clearMessageDot() {
-    print("clearing dot");
-    listingModel.value.data?.unreadMessage = false;
-    print("cleared ${listingModel.value.data?.unreadMessage}");
+  query() {
+    if (selectedCity == "Select City" &&
+        selectedCaste == "Select Caste" &&
+        selectedReligion == "Select Religion" &&
+        lowerValue.value.round() == 18 &&
+        upperValue.value.round() == 60 &&
+        selectedMartialStatus == "Select Status") {
+      queryValue = FirebaseFirestore.instance
+          .collection("users")
+          .where("age", isGreaterThanOrEqualTo: 18)
+          .snapshots();
+    } else {
+      queryValue = FirebaseFirestore.instance
+          .collection("users")
+          .where("age", isGreaterThanOrEqualTo: lowerValue.value.round())
+          .where("age", isLessThanOrEqualTo: upperValue.value.round())
+          .where("martial_status", isEqualTo: selectedMartialStatus)
+          .where("address", isEqualTo: selectedCity)
+          .where("caste", isEqualTo: selectedCaste)
+          .where("religion", isEqualTo: selectedReligion)
+          .snapshots();
+    }
+    update();
+    return queryValue;
+  }
+
+  selectedMartialFunction(String? value) {
+    selectedMartialStatus = value;
     update();
   }
 
-  iniCustom() {
-    // fetch_listing_data(pageNumber: currentPage.value.toString());
+  selectedCityFunction(String? value) {
+    selectedCity = value;
+    update();
   }
 
-  late PageController controller;
+  selectedReligionFunction(String? value) {
+    selectedReligion = value;
+    update();
+  }
 
-  var listingModel = ListingModel().obs;
-  RxList<Listing> Listing_List = RxList<Listing>([]);
+  selectedCasteFunction(String? value) {
+    selectedCaste = value;
+    update();
+  }
+
+  // iniCustom() {
+  //   // fetch_listing_data(pageNumber: currentPage.value.toString());
+  // }
+  //
+  // late PageController controller;
+  //
+  // var listingModel = ListingModel().obs;
+  // var userlist = UserModel().obs;
+/*  late List countList;
 
   SwipableStackController stackController = SwipableStackController();
 
@@ -47,7 +94,7 @@ class home_page_controller extends GetxController {
     print("============> CURRENT API");
     currentPage.value++;
     // fetch_listing_data(pageNumber: currentPage.value.toString());
-  }
+  }*/
 
 /*
   Future fetch_listing_data({required String pageNumber}) async {
@@ -89,11 +136,30 @@ class home_page_controller extends GetxController {
     }
   }
 */
+  /* void onInit() {
+    // TODO: implement onInit
+    super.onInit();
 
-  remove_user(Listing e) {
-    Listing_List.value.remove(e);
+    if (stackController.hasListeners) {
+      stackController.removeListener(() {});
+    }
+    stackController = SwipableStackController()
+      ..addListener(() {
+        update();
+      });
+    controller = PageController(initialPage: 0);
+  }
+
+  clearMessageDot() {
+    print("clearing dot");
+    listingModel.value.data?.unreadMessage = false;
+    print("cleared ${listingModel.value.data?.unreadMessage}");
+    update();
+  }*/
+/*  remove_user(Listing e) {
+    // Listing_List.value.remove(e);
     refresh();
     update();
     notifyChildrens();
-  }
+  }*/
 }

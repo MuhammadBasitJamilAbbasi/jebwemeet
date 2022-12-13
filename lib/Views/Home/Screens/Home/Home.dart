@@ -1,155 +1,340 @@
+import 'dart:developer';
 import 'dart:math' as math;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:swipable_stack/swipable_stack.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
+import 'package:jabwemeet/Models/UserModel.dart';
+import 'package:jabwemeet/Models/chatroom.model.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
-import 'package:jabwemeet/Views/Home/Screens/Home/Home_Components.dart';
+import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/personmessages.view.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/filterScreen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Tabbar.dart';
-
+import 'package:swipable_stack/swipable_stack.dart';
+import 'package:uuid/uuid.dart';
 //import 'package:marry_muslim/models/listing_custom_model.dart';
 
-class Home extends GetView<home_page_controller> {
-  final a = Get.put(home_page_controller());
-
-  Widget getCard() {
-    return GetBuilder<home_page_controller>(
-        init: home_page_controller(),
-        builder: (builder) {
-          return ProfileCard("primary", true);
-        });
-  }
+class Home extends StatelessWidget {
+  final controller = Get.find<Home_page_controller>();
 
   @override
   Widget build(BuildContext context) {
-    // a.iniCustom();
     return Scaffold(
       bottomNavigationBar: kCustomBottomNavBar(
         index: 0,
       ),
       body: SafeArea(
-          child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-            // outlined_button(
-            //     txt: "Refresh",
-            //     ontap: () {
-            //       // controller.fetch_listing_data(pageNumber: "0");
-            //       //  controller.fetch_listing_data(pageNumber: controller.currentPage.value.toString());
-            //     },
-            //     color: Theme.of(context).primaryColor,
-            //     icon: Icon(
-            //       Icons.refresh,
-            //       color: Theme.of(context).primaryColor,
-            //     )),
-            AppComponents().sizedBox20,
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Discover",
-                    style: k25styleblack,
-                  ),
-                  Image.asset(
-                    "assets/filter.png",
-                    height: 30,
-                    width: 30,
-                  ),
-                ],
-              ),
-            ),
-            AppComponents().sizedBox10,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              child: Text(
-                "People’s that matches your hobby. Start connecting with them.",
-                style: k12styleblack,
-              ),
-            ),
-            AppComponents().sizedBox10,
-
-            Container(
-              height: MediaQuery.of(context).size.height * .695,
-              margin: EdgeInsets.symmetric(horizontal: 30),
-              child: SwipableStack(
-                builder: (context, properties) {
-                  return getCard();
-                },
-                detectableSwipeDirections: const {
-                  SwipeDirection.right,
-                  SwipeDirection.left,
-                  SwipeDirection.up,
-                  SwipeDirection.down,
-                },
-                itemCount: 5,
-                controller: controller.stackController,
-                stackClipBehaviour: Clip.none,
-                allowVerticalSwipe: true,
-                onWillMoveNext: (index, swipeDirection) {
-                  // Datum model = Functions.convertListingToDatum(
-                  //     controller.Listing_List.value[index]);
-
-                  // Return true for the desired swipe direction.
-                  switch (swipeDirection) {
-                    case SwipeDirection.left:
-                      {
-                        print("====> left");
-                        // all_CRUD_user_operation().add_user_to_ignore(model);
-                        return true;
-                      }
-                    case SwipeDirection.right:
-                      {
-                        print("====> right");
-                        // all_CRUD_user_operation().add_user_to_interest(model);
-                        return true;
-                      }
-                    case SwipeDirection.up:
-                      {
-                        print("====> up");
-                        //  all_CRUD_user_operation().add_user_to_follow(model);
-                        // all_CRUD_user_operation().check_followed_unfollowed(
-                        //     e: model, isfollowed: model.isFollow!);
-                        // model.isFollow = !model.isFollow!;
-
-                        return true;
-                      }
-                    case SwipeDirection.down:
-                      return false;
-                  }
-                },
-                horizontalSwipeThreshold: 0.8,
-                verticalSwipeThreshold: 1,
-                overlayBuilder: (
-                  context,
-                  properties,
-                ) =>
-                    CardOverlay(
-                  swipeProgress: properties.swipeProgress,
-                  direction: properties.direction,
-                ),
-              ),
-            )
-          ])
-              /*return  PageView(
-                physics: BouncingScrollPhysics(),
-                //key: PageStorageKey("Listing_List"),
-                controller: controller.controller,
-                scrollDirection: Axis.vertical,
-                children: controller.Listing_List.value.map((e) {
-                  return getCard(e);
-                }).toList()
-            );*/
-              )),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+            Expanded(
+                child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: GetBuilder<Home_page_controller>(
+                        init: Home_page_controller(),
+                        builder: (controller) {
+                          return Stack(
+                            children: [
+                              StreamBuilder<QuerySnapshot>(
+                                  stream: controller.queryValue,
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    } else if (!snapshot.hasData ||
+                                        snapshot.hasError ||
+                                        snapshot.data == null) {
+                                      return Center(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 68.0),
+                                          child: Text(
+                                            "No Data found...",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    if (snapshot.data!.size == 0) {
+                                      return Center(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 68.0),
+                                          child: Text(
+                                            "No Matches Yet...",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    return Container(
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      child: ListView.builder(
+                                        physics: BouncingScrollPhysics(),
+                                        padding: EdgeInsets.zero,
+                                        itemCount: snapshot.data!.docs.length,
+                                        itemBuilder:
+                                            (BuildContext context, index) {
+                                          UserModel userModel =
+                                              UserModel.fromMap(snapshot
+                                                      .data!.docs[index]
+                                                      .data()
+                                                  as Map<String, dynamic>);
+                                          print(
+                                              "<===========Image Url=============>");
+                                          log(userModel.imageUrl.toString());
+                                          return Padding(
+                                            padding: const EdgeInsets.all(0.0),
+                                            child: Card(
+                                              clipBehavior: Clip.antiAlias,
+                                              color: Colors.white,
+                                              margin: EdgeInsets.zero,
+                                              // shape: defaultCardBorder(),
+                                              child: Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height -
+                                                    80,
+                                                margin:
+                                                    EdgeInsets.only(bottom: 10),
+                                                child: Column(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Container(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            image: NetworkImage(
+                                                              userModel.imageUrl
+                                                                  .toString(),
+                                                            ),
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                        child: Container(
+                                                          alignment: Alignment
+                                                              .bottomLeft,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(7.0),
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                userModel.name
+                                                                    .toString(),
+                                                                style:
+                                                                    k18stylePrimary,
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                        "Age: " +
+                                                                            userModel.age.toString(),
+                                                                        style:
+                                                                            k10stylePrimary,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        "Profession: " +
+                                                                            userModel.work.toString(),
+                                                                        style:
+                                                                            k10stylePrimary,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  InkWell(
+                                                                    onTap:
+                                                                        () async {
+                                                                      log("1 chat room not null");
+                                                                      ChatRoomModel?
+                                                                          chatRoom =
+                                                                          await getchatRoom(userModel
+                                                                              .uid
+                                                                              .toString());
+                                                                      log("2 chat room not null");
+                                                                      if ((chatRoom !=
+                                                                          null)) {
+                                                                        log("3 chat room not null");
+                                                                        Get.to(() => PersonMessageView(
+                                                                            name:
+                                                                                userModel.name.toString(),
+                                                                            profilePicture: userModel.imageUrl.toString(),
+                                                                            uid: userModel.uid.toString(),
+                                                                            chatRoomModel: chatRoom));
+                                                                      }
+                                                                    },
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          50,
+                                                                      width: 50,
+                                                                      padding: EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              10,
+                                                                          vertical:
+                                                                              10),
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(
+                                                                              0xFFFA2A39),
+                                                                          shape:
+                                                                              BoxShape.circle),
+                                                                      child: Image
+                                                                          .asset(
+                                                                        "assets/icons/chat2.png",
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              AppComponents()
+                                                                  .sizedBox10,
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Image.asset(
+                                                                    "assets/icons/cancel.png",
+                                                                    height: 50,
+                                                                    width: 50,
+                                                                  ),
+                                                                  Container(
+                                                                    height: 50,
+                                                                    width: 50,
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        horizontal:
+                                                                            10,
+                                                                        vertical:
+                                                                            10),
+                                                                    decoration: BoxDecoration(
+                                                                        color: Color(
+                                                                            0xFFFA2A39),
+                                                                        shape: BoxShape
+                                                                            .circle),
+                                                                    child: Image
+                                                                        .asset(
+                                                                      "assets/icons/heart.png",
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  }),
+                              Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Get.to(() => FilterScreen());
+                                      },
+                                      child: Image.asset(
+                                        "assets/filter.png",
+                                        height: 30,
+                                        width: 30,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        })))
+          ])),
     );
+  }
+
+  Future<ChatRoomModel?> getchatRoom(var opponent_id) async {
+    ChatRoomModel chatRoom = ChatRoomModel();
+    User? user = FirebaseAuth.instance.currentUser;
+    QuerySnapshot snapshotData = await FirebaseFirestore.instance
+        .collection('chatrooms')
+        .where('participants.${user!.uid}', isEqualTo: true)
+        .where('participants.${opponent_id}', isEqualTo: true)
+        .get();
+
+    if (snapshotData.docs.length > 0) {
+      var chatRoomData = snapshotData.docs[0].data();
+      ChatRoomModel exisitingChatRoom =
+          ChatRoomModel.fromMap(chatRoomData as Map<String, dynamic>);
+
+      chatRoom = exisitingChatRoom;
+
+      log('you have already a chatromm');
+    } else {
+      ChatRoomModel newChatRoom = ChatRoomModel(
+          chatRoomId: Uuid().v1(),
+          typing: [],
+          participants: {
+            user.uid: true,
+            opponent_id: true,
+          },
+          isReadSender: true,
+          isReadReceiver: false,
+          lastMessage: '',
+          lastMesgUserId: FirebaseAuth.instance.currentUser!.uid.toString());
+
+      await FirebaseFirestore.instance
+          .collection('chatrooms')
+          .doc(newChatRoom.chatRoomId)
+          .set(newChatRoom.toMap());
+      chatRoom = newChatRoom;
+
+      log('Hurrah!new chat room created!');
+    }
+
+    return chatRoom;
   }
 }
 

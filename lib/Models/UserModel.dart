@@ -1,7 +1,7 @@
 class UserModel {
   String? gender;
   String? martial_status;
-  String? age;
+  int? age;
   String? address;
   String? religion;
   String? caste;

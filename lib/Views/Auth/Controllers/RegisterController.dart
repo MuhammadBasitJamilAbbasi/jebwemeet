@@ -37,6 +37,7 @@ class RegisterController extends GetxController {
   var isPolicy = false.obs;
   bool isPasswordVisible = true;
   String? selectedValue = "Select Caste";
+  String? selectedCity = "Select City";
   String? selectedStar = "Select Star";
   String? selectedHeight = "Select height";
   String? selectedIncome = "Select income";
@@ -50,6 +51,11 @@ class RegisterController extends GetxController {
 
   selectedCasteFunction(String? value) {
     selectedValue = value;
+    update();
+  }
+
+  selectedCityFunction(String? value) {
+    selectedCity = value;
     update();
   }
 
@@ -274,11 +280,11 @@ class RegisterController extends GetxController {
       name: storage.box.read(kFull_name),
       about: storage.box.read(kAbout),
       address: storage.box.read(kAddress),
-      age: storage.box.read(kAge),
+      age: int.parse(storage.box.read(kAge)),
       caste: storage.box.read(kCaste),
       creativity: storage.box.read(kCreativity),
       education: storage.box.read(kEducation),
-      email: storage.box.read(kEmail),
+      email: user!.email.toString(),
       fcm_token: await FirebaseMessaging.instance.getToken(),
       gender: storage.box.read(kGender),
       smoking: storage.box.read(kSmoke),
@@ -288,7 +294,7 @@ class RegisterController extends GetxController {
       sports: storage.box.read(kSports),
       work: storage.box.read(kWork),
       martial_status: storage.box.read(kMartial_Statius),
-      imageUrl: "",
+      imageUrl: storage.box.read(kImageUrl),
       phone_number: storage.box.read(kPhone),
       income: storage.box.read(kIncome),
       uid: FirebaseAuth.instance.currentUser!.uid,
@@ -296,7 +302,7 @@ class RegisterController extends GetxController {
     );
     await FirebaseFirestore.instance
         .collection('users')
-        .doc(user!.uid)
+        .doc(user.uid)
         .set(userModel.toMap())
         .then((value) => Get.offAll(() => Complete_Profile1()));
   }
@@ -321,16 +327,13 @@ class RegisterController extends GetxController {
           number = element.get("phone_number");
           uiddd = element.get("uid");
           oldPassword = element.get("password");
-          isResetLoad = false;
           update();
         }
       } else {
-        isResetLoad = false;
         update();
         snackBar(context, "Your Account not found", Colors.deepOrange);
       }
     });
-    isResetLoad = false;
     update();
   }
 

@@ -123,6 +123,12 @@ class ProfileConytroller extends GetxController {
     update();
   }
 
+  //remove topics from the list
+  void removeTopics(TopicModel topics) {
+    selectedList.remove(topics);
+    update();
+  }
+
   //add topics to the list
   void addTitles(TopicModel topics) {
     getTitlesSelected.add(topics.title);
@@ -132,12 +138,6 @@ class ProfileConytroller extends GetxController {
   //add topics to the list
   void removeTitles(TopicModel topics) {
     getTitlesSelected.remove(topics.title);
-    update();
-  }
-
-  //remove topics from the list
-  void removeTopics(TopicModel topics) {
-    selectedList.remove(topics);
     update();
   }
 
@@ -194,7 +194,7 @@ class ProfileConytroller extends GetxController {
                 Get.find<GetSTorageController>().box.read(kHobbies).toString(),
             "hobbies": titleSelected,
             "imageUrl":
-                Get.find<GetSTorageController>().box.read(kHobbies).toString(),
+                Get.find<GetSTorageController>().box.read(kImageUrl).toString(),
             "income":
                 Get.find<GetSTorageController>().box.read(kIncome).toString(),
             "sports":

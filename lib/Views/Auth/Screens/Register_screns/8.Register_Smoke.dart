@@ -27,8 +27,7 @@ class Register_Smoke extends StatelessWidget {
                 ),
               ),
               AppComponents().sizedBox50,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+              Center(
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton2(
                     isExpanded: true,
@@ -67,22 +66,35 @@ class Register_Smoke extends StatelessWidget {
                     iconSize: 24,
                     iconEnabledColor: Colors.white,
                     iconDisabledColor: Colors.grey,
-                    buttonHeight: 50,
-                    buttonWidth: MediaQuery.of(context).size.width,
+                    buttonHeight: 47,
+                    buttonWidth: 247,
                     buttonPadding: const EdgeInsets.only(
                       left: 20,
                       right: 20,
                     ),
                     buttonDecoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
-                      color: butoncolor,
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFFEA7C4A),
+                            Color(0xFFF1565A),
+                          ]),
                     ),
                     offset: Offset(0, -20),
                     itemHeight: 40,
                     itemPadding: const EdgeInsets.only(left: 14, right: 14),
                     dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: butoncolor),
+                      borderRadius: BorderRadius.circular(4),
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFFEA7C4A),
+                            Color(0xFFF1565A),
+                          ]),
+                    ),
                     scrollbarRadius: const Radius.circular(40),
                     scrollbarThickness: 6,
                     scrollbarAlwaysShow: true,

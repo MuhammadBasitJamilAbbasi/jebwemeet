@@ -8,9 +8,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
+import 'package:jabwemeet/Views/Auth/Controllers/Password_encyption.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
@@ -18,6 +20,7 @@ import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
 class LoginController extends GetxController {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController otpController = TextEditingController();
   RxBool hidePassword = true.obs;
 
   // SignInService service = new SignInService();
@@ -34,6 +37,26 @@ class LoginController extends GetxController {
       return 'Invalid Email';
     }
     return null;
+  }
+
+  String? validateOTP(String value) {
+    if (value == null || value == '') {
+      return "*Required";
+    } else if (value.length < 6) {
+      return 'Invalid OTP';
+    }
+    return null;
+  }
+
+  bool isCodeEntered = false;
+
+  codeentered(value) {
+    if (value.length == 6) {
+      isCodeEntered = true;
+      update();
+    } else
+      isCodeEntered = false;
+    update();
   }
 
   String? validatePassword(String value) {
@@ -96,12 +119,14 @@ class LoginController extends GetxController {
             .collection("users")
             .doc(user!.uid)
             .get()
-            .then((value) async => {
-                  if (value.get("imageUrl") == "")
-                    {Get.offAll(() => Complete_Profile1())}
-                  else
-                    {Get.offAll(() => Home())}
-                });
+            .then((value) async {
+          Get.find<GetSTorageController>().box.write("loggedin", "loggedin");
+          if (value.get("imageUrl") == null) {
+            Get.offAll(() => Complete_Profile1());
+          } else {
+            Get.offAll(() => Home());
+          }
+        });
       } catch (e) {
         log(e.toString());
       }
@@ -163,28 +188,37 @@ class LoginController extends GetxController {
         idToken: googleSignInAuthentication.idToken,
       );
       await auth.signInWithCredential(credential).then((value) async {
-        await addUserdetails();
         User? user = FirebaseAuth.instance.currentUser;
         try {
           await FirebaseFirestore.instance
               .collection("users")
               .doc(user!.uid)
               .get()
-              .then((value) async => {
-                    if (value.get("age") == "")
-                      {Get.offAll(() => Register_screen())}
-                    else
-                      {
-                        if (value.get("imageUrl") == "")
-                          {Get.offAll(() => Complete_Profile1())}
-                        else
-                          {Get.offAll(() => Home())}
-                      }
-                  });
+              .then((value) async {
+            if (value.exists) {
+              Get.find<GetSTorageController>()
+                  .box
+                  .write(kFull_name, user.displayName.toString());
+              Get.find<GetSTorageController>()
+                  .box
+                  .write(kPhone, user.phoneNumber.toString());
+              if (value.get("age") == null) {
+                Get.offAll(() => Register_screen());
+              } else {
+                if (value.get("imageUrl") == null) {
+                  Get.offAll(() => Complete_Profile1());
+                } else {
+                  Get.offAll(() => Home());
+                }
+              }
+            } else {
+              await addUserdetails();
+            }
+            Get.find<GetSTorageController>().box.write("loggedin", "loggedin");
+          });
         } catch (e) {
           log(e.toString());
         }
-        ;
       });
     } on FirebaseAuthException catch (e) {
       isLoaderGoogle = false;
@@ -196,6 +230,7 @@ class LoginController extends GetxController {
 
 //add the user details while signup
   final storage = Get.find<GetSTorageController>();
+
   Future addUserdetails() async {
     FirebaseAuth _fireAuth = FirebaseAuth.instance;
     User? user = _fireAuth.currentUser;
@@ -204,7 +239,7 @@ class LoginController extends GetxController {
         name: user!.displayName,
         about: null,
         address: storage.box.read(kAddress),
-        age: "",
+        age: null,
         caste: "",
         creativity: "",
         education: "",
@@ -218,7 +253,7 @@ class LoginController extends GetxController {
         sports: null,
         work: null,
         martial_status: null,
-        imageUrl: "",
+        imageUrl: null,
         phone_number: null,
         income: null,
         uid: FirebaseAuth.instance.currentUser!.uid,
@@ -227,6 +262,224 @@ class LoginController extends GetxController {
         .collection('users')
         .doc(user.uid)
         .set(userModel.toMap());
+  }
+
+  var resend_Token;
+  var verification_Id;
+  bool isSendOtpLoad = false;
+  bool isSent = false;
+
+  //by sajawal
+  sendOTP({required String phoneNumber, required BuildContext context}) async {
+    log("<=============================================>");
+    log("Inside Phone Authentication sendOTP Service");
+    log("Phone no is $phoneNumber");
+    log("<=============================================>");
+    isSendOtpLoad = true;
+    update();
+    try {
+      log("Inside try Otp statement. ");
+      await FirebaseAuth.instance.verifyPhoneNumber(
+          phoneNumber: phoneNumber,
+          verificationCompleted: (credentials) {},
+          verificationFailed: (ex) {
+            snackBar(context, ex.code.toString(), Colors.deepOrange);
+            log(ex.code.toString());
+          },
+          codeSent: (verificationId, resendToken) {
+            log("Resend Token is $resendToken");
+            log("VerificationId is $verificationId");
+            snackBar(context, "OTP Sending...", Colors.pink);
+            resend_Token = resendToken;
+            update();
+            verification_Id = verificationId;
+            update();
+            isSendOtpLoad = false;
+            isSent = true;
+            update();
+            /*  Get.to(() => ForgetPassword_OTP_view(
+                phoneNumber: number.toString(),
+                verificationId: verification_Id.toString()));*/
+          },
+          codeAutoRetrievalTimeout: (verificationId) {},
+          timeout: Duration(seconds: 60));
+      isSendOtpLoad = false;
+      update();
+    } on FirebaseException catch (e) {
+      isSendOtpLoad = false;
+      isSent = true;
+      update();
+      log("Inside Catch statement ${e.code}");
+      snackBar(context, e.code.toString(), Colors.deepOrange);
+    }
+  }
+
+  bool isVerifyLoad = false;
+
+  Future<bool> verifyOtp() async {
+    log("<=============================================>");
+    log("Inside Phone Authentication verifyOtp Service");
+    log("VerificationId is $verification_Id");
+    log("<=============================================>");
+    bool verificationStatus = false;
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verification_Id, smsCode: otpController.value.text);
+    isVerifyLoad = true;
+    update();
+    try {
+      log("Inside try statement.");
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      if (userCredential.user != null) {
+        log("Firebase Verification Successful");
+        verificationStatus = true;
+        log("Verification Status inside if statement is: $verificationStatus");
+        /* await FirebaseAuth.instance.signOut();*/
+      } else {
+        isVerifyLoad = false;
+        update();
+        verificationStatus = false;
+        log("Verification Status inside else statement is: $verificationStatus");
+      }
+      log("Verification Status outside if else statement: $verificationStatus");
+      if (verificationStatus == true) {
+        await addUserdetailsPhone();
+      }
+      return verificationStatus;
+    } on FirebaseAuthException catch (e) {
+      isVerifyLoad = false;
+      update();
+      log("Inside Catch statement ${e.code}");
+      verificationStatus = false;
+      return verificationStatus;
+    }
+  }
+
+  bool isResendLoad = false;
+
+  resendOtp() async {
+    log("<=============================================>");
+    log("Inside Phone Authentication resendOtp Service");
+    log("Phone Number is $Get.find<GetSTorageController>().box.read(kPhone)");
+    log("Resend Token is $resend_Token");
+    log("<=============================================>");
+    isResendLoad = true;
+    update();
+    try {
+      log("Inside try statement. ");
+      await FirebaseAuth.instance.verifyPhoneNumber(
+          phoneNumber: Get.find<GetSTorageController>().box.read(kPhone),
+          verificationCompleted: (credentials) {},
+          verificationFailed: (ex) {
+            log(ex.code.toString());
+          },
+          codeSent: (verificationId, resendToken) {
+            log("Resend Token is $resendToken");
+          },
+          forceResendingToken: resend_Token,
+          codeAutoRetrievalTimeout: (verificationId) {},
+          timeout: Duration(seconds: 60));
+      isResendLoad = false;
+      update();
+    } on FirebaseException catch (e) {
+      isResendLoad = false;
+      update();
+      log("Inside Catch statement ${e.code}");
+      // Get.snackbar("Otp Re-Send Error", e.code);
+    }
+  }
+
+  //add the user details while signup
+  addUserdetailsPhone() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    log(user!.uid);
+    UserModel userModel = UserModel(
+      height: storage.box.read(kHeight),
+      name: storage.box.read(kFull_name),
+      about: storage.box.read(kAbout),
+      address: storage.box.read(kAddress),
+      age: storage.box.read(kAge),
+      caste: storage.box.read(kCaste),
+      creativity: storage.box.read(kCreativity),
+      education: storage.box.read(kEducation),
+      email: storage.box.read(kEmail),
+      fcm_token: await FirebaseMessaging.instance.getToken(),
+      gender: storage.box.read(kGender),
+      smoking: storage.box.read(kSmoke),
+      star_sign: storage.box.read(kStar_sign),
+      religion: storage.box.read(kReligion),
+      hobbies: storage.box.read(kHobbies),
+      sports: storage.box.read(kSports),
+      work: storage.box.read(kWork),
+      martial_status: storage.box.read(kMartial_Statius),
+      imageUrl: storage.box.read(kImageUrl),
+      phone_number: storage.box.read(kPhone),
+      income: storage.box.read(kIncome),
+      uid: user.uid,
+      password: storage.box.read(kPassword),
+    );
+    Get.find<GetSTorageController>().box.write("isPhone", "isPhone");
+    Get.find<GetSTorageController>().box.write("loggedin", "loggedin");
+    try {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(user.uid)
+          .get()
+          .then((value) async {
+        Get.find<GetSTorageController>().box.write("loggedin", "loggedin");
+        if (value.get("age") == null) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .set(userModel.toMap())
+              .then((value) => Get.offAll(() => Register_screen()));
+        } else {
+          if (value.get("imageUrl") == null) {
+            Get.offAll(() => Complete_Profile1());
+          } else {
+            Get.offAll(() => Home());
+          }
+        }
+      });
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  addUserdetailsPhoneUpdate() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    log(user!.uid);
+    UserModel userModel = UserModel(
+      height: storage.box.read(kHeight),
+      name: storage.box.read(kPhone),
+      about: storage.box.read(kAbout),
+      address: storage.box.read(kAddress),
+      age: storage.box.read(kAge),
+      caste: storage.box.read(kCaste),
+      creativity: storage.box.read(kCreativity),
+      education: storage.box.read(kEducation),
+      email: storage.box.read(kEmail),
+      fcm_token: await FirebaseMessaging.instance.getToken(),
+      gender: storage.box.read(kGender),
+      smoking: storage.box.read(kSmoke),
+      star_sign: storage.box.read(kStar_sign),
+      religion: storage.box.read(kReligion),
+      hobbies: storage.box.read(kHobbies),
+      sports: storage.box.read(kSports),
+      work: storage.box.read(kWork),
+      martial_status: storage.box.read(kMartial_Statius),
+      imageUrl: storage.box.read(kImageUrl),
+      phone_number: storage.box.read(kPhone),
+      income: storage.box.read(kIncome),
+      uid: user.uid,
+      password: EncryptData.encryptData(password: storage.box.read(kPassword)),
+    );
+    Get.find<GetSTorageController>().box.write("isPhone", "isPhone");
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .update(userModel.toMap())
+        .then((value) => Get.offAll(() => Register_screen()));
   }
 
   @override

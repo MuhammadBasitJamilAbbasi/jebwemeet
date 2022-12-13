@@ -4,6 +4,7 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Utils/enums.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
+import 'package:jabwemeet/Views/Auth/Controllers/LoginController.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 
 class Register_Name extends StatelessWidget {
@@ -28,7 +29,7 @@ class Register_Name extends StatelessWidget {
               AppComponents().sizedBox50,
               Center(
                   child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 25),
                 child: kCustomTextField(
                     hinttext: "Full name",
                     controller: controller.nameController,
@@ -36,18 +37,25 @@ class Register_Name extends StatelessWidget {
                       return "";
                     }),
               )),
-              AppComponents().sizedBox15,
+              AppComponents().sizedBox30,
               controller.nameController.value.text.isNotEmpty
                   ? Center(
                       child: kCustomButton(
                         label: "Continue",
-                        ontap: () {
+                        ontap: () async {
                           if (controller.nameController.value.text.isNotEmpty) {
                             Get.find<GetSTorageController>().box.write(
                                 kFull_name,
                                 controller.nameController.value.text);
-                            controller.setRegisterViewPage(
-                                RegisterViewEnum.RegisterView12);
+                            if (Get.find<GetSTorageController>()
+                                    .box
+                                    .read("isPhone") ==
+                                "isPhone") {
+                              Get.find<LoginController>()
+                                  .addUserdetailsPhoneUpdate();
+                            } else
+                              controller.setRegisterViewPage(
+                                  RegisterViewEnum.RegisterView12);
                           } else {
                             snackBar(
                                 context, "Please Enter your Name", Colors.pink);

@@ -1,4 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
@@ -27,8 +28,7 @@ class Register_Creativity extends StatelessWidget {
                 ),
               ),
               AppComponents().sizedBox50,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+              Center(
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton2(
                     isExpanded: true,
@@ -68,21 +68,34 @@ class Register_Creativity extends StatelessWidget {
                     iconSize: 24,
                     iconEnabledColor: Colors.white,
                     iconDisabledColor: Colors.grey,
-                    buttonHeight: 50,
-                    buttonWidth: MediaQuery.of(context).size.width,
+                    buttonHeight: 47,
+                    buttonWidth: 247,
                     buttonPadding: const EdgeInsets.only(
                       left: 20,
                       right: 20,
                     ),
                     buttonDecoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
-                      color: butoncolor,
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFFEA7C4A),
+                            Color(0xFFF1565A),
+                          ]),
                     ),
                     itemHeight: 40,
                     itemPadding: const EdgeInsets.only(left: 14, right: 14),
                     dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: butoncolor),
+                      borderRadius: BorderRadius.circular(4),
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFFEA7C4A),
+                            Color(0xFFF1565A),
+                          ]),
+                    ),
                     scrollbarRadius: const Radius.circular(40),
                     scrollbarThickness: 6,
                     scrollbarAlwaysShow: true,
@@ -95,13 +108,27 @@ class Register_Creativity extends StatelessWidget {
                       child: kCustomButton(
                         label: "Continue",
                         ontap: () {
+                          User? user = FirebaseAuth.instance.currentUser;
                           if (controller.selectedCreativity.toString() !=
                               "Select Creativity") {
                             Get.find<GetSTorageController>().box.write(
                                 kCreativity,
                                 controller.selectedCreativity.toString());
-                            controller.setRegisterViewPage(
-                                RegisterViewEnum.RegisterView10);
+                            if (Get.find<GetSTorageController>()
+                                    .box
+                                    .read("isPhone") ==
+                                "isPhone") {
+                              controller.setRegisterViewPage(
+                                  RegisterViewEnum.RegisterView10);
+                            } else {
+                              if (user == null) {
+                                controller.setRegisterViewPage(
+                                    RegisterViewEnum.RegisterView10);
+                              } else {
+                                controller.setRegisterViewPage(
+                                    RegisterViewEnum.RegisterView12);
+                              }
+                            }
                           } else {
                             snackBar(context, "Please Select your creativity",
                                 Colors.pink);
