@@ -195,7 +195,7 @@ class RegisterController extends GetxController {
           context: context,
           builder: (builder) {
             return AlertDialog(
-              title: Text('Account created Successfully'),
+              title: Text('Profile created Successfully'),
             );
           });
 
@@ -331,7 +331,7 @@ class RegisterController extends GetxController {
         }
       } else {
         update();
-        snackBar(context, "Your Account not found", Colors.deepOrange);
+        snackBar(context, "Your Profile not found", Colors.deepOrange);
       }
     });
     update();

@@ -22,7 +22,7 @@ class _Add_HoobiesState extends State<Add_Hoobies> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: GetBuilder<ProfileConytroller>(
+          child: GetBuilder<ProfileController>(
             builder: (controller) {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),

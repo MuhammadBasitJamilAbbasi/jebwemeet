@@ -69,7 +69,7 @@ class _JabWeMet_ScreenState extends State<JabWeMet_Screen> {
                     Get.to(() => Bismillah_Screen());
                   },
                   child: Text(
-                    "Create Account",
+                    "Create Profile",
                     style: TextStyle(
                         color: butoncolor, fontWeight: FontWeight.w600),
                   ),

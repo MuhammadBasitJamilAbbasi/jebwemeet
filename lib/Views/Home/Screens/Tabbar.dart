@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Controllers/message_controller.dart';
-import 'package:jabwemeet/Views/Home/Screens/Account/Account.dart';
 import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/message.view.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
 import 'package:jabwemeet/Views/Home/Screens/Likes/LIke.dart';
+import 'package:jabwemeet/Views/Home/Screens/Profile/Profile.dart';
 
 class kCustomBottomNavBar extends StatefulWidget {
   final int? index;
@@ -175,7 +175,7 @@ class _kCustomBottomNavBarState extends State<kCustomBottomNavBar> {
           CustomNavigationBarItem(
             icon: InkWell(
               onTap: () {
-                Get.to(() => Account());
+                Get.to(() => Profile());
               },
               child: Container(
                 height: 45,

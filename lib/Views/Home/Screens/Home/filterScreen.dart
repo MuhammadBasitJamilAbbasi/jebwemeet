@@ -68,8 +68,8 @@ class _FilterScreenState extends State<FilterScreen> {
                     AppComponents().sizedBox30,
                     RangeSliderFlutter(
                       values: [
-                        controller.lowerValue.value,
-                        controller.upperValue.value
+                        controller.filterlowerValue,
+                        controller.filterupperValue
                       ],
                       rangeSlider: true,
                       jump: true,
@@ -96,8 +96,8 @@ class _FilterScreenState extends State<FilterScreen> {
                       fontSize: 15,
                       textBackgroundColor: Colors.deepOrange,
                       onDragging: (handlerIndex, lowerValue, upperValue) {
-                        controller.lowerValue.value = lowerValue;
-                        controller.upperValue.value = upperValue;
+                        controller.filterlowerValue = lowerValue;
+                        controller.filterupperValue = upperValue;
                         controller.update();
                         controller.query();
                       },
@@ -116,6 +116,8 @@ class _FilterScreenState extends State<FilterScreen> {
                             : controller.selectedMartialStatus,
                         onchange: (value) {
                           controller.selectedMartialFunction(value.toString());
+                          controller.filterMartialStatus = value.toString();
+                          controller.update();
                           controller.query();
                         },
                         controller: controller),
@@ -133,6 +135,8 @@ class _FilterScreenState extends State<FilterScreen> {
                             : controller.selectedReligion,
                         onchange: (value) {
                           controller.selectedReligionFunction(value.toString());
+                          controller.filterReligion = value.toString();
+                          controller.update();
                           controller.query();
                         },
                         controller: controller),
@@ -150,6 +154,8 @@ class _FilterScreenState extends State<FilterScreen> {
                             : controller.selectedCaste,
                         onchange: (value) {
                           controller.selectedCasteFunction(value.toString());
+                          controller.filterCaste = value.toString();
+                          controller.update();
                           controller.query();
                         },
                         controller: controller),
@@ -167,6 +173,8 @@ class _FilterScreenState extends State<FilterScreen> {
                             : controller.selectedCity,
                         onchange: (value) {
                           controller.selectedCityFunction(value.toString());
+                          controller.filterCity = value.toString();
+                          controller.update();
                           controller.query();
                         },
                         controller: controller),

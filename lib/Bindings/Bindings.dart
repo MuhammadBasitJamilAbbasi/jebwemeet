@@ -14,7 +14,7 @@ class InitialBindings implements Bindings {
     Get.lazyPut(() => GetSTorageController(), fenix: true);
     Get.lazyPut(() => HelpersFunctions(), fenix: true);
     Get.lazyPut(() => RegisterController(), fenix: true);
-    Get.lazyPut(() => ProfileConytroller(), fenix: true);
+    Get.lazyPut(() => ProfileController(), fenix: true);
     Get.lazyPut(() => MessageController(), fenix: true);
     Get.lazyPut(() => Home_page_controller(), fenix: true);
   }

@@ -22,30 +22,33 @@ class Home_page_controller extends GetxController {
     selectedCaste = "Select Caste";
     selectedCity = "Select City";
     lowerValue.value = 18.0;
-    upperValue.value = 60.0;
+    upperValue.value = 70.0;
+    filterMartialStatus = null;
+    filterReligion = null;
+    filterCaste = null;
+    filterCity = null;
+    filterlowerValue = 18.0;
+    filterupperValue = 70.0;
     update();
     snackBar(context, "Filters Clear", Colors.pink);
   }
 
+  String? filterMartialStatus = null;
+  String? filterReligion = null;
+  String? filterCaste = null;
+  String? filterCity = null;
+  var filterlowerValue = 18.0;
+  var filterupperValue = 70.0;
+
   query() {
-    if (selectedCity == "Select City" &&
-        selectedCaste == "Select Caste" &&
-        selectedReligion == "Select Religion" &&
-        lowerValue.value.round() == 18 &&
-        upperValue.value.round() == 60 &&
-        selectedMartialStatus == "Select Status") {
-      queryValue = FirebaseFirestore.instance.collection("users").snapshots();
-    } else {
-      queryValue = FirebaseFirestore.instance
-          .collection("users")
-          .where("age", isGreaterThanOrEqualTo: lowerValue.value.round())
-          .where("age", isLessThanOrEqualTo: upperValue.value.round())
-          .where("martial_status", isEqualTo: selectedMartialStatus)
-          .where("address", isEqualTo: selectedCity)
-          .where("caste", isEqualTo: selectedCaste)
-          .where("religion", isEqualTo: selectedReligion)
-          .snapshots();
-    }
+    queryValue = FirebaseFirestore.instance
+        .collection("users")
+        .where("age", isGreaterThanOrEqualTo: filterlowerValue.round())
+        .where("age", isLessThanOrEqualTo: filterupperValue.round())
+        .where("martial_status", isEqualTo: filterMartialStatus)
+        .where("address", isEqualTo: filterCity)
+        .where("religion", isEqualTo: filterReligion)
+        .snapshots();
     update();
     return queryValue;
   }

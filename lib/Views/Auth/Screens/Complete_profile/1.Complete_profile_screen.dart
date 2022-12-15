@@ -19,13 +19,13 @@ import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/add_work.dart';
 class Complete_Profile1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProfileConytroller>();
+    final controller = Get.find<ProfileController>();
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: GetBuilder<ProfileConytroller>(
-                init: ProfileConytroller(),
+              child: GetBuilder<ProfileController>(
+                init: ProfileController(),
                 builder: (controller) {
                   return Column(
                       mainAxisSize: MainAxisSize.min,

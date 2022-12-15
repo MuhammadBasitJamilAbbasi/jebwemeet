@@ -10,7 +10,7 @@ class Add_About extends StatelessWidget {
   Widget build(BuildContext context) {
     final storageController = Get.find<GetSTorageController>();
 
-    return Scaffold(body: GetBuilder<ProfileConytroller>(
+    return Scaffold(body: GetBuilder<ProfileController>(
       builder: (controller) {
         return SafeArea(
           child: SingleChildScrollView(

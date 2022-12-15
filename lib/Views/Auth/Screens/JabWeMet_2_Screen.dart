@@ -79,7 +79,7 @@ class _JabWeMet_Screen2State extends State<JabWeMet_Screen2> {
                           builder: (builder) => const TermsAndConiditons()));
                     },
                     child: Text(
-                      "Create Account",
+                      "Create Profile",
                       style: TextStyle(
                           color: butoncolor, fontWeight: FontWeight.w600),
                     ),

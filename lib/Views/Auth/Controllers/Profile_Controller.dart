@@ -15,14 +15,18 @@ import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
 
-class ProfileConytroller extends GetxController {
+class ProfileController extends GetxController {
   TextEditingController workController = TextEditingController();
   TextEditingController heightController = TextEditingController();
   TextEditingController casteController = TextEditingController();
   TextEditingController sportsController = TextEditingController();
   TextEditingController aboutController = TextEditingController();
   TextEditingController moviesController = TextEditingController();
-
+  TextEditingController nameController = TextEditingController();
+  String? selectedMartialStatus = "Select Status";
+  String? selectedReligion = "Select Religion";
+  String? selectedCaste = "Select Caste";
+  String? selectedCity = "Select City";
   var selectedImagePath = "";
   bool isLoader = false;
   bool isImageLoading = false;
@@ -45,6 +49,25 @@ class ProfileConytroller extends GetxController {
     }
   }
 */
+  selectedMartialFunction(String? value) {
+    selectedMartialStatus = value;
+    update();
+  }
+
+  selectedCityFunction(String? value) {
+    selectedCity = value;
+    update();
+  }
+
+  selectedReligionFunction(String? value) {
+    selectedReligion = value;
+    update();
+  }
+
+  selectedCasteFunction(String? value) {
+    selectedCaste = value;
+    update();
+  }
 
   List interestList = [];
   List addTopicsList = [];

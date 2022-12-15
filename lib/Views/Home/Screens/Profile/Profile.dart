@@ -6,12 +6,14 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
+import 'package:jabwemeet/Views/Home/Screens/Profile/Edit_Profile.dart';
 import 'package:jabwemeet/Views/Home/Screens/Tabbar.dart';
 
-class Account extends StatelessWidget {
+class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
+    UserModel? userModel;
     return Scaffold(
       bottomNavigationBar: kCustomBottomNavBar(
         index: 3,
@@ -60,30 +62,44 @@ class Account extends StatelessWidget {
                       ),
                     );
                   }
-                  UserModel userModel = UserModel.fromMap(
+                  userModel = UserModel.fromMap(
                       snapshot.data!.data() as Map<String, dynamic>);
                   return UserProfile(
-                    height: userModel.height.toString(),
-                    address: userModel.address.toString(),
-                    age: userModel.age.toString(),
-                    education: userModel.education.toString(),
-                    gender: userModel.gender.toString(),
-                    martial_status: userModel.martial_status.toString(),
-                    hobbies: userModel.hobbies.toString(),
-                    imageUrl: userModel.imageUrl.toString(),
-                    name: userModel.name.toString(),
-                    designation: userModel.work.toString(),
-                    email: userModel.email.toString(),
-                    phone_number: userModel.phone_number.toString() == "null"
+                    height: userModel!.height.toString() == "null"
                         ? ""
-                        : userModel.phone_number.toString(),
+                        : userModel!.height.toString(),
+                    address: userModel!.address.toString() == "null"
+                        ? ""
+                        : userModel!.address.toString(),
+                    age: userModel!.age.toString(),
+                    education: userModel!.education.toString(),
+                    gender: userModel!.gender.toString(),
+                    martial_status: userModel!.martial_status.toString(),
+                    hobbies: userModel!.hobbies.toString(),
+                    imageUrl: userModel!.imageUrl.toString(),
+                    name: userModel!.name.toString(),
+                    designation: userModel!.work.toString(),
+                    email: userModel!.email.toString() == "null"
+                        ? ""
+                        : userModel!.email.toString(),
+                    phone_number: userModel!.phone_number.toString() == "null"
+                        ? ""
+                        : userModel!.phone_number.toString(),
                   );
                 },
               ),
             ),
+            AppComponents().sizedBox20,
             Center(
-              child: kCustomButton(label: "Edit Profile", ontap: () {}),
-            )
+              child: kCustomButton(
+                  label: "Edit Profile",
+                  ontap: () {
+                    Get.to(() => Edit_Profile(
+                          userModel: userModel!,
+                        ));
+                  }),
+            ),
+            AppComponents().sizedBox20,
           ],
         ),
       ),

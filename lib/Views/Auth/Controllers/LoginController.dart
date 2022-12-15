@@ -12,7 +12,6 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
-import 'package:jabwemeet/Views/Auth/Controllers/Password_encyption.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
@@ -458,10 +457,10 @@ class LoginController extends GetxController {
     log(user!.uid);
     UserModel userModel = UserModel(
       height: storage.box.read(kHeight),
-      name: storage.box.read(kPhone),
+      name: storage.box.read(kFull_name),
       about: storage.box.read(kAbout),
       address: storage.box.read(kAddress),
-      age: storage.box.read(kAge),
+      age: int.parse(storage.box.read(kAge)),
       caste: storage.box.read(kCaste),
       creativity: storage.box.read(kCreativity),
       education: storage.box.read(kEducation),
@@ -479,14 +478,14 @@ class LoginController extends GetxController {
       phone_number: storage.box.read(kPhone),
       income: storage.box.read(kIncome),
       uid: user.uid,
-      password: EncryptData.encryptData(password: storage.box.read(kPassword)),
+      password: "",
     );
     Get.find<GetSTorageController>().box.write("isPhone", "isPhone");
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .update(userModel.toMap())
-        .then((value) => Get.offAll(() => Register_screen()));
+        .then((value) => Get.offAll(() => Complete_Profile1()));
   }
 
   @override
