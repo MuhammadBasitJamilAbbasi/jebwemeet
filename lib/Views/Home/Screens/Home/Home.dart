@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:math' as math;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -111,154 +112,232 @@ class Home extends StatelessWidget {
                                                 child: Column(
                                                   children: [
                                                     Expanded(
-                                                      child: Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          image:
-                                                              DecorationImage(
-                                                            image: NetworkImage(
-                                                              userModel.imageUrl
-                                                                  .toString(),
-                                                            ),
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                        child: Container(
-                                                          alignment: Alignment
-                                                              .bottomLeft,
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(7.0),
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                userModel.name
-                                                                    .toString(),
-                                                                style:
-                                                                    k18stylePrimary,
+                                                      child: Stack(
+                                                        children: [
+                                                          CachedNetworkImage(
+                                                            height:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height,
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            imageUrl: userModel
+                                                                .imageUrl
+                                                                .toString(),
+                                                            imageBuilder: (context,
+                                                                    imageProvider) =>
+                                                                Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  image:
+                                                                      imageProvider,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ),
                                                               ),
-                                                              Row(
+                                                            ),
+                                                            placeholder:
+                                                                (context,
+                                                                        url) =>
+                                                                    Center(
+                                                              child: SizedBox(
+                                                                width: 40.0,
+                                                                height: 40.0,
+                                                                child:
+                                                                    new CircularProgressIndicator(),
+                                                              ),
+                                                            ),
+                                                            errorWidget:
+                                                                (context, url,
+                                                                        error) =>
+                                                                    Icon(Icons
+                                                                        .error),
+                                                          ),
+                                                          // CachedNetworkImage(
+                                                          //   height:
+                                                          //       MediaQuery.of(
+                                                          //               context)
+                                                          //           .size
+                                                          //           .height,
+                                                          //   width:
+                                                          //       MediaQuery.of(
+                                                          //               context)
+                                                          //           .size
+                                                          //           .width,
+                                                          //   imageUrl: userModel
+                                                          //       .imageUrl
+                                                          //       .toString(),
+                                                          //   fit: BoxFit.cover,
+                                                          //   progressIndicatorBuilder:
+                                                          //       (context, url,
+                                                          //               downloadProgress) =>
+                                                          //           Container(
+                                                          //     height: 50,
+                                                          //     width: 50,
+                                                          //     child: CircularProgressIndicator(
+                                                          //         value: downloadProgress
+                                                          //             .progress),
+                                                          //   ),
+                                                          //   errorWidget:
+                                                          //       (context, url,
+                                                          //               error) =>
+                                                          //           Icon(Icons
+                                                          //               .error),
+                                                          // ),
+                                                          Container(
+                                                            alignment: Alignment
+                                                                .bottomCenter,
+                                                            /*    decoration:
+                                                                BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image: NetworkImage(
+                                                                  userModel.imageUrl
+                                                                      .toString(),
+                                                                ),
+                                                                fit: BoxFit.cover,
+                                                              ),
+                                                            ),*/
+                                                            child: Container(
+                                                              alignment: Alignment
+                                                                  .bottomLeft,
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(7.0),
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
-                                                                        .spaceBetween,
+                                                                        .end,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
                                                                 children: [
-                                                                  Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
+                                                                  Text(
+                                                                    userModel
+                                                                        .name
+                                                                        .toString(),
+                                                                    style:
+                                                                        k18stylePrimary,
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
                                                                     children: [
-                                                                      Text(
-                                                                        "Age: " +
-                                                                            userModel.age.toString(),
-                                                                        style:
-                                                                            k10stylePrimary,
+                                                                      Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text(
+                                                                            "Age: " +
+                                                                                userModel.age.toString(),
+                                                                            style:
+                                                                                k10stylePrimary,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          Text(
+                                                                            "Profession: " +
+                                                                                userModel.work.toString(),
+                                                                            style:
+                                                                                k10stylePrimary,
+                                                                          ),
+                                                                        ],
                                                                       ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            5,
-                                                                      ),
-                                                                      Text(
-                                                                        "Profession: " +
-                                                                            userModel.work.toString(),
-                                                                        style:
-                                                                            k10stylePrimary,
-                                                                      ),
+                                                                      InkWell(
+                                                                        onTap:
+                                                                            () async {
+                                                                          log("1 chat room not null");
+                                                                          ChatRoomModel?
+                                                                              chatRoom =
+                                                                              await getchatRoom(userModel.uid.toString());
+                                                                          log("2 chat room not null");
+                                                                          if ((chatRoom !=
+                                                                              null)) {
+                                                                            log("3 chat room not null");
+                                                                            Get.to(() => PersonMessageView(
+                                                                                name: userModel.name.toString(),
+                                                                                profilePicture: userModel.imageUrl.toString(),
+                                                                                uid: userModel.uid.toString(),
+                                                                                chatRoomModel: chatRoom));
+                                                                          }
+                                                                        },
+                                                                        child:
+                                                                            Container(
+                                                                          height:
+                                                                              50,
+                                                                          width:
+                                                                              50,
+                                                                          padding: EdgeInsets.symmetric(
+                                                                              horizontal: 10,
+                                                                              vertical: 10),
+                                                                          decoration: BoxDecoration(
+                                                                              color: Color(0xFFFA2A39),
+                                                                              shape: BoxShape.circle),
+                                                                          child:
+                                                                              Image.asset(
+                                                                            "assets/icons/chat2.png",
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                        ),
+                                                                      )
                                                                     ],
                                                                   ),
-                                                                  InkWell(
-                                                                    onTap:
-                                                                        () async {
-                                                                      log("1 chat room not null");
-                                                                      ChatRoomModel?
-                                                                          chatRoom =
-                                                                          await getchatRoom(userModel
-                                                                              .uid
-                                                                              .toString());
-                                                                      log("2 chat room not null");
-                                                                      if ((chatRoom !=
-                                                                          null)) {
-                                                                        log("3 chat room not null");
-                                                                        Get.to(() => PersonMessageView(
-                                                                            name:
-                                                                                userModel.name.toString(),
-                                                                            profilePicture: userModel.imageUrl.toString(),
-                                                                            uid: userModel.uid.toString(),
-                                                                            chatRoomModel: chatRoom));
-                                                                      }
-                                                                    },
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          50,
-                                                                      width: 50,
-                                                                      padding: EdgeInsets.symmetric(
-                                                                          horizontal:
-                                                                              10,
-                                                                          vertical:
-                                                                              10),
-                                                                      decoration: BoxDecoration(
-                                                                          color: Color(
-                                                                              0xFFFA2A39),
-                                                                          shape:
-                                                                              BoxShape.circle),
-                                                                      child: Image
+                                                                  AppComponents()
+                                                                      .sizedBox10,
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Image
                                                                           .asset(
-                                                                        "assets/icons/chat2.png",
-                                                                        color: Colors
-                                                                            .white,
+                                                                        "assets/icons/cancel.png",
+                                                                        height:
+                                                                            50,
+                                                                        width:
+                                                                            50,
                                                                       ),
-                                                                    ),
+                                                                      Container(
+                                                                        height:
+                                                                            50,
+                                                                        width:
+                                                                            50,
+                                                                        padding: EdgeInsets.symmetric(
+                                                                            horizontal:
+                                                                                10,
+                                                                            vertical:
+                                                                                10),
+                                                                        decoration: BoxDecoration(
+                                                                            color:
+                                                                                Color(0xFFFA2A39),
+                                                                            shape: BoxShape.circle),
+                                                                        child: Image
+                                                                            .asset(
+                                                                          "assets/icons/heart.png",
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                      )
+                                                                    ],
                                                                   )
                                                                 ],
                                                               ),
-                                                              AppComponents()
-                                                                  .sizedBox10,
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Image.asset(
-                                                                    "assets/icons/cancel.png",
-                                                                    height: 50,
-                                                                    width: 50,
-                                                                  ),
-                                                                  Container(
-                                                                    height: 50,
-                                                                    width: 50,
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        horizontal:
-                                                                            10,
-                                                                        vertical:
-                                                                            10),
-                                                                    decoration: BoxDecoration(
-                                                                        color: Color(
-                                                                            0xFFFA2A39),
-                                                                        shape: BoxShape
-                                                                            .circle),
-                                                                    child: Image
-                                                                        .asset(
-                                                                      "assets/icons/heart.png",
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              )
-                                                            ],
+                                                            ),
                                                           ),
-                                                        ),
+                                                        ],
                                                       ),
                                                     ),
                                                   ],

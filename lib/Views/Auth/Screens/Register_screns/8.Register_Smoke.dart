@@ -1,4 +1,3 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
@@ -28,78 +27,14 @@ class Register_Smoke extends StatelessWidget {
               ),
               AppComponents().sizedBox50,
               Center(
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton2(
-                    isExpanded: true,
-                    hint: Row(
-                      children: [
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Do you smoke?',
-                            style: k14styleWhite,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    items: ksmokeList!
-                        .map((item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: k14styleWhite,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ))
-                        .toList(),
+                child: buildRegisterDropDown(
+                    text: "Do you smoke",
+                    list: ksmokeList!,
                     value: controller.selectedSmoke,
-                    onChanged: (value) {
+                    onchange: (value) {
                       controller.selectedSmokeFunction(value);
                     },
-                    icon: Icon(
-                      Icons.arrow_drop_down_outlined,
-                    ),
-                    dropdownMaxHeight: 300,
-                    iconSize: 24,
-                    iconEnabledColor: Colors.white,
-                    iconDisabledColor: Colors.grey,
-                    buttonHeight: 47,
-                    buttonWidth: 247,
-                    buttonPadding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                    ),
-                    buttonDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFFEA7C4A),
-                            Color(0xFFF1565A),
-                          ]),
-                    ),
-                    offset: Offset(0, -20),
-                    itemHeight: 40,
-                    itemPadding: const EdgeInsets.only(left: 14, right: 14),
-                    dropdownDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFFEA7C4A),
-                            Color(0xFFF1565A),
-                          ]),
-                    ),
-                    scrollbarRadius: const Radius.circular(40),
-                    scrollbarThickness: 6,
-                    scrollbarAlwaysShow: true,
-                  ),
-                ),
+                    controller: controller),
               ),
               AppComponents().sizedBox30,
               controller.selectedSmoke != "Do you smoke?"

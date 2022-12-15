@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Utils/constants.dart';
+import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -754,10 +755,12 @@ class buildFilterDropDown extends StatelessWidget {
   final onchange;
   final text;
   final value;
+  final dropDownHeight;
   buildFilterDropDown(
       {required this.text,
       required this.list,
       required this.value,
+      this.dropDownHeight = 250.0,
       required this.onchange,
       required this.controller});
   @override
@@ -799,7 +802,103 @@ class buildFilterDropDown extends StatelessWidget {
             icon: Icon(
               Icons.arrow_drop_down_outlined,
             ),
-            // dropdownMaxHeight: 50,
+            dropdownMaxHeight: dropDownHeight,
+            // dropdownWidth: 247,
+            iconSize: 24,
+            iconEnabledColor: Colors.white,
+            iconDisabledColor: Colors.grey,
+            buttonHeight: 47,
+            buttonPadding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            offset: Offset(0, -20),
+            buttonDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFFEA7C4A),
+                    Color(0xFFF1565A),
+                  ]),
+            ),
+            itemHeight: 47,
+            itemPadding: const EdgeInsets.only(left: 14, right: 14),
+            dropdownDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFFEA7C4A),
+                    Color(0xFFF1565A),
+                  ]),
+            ),
+            scrollbarRadius: const Radius.circular(40),
+            scrollbarThickness: 6,
+            scrollbarAlwaysShow: true,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class buildRegisterDropDown extends StatelessWidget {
+  RegisterController controller;
+  List<String> list;
+  final onchange;
+  final text;
+  final value;
+  final dropDownHeight;
+  buildRegisterDropDown(
+      {required this.text,
+      required this.list,
+      required this.value,
+      this.dropDownHeight = 350.0,
+      required this.onchange,
+      required this.controller});
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        height: 47,
+        margin: EdgeInsets.symmetric(horizontal: 30),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton2(
+            isDense: true,
+            isExpanded: true,
+            hint: Row(
+              children: [
+                SizedBox(
+                  width: 4,
+                ),
+                Expanded(
+                  child: Text(
+                    text,
+                    style: k14styleWhite,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            items: list
+                .map((item) => DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(
+                        item,
+                        style: k14styleWhite,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ))
+                .toList(),
+            value: value,
+            onChanged: onchange,
+            icon: Icon(
+              Icons.arrow_drop_down_outlined,
+            ),
+            dropdownMaxHeight: dropDownHeight,
             // dropdownWidth: 247,
             iconSize: 24,
             iconEnabledColor: Colors.white,

@@ -249,7 +249,7 @@ class LoginController extends GetxController {
         smoking: null,
         star_sign: null,
         religion: null,
-        hobbies: null,
+        hobbies: [],
         sports: null,
         work: null,
         martial_status: null,
@@ -275,9 +275,10 @@ class LoginController extends GetxController {
     log("Inside Phone Authentication sendOTP Service");
     log("Phone no is $phoneNumber");
     log("<=============================================>");
-    isSendOtpLoad = true;
-    update();
+
     try {
+      isSendOtpLoad = true;
+      update();
       log("Inside try Otp statement. ");
       await FirebaseAuth.instance.verifyPhoneNumber(
           phoneNumber: phoneNumber,
@@ -295,6 +296,7 @@ class LoginController extends GetxController {
             verification_Id = verificationId;
             update();
             isSendOtpLoad = false;
+            update();
             isSent = true;
             update();
             /*  Get.to(() => ForgetPassword_OTP_view(
@@ -303,8 +305,6 @@ class LoginController extends GetxController {
           },
           codeAutoRetrievalTimeout: (verificationId) {},
           timeout: Duration(seconds: 60));
-      isSendOtpLoad = false;
-      update();
     } on FirebaseException catch (e) {
       isSendOtpLoad = false;
       isSent = true;
@@ -324,6 +324,8 @@ class LoginController extends GetxController {
     bool verificationStatus = false;
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verification_Id, smsCode: otpController.value.text);
+    isSent = false;
+    update();
     isVerifyLoad = true;
     update();
     try {
@@ -334,10 +336,12 @@ class LoginController extends GetxController {
         log("Firebase Verification Successful");
         verificationStatus = true;
         log("Verification Status inside if statement is: $verificationStatus");
+        // isVerifyLoad = false;
+        // update();
         /* await FirebaseAuth.instance.signOut();*/
       } else {
-        isVerifyLoad = false;
-        update();
+        // isVerifyLoad = false;
+        // update();
         verificationStatus = false;
         log("Verification Status inside else statement is: $verificationStatus");
       }
@@ -368,7 +372,8 @@ class LoginController extends GetxController {
     try {
       log("Inside try statement. ");
       await FirebaseAuth.instance.verifyPhoneNumber(
-          phoneNumber: Get.find<GetSTorageController>().box.read(kPhone),
+          phoneNumber:
+              Get.find<GetSTorageController>().box.read(kPhone).toString(),
           verificationCompleted: (credentials) {},
           verificationFailed: (ex) {
             log(ex.code.toString());
@@ -408,7 +413,7 @@ class LoginController extends GetxController {
       smoking: storage.box.read(kSmoke),
       star_sign: storage.box.read(kStar_sign),
       religion: storage.box.read(kReligion),
-      hobbies: storage.box.read(kHobbies),
+      hobbies: [],
       sports: storage.box.read(kSports),
       work: storage.box.read(kWork),
       martial_status: storage.box.read(kMartial_Statius),
@@ -427,14 +432,16 @@ class LoginController extends GetxController {
           .get()
           .then((value) async {
         Get.find<GetSTorageController>().box.write("loggedin", "loggedin");
-        if (value.get("age") == null) {
+        if (!value.exists) {
           await FirebaseFirestore.instance
               .collection('users')
               .doc(user.uid)
               .set(userModel.toMap())
               .then((value) => Get.offAll(() => Register_screen()));
         } else {
-          if (value.get("imageUrl") == null) {
+          if (value.get("age") == null) {
+            Get.offAll(() => Register_screen());
+          } else if (value.get("imageUrl") == null) {
             Get.offAll(() => Complete_Profile1());
           } else {
             Get.offAll(() => Home());
@@ -464,7 +471,7 @@ class LoginController extends GetxController {
       smoking: storage.box.read(kSmoke),
       star_sign: storage.box.read(kStar_sign),
       religion: storage.box.read(kReligion),
-      hobbies: storage.box.read(kHobbies),
+      hobbies: [],
       sports: storage.box.read(kSports),
       work: storage.box.read(kWork),
       martial_status: storage.box.read(kMartial_Statius),

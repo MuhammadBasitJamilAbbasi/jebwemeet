@@ -44,7 +44,7 @@ class Register_Password extends StatelessWidget {
                   );
                 }),
               )),
-              AppComponents().sizedBox15,
+              AppComponents().sizedBox30,
               controller.passwordController.value.text.isNotEmpty
                   ? controller.loading
                       ? Center(

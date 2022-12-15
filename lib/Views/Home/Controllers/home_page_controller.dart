@@ -34,10 +34,7 @@ class Home_page_controller extends GetxController {
         lowerValue.value.round() == 18 &&
         upperValue.value.round() == 60 &&
         selectedMartialStatus == "Select Status") {
-      queryValue = FirebaseFirestore.instance
-          .collection("users")
-          .where("age", isGreaterThanOrEqualTo: 18)
-          .snapshots();
+      queryValue = FirebaseFirestore.instance.collection("users").snapshots();
     } else {
       queryValue = FirebaseFirestore.instance
           .collection("users")

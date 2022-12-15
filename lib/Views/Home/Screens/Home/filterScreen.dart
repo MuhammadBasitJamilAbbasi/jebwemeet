@@ -74,8 +74,11 @@ class _FilterScreenState extends State<FilterScreen> {
                       rangeSlider: true,
                       jump: true,
                       tooltip: RangeSliderFlutterTooltip(
-                        alwaysShowTooltip: true,
-                      ),
+                          alwaysShowTooltip: true,
+                          boxStyle: RangeSliderFlutterTooltipBox(
+                              decoration: BoxDecoration(
+                                  color: Colors.deepOrange,
+                                  borderRadius: BorderRadius.circular(25)))),
                       max: 80,
                       textPositionTop: -80,
                       handlerHeight: 30,
@@ -89,9 +92,9 @@ class _FilterScreenState extends State<FilterScreen> {
                           color: Colors.grey,
                         ),
                       ),
-                      min: 0,
+                      min: 18,
                       fontSize: 15,
-                      textBackgroundColor: Colors.red,
+                      textBackgroundColor: Colors.deepOrange,
                       onDragging: (handlerIndex, lowerValue, upperValue) {
                         controller.lowerValue.value = lowerValue;
                         controller.upperValue.value = upperValue;

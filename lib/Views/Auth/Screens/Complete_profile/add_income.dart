@@ -1,4 +1,3 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
@@ -32,64 +31,15 @@ class Add_Income extends StatelessWidget {
                     ),
                   ),
                   AppComponents().sizedBox50,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton2(
-                        isExpanded: true,
-                        isDense: true,
-                        hint: Row(
-                          children: [
-                            SizedBox(width: 4),
-                            Expanded(
-                              child: Text(
-                                'Select income',
-                                style: k14styleWhite,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                        items: kIncomeList!
-                            .map((item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(
-                                    item,
-                                    style: k14styleWhite,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
-                            .toList(),
+                  Center(
+                    child: buildRegisterDropDown(
+                        text: "Select income",
+                        list: kIncomeList!,
                         value: controller.selectedIncome,
-                        onChanged: (value) {
+                        onchange: (value) {
                           controller.selectedIncomeFunction(value);
                         },
-                        icon: Icon(
-                          Icons.arrow_drop_down_outlined,
-                        ),
-                        dropdownMaxHeight: 350,
-                        iconSize: 24,
-                        iconEnabledColor: Colors.white,
-                        iconDisabledColor: Colors.grey,
-                        buttonHeight: 50,
-                        buttonWidth: MediaQuery.of(context).size.width,
-                        buttonPadding: const EdgeInsets.only(
-                          left: 20,
-                          right: 20,
-                        ),
-                        buttonDecoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: butoncolor,
-                        ),
-                        offset: Offset(0, -20),
-                        itemHeight: 40,
-                        itemPadding: const EdgeInsets.only(left: 14, right: 14),
-                        dropdownDecoration: BoxDecoration(color: butoncolor),
-                        scrollbarRadius: const Radius.circular(40),
-                        scrollbarThickness: 6,
-                        scrollbarAlwaysShow: true,
-                      ),
-                    ),
+                        controller: controller),
                   ),
                   AppComponents().sizedBox30,
                   controller.selectedIncome != "Select income"

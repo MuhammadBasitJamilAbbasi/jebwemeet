@@ -41,7 +41,6 @@ class SignUpPhoneScreen extends StatelessWidget {
                       ),
                     ),
                     AppComponents().sizedBox50,
-
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

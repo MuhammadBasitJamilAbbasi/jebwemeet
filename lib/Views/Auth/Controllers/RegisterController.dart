@@ -290,7 +290,7 @@ class RegisterController extends GetxController {
       smoking: storage.box.read(kSmoke),
       star_sign: storage.box.read(kStar_sign),
       religion: storage.box.read(kReligion),
-      hobbies: storage.box.read(kHobbies),
+      hobbies: [],
       sports: storage.box.read(kSports),
       work: storage.box.read(kWork),
       martial_status: storage.box.read(kMartial_Statius),

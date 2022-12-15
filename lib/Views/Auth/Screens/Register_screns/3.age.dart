@@ -44,15 +44,23 @@ class Register_Age extends StatelessWidget {
                         child: kCustomButton(
                           label: "Continue",
                           ontap: () {
-                            if (controller
-                                .ageController.value.text.isNotEmpty) {
-                              Get.find<GetSTorageController>().box.write(
-                                  kAge, controller.ageController.value.text);
-                              controller.setRegisterViewPage(
-                                  RegisterViewEnum.RegisterView4);
-                            } else {
+                            if (controller.ageController.value.text.isEmpty) {
                               snackBar(context, "Please Enter your age",
                                   Colors.pink);
+                            } else {
+                              if (int.parse(
+                                      controller.ageController.value.text) >=
+                                  18) {
+                                Get.find<GetSTorageController>().box.write(
+                                    kAge, controller.ageController.value.text);
+                                controller.setRegisterViewPage(
+                                    RegisterViewEnum.RegisterView4);
+                              } else {
+                                snackBar(
+                                    context,
+                                    "Please Enter your age above 18",
+                                    Colors.pink);
+                              }
                             }
                           },
                           isRegister: true,

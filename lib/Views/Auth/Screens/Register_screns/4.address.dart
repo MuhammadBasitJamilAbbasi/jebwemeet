@@ -1,4 +1,3 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
@@ -29,86 +28,14 @@ class Register_address extends StatelessWidget {
               ),
               AppComponents().sizedBox50,
               Center(
-                child: Container(
-                  height: 53,
-                  width: 247,
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton2(
-                      isDense: true,
-                      isExpanded: true,
-                      hint: Row(
-                        children: [
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Expanded(
-                            child: Text(
-                              'Select City',
-                              style: k14styleWhite,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                      items: kCityList!
-                          .map((item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: k14styleWhite,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ))
-                          .toList(),
-                      value: controller.selectedCity == ""
-                          ? kcasteList![0]
-                          : controller.selectedCity,
-                      onChanged: (value) {
-                        controller.selectedCityFunction(value.toString());
-                      },
-                      icon: Icon(
-                        Icons.arrow_drop_down_outlined,
-                      ),
-                      dropdownMaxHeight: 350,
-                      dropdownWidth: 247,
-                      iconSize: 24,
-                      iconEnabledColor: Colors.white,
-                      iconDisabledColor: Colors.grey,
-                      buttonHeight: 53,
-                      buttonWidth: 247,
-                      buttonPadding: const EdgeInsets.only(
-                        left: 20,
-                        right: 20,
-                      ),
-                      offset: Offset(0, -20),
-                      buttonDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(40),
-                        gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Color(0xFFEA7C4A),
-                              Color(0xFFF1565A),
-                            ]),
-                      ),
-                      itemHeight: 47,
-                      itemPadding: const EdgeInsets.only(left: 14, right: 14),
-                      dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Color(0xFFEA7C4A),
-                              Color(0xFFF1565A),
-                            ]),
-                      ),
-                      scrollbarRadius: const Radius.circular(40),
-                      scrollbarThickness: 6,
-                      scrollbarAlwaysShow: true,
-                    ),
-                  ),
-                ),
+                child: buildRegisterDropDown(
+                    text: "Select City",
+                    list: kCityList!,
+                    value: controller.selectedCity,
+                    onchange: (value) {
+                      controller.selectedCityFunction(value);
+                    },
+                    controller: controller),
               ),
               AppComponents().sizedBox30,
               controller.selectedCity != "Select City"

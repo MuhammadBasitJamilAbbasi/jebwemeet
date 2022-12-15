@@ -116,11 +116,16 @@ class ProfileConytroller extends GetxController {
 
   List<String> randomTitles = [];
   List<String> get getRandomTitles => randomTitles;
-
+  List<String> getList = [];
   //add topics to the list
   void addTopics(TopicModel topics) {
     selectedList.add(topics);
     update();
+    selectedList.forEach((element) {
+      getList.add(element.title);
+      update();
+    });
+    print(getList);
   }
 
   //remove topics from the list
@@ -146,31 +151,41 @@ class ProfileConytroller extends GetxController {
     if (file.toString() == "") {
       snackBar(context, "Please Select your image", Colors.pink);
     } else if (Get.find<GetSTorageController>().box.read(kAbout).toString() ==
-        "") {
+            "" ||
+        Get.find<GetSTorageController>().box.read(kAbout).toString() ==
+            "null") {
       snackBar(context, "Please enter about", Colors.pink);
     } else if (Get.find<GetSTorageController>()
-            .box
-            .read(kEducation)
-            .toString() ==
-        "") {
+                .box
+                .read(kEducation)
+                .toString() ==
+            "" ||
+        Get.find<GetSTorageController>().box.read(kEducation).toString() ==
+            "null") {
       snackBar(context, "Please Select your education level", Colors.pink);
     } else if (Get.find<GetSTorageController>().box.read(kIncome).toString() ==
-        "") {
+            "" ||
+        Get.find<GetSTorageController>().box.read(kIncome).toString() ==
+            "null") {
       snackBar(context, "Please Enter your income", Colors.pink);
     } else if (Get.find<GetSTorageController>().box.read(kWork).toString() ==
-        "") {
+            "" ||
+        Get.find<GetSTorageController>().box.read(kWork).toString() == "null") {
       snackBar(context, "Please Enter your occupation sector", Colors.pink);
     } else if (Get.find<GetSTorageController>().box.read(kHeight).toString() ==
-        "") {
+            "" ||
+        Get.find<GetSTorageController>().box.read(kHeight).toString() ==
+            "null") {
       snackBar(context, "Please Enter your Height", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kHobbies).toString() ==
-        "") {
-      snackBar(context, "Please Select your Hobbies", Colors.pink);
     } else if (Get.find<GetSTorageController>().box.read(kSports).toString() ==
-        "") {
+            "" ||
+        Get.find<GetSTorageController>().box.read(kSports).toString() ==
+            "null") {
       snackBar(context, "Please add your sports", Colors.pink);
     } else if (Get.find<GetSTorageController>().box.read(kMovies).toString() ==
-        "") {
+            "" ||
+        Get.find<GetSTorageController>().box.read(kMovies).toString() ==
+            "null") {
       snackBar(context, "Please add your movies", Colors.pink);
     } else {
       User? user = FirebaseAuth.instance.currentUser!;
@@ -190,9 +205,7 @@ class ProfileConytroller extends GetxController {
                 .toString(),
             "height":
                 Get.find<GetSTorageController>().box.read(kHeight).toString(),
-            "hobbies":
-                Get.find<GetSTorageController>().box.read(kHobbies).toString(),
-            "hobbies": titleSelected,
+            "hobbies": getList,
             "imageUrl":
                 Get.find<GetSTorageController>().box.read(kImageUrl).toString(),
             "income":
