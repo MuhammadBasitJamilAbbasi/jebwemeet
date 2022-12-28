@@ -1,11 +1,15 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl/intl.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Utils/constants.dart';
@@ -16,11 +20,15 @@ import 'package:jabwemeet/Views/Auth/Controllers/Password_encyption.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Forgot_password_screen/Forgot_pass_Otp.dart';
 import 'package:jabwemeet/Views/Auth/Screens/LoginScreen2.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Register_screns/Bismillah_Screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
 
 class RegisterController extends GetxController {
   final resetFormKey = GlobalKey<FormState>();
   final resetPasswordFormKey = GlobalKey<FormState>();
   final createPasswordKey = GlobalKey<FormState>();
+  final signupKey = GlobalKey<FormState>();
 
   final TextEditingController ageController = TextEditingController();
   final TextEditingController casteController = TextEditingController();
@@ -35,22 +43,37 @@ class RegisterController extends GetxController {
   var isAccept = false.obs;
   var isTerm = false.obs;
   var isPolicy = false.obs;
+  var isChild = false;
   bool isPasswordVisible = true;
   String? selectedValue = "Select Caste";
+  String? selectedLanguage = "Select Language";
   String? selectedCity = "Select City";
   String? selectedStar = "Select Star";
   String? selectedHeight = "Select height";
   String? selectedIncome = "Select income";
   String? selectedwork = "Select Occupation Sector";
   String? selectedSports = "Select Sports";
+  String? selectedChild = "0";
   String? selectedSmoke = "Do you smoke?";
   String? selectedCreativity = "Select Creativity";
 //loading
   bool loading = false;
   var address = "".obs;
+  bool isEmailVerified = false;
+  bool canResendEmail = false;
 
   selectedCasteFunction(String? value) {
     selectedValue = value;
+    update();
+  }
+
+  selectedLanguageFunction(String? value) {
+    selectedLanguage = value;
+    update();
+  }
+
+  selectedChildFunction(String? value) {
+    selectedChild = value;
     update();
   }
 
@@ -181,6 +204,66 @@ class RegisterController extends GetxController {
     return setPage;
   }
 
+  Future signup(BuildContext context) async {
+    try {
+      loading = true;
+      update();
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.value.text.trim(),
+          password: passwordController.value.text.trim());
+      try {
+        final user = FirebaseAuth.instance.currentUser!;
+        await user.sendEmailVerification();
+        Get.off(() => Bismillah_Screen());
+        await Future.delayed(Duration(seconds: 5));
+      } catch (e) {
+        snackBar(context, e.toString(), Colors.pink);
+      }
+      // await helpers.getName();
+    } on FirebaseAuthException catch (e) {
+      // ignore: avoid_print
+      print(e);
+      String? errorMessage;
+
+      switch (e.code) {
+        case 'email-already-in-use':
+          errorMessage = 'Email already registered';
+          break;
+
+        case 'invalid-email':
+          errorMessage = "Invalid Email address";
+          break;
+
+        case 'operation-not-allowed':
+          errorMessage = "Operation not allowed";
+          break;
+
+        case 'weak-password':
+          errorMessage =
+              'Weak password, please enter a strong password minimum 8 characters and combination of special characters,alphabets and numbers make it more strong';
+      }
+      showDialog(
+          context: context,
+          builder: (builder) {
+            return AlertDialog(
+              shape: Border.all(
+                color: Colors.red,
+              ),
+              title: const Text('Registeration failed!'),
+              content: Text(errorMessage ?? ''),
+              icon: Image.asset(
+                "assets/appicon.png",
+                height: 40,
+                width: 40,
+              ),
+            );
+          });
+    } finally {
+      loading = false;
+      update();
+    }
+  }
+
   Future register(BuildContext context) async {
     try {
       loading = true;
@@ -238,6 +321,7 @@ class RegisterController extends GetxController {
     }
   }
 
+  List userNamesList = [];
   //get all the users username
   Future<QuerySnapshot?> getAllEmails(BuildContext context) async {
     List emailOfUsers = [];
@@ -248,10 +332,12 @@ class RegisterController extends GetxController {
       emailOfUsers.clear();
       for (var i in snapshot.docs) {
         UserModel userModel = UserModel.fromMap(i.data());
-
-        emailOfUsers.add(userModel.email);
+        emailOfUsers.add(userModel.email.toString());
+        userNamesList.add(userModel.name.toString());
+        update();
+        print(emailOfUsers);
+        print(userNamesList);
       }
-
       if (emailOfUsers.contains(emailController.text)) {
         showDialog(
             context: context,
@@ -272,26 +358,98 @@ class RegisterController extends GetxController {
 
 //add the user details while signup
   final storage = Get.find<GetSTorageController>();
+  Future addsignupdetails() async {
+    FirebaseAuth fireAuth = FirebaseAuth.instance;
+    User? user = fireAuth.currentUser;
+    UserModel userModel = UserModel(
+      height: storage.box.read(kHeight),
+      name: storage.box.read(kFull_name),
+      imagesList: [],
+      about: storage.box.read(kAbout),
+      address: storage.box.read(kAddress),
+      age: age,
+      birthday: storage.box.read(kAge),
+      caste: storage.box.read(kCaste),
+      industry: storage.box.read(kIndustry),
+      education: storage.box.read(kEducation),
+      email: user!.email.toString(),
+      fcm_token: await FirebaseMessaging.instance.getToken(),
+      gender: storage.box.read(kGender),
+      childerns: storage.box.read(kchildern),
+      languages: storage.box.read(kLanguage),
+      religion: storage.box.read(kReligion),
+      hobbies: [],
+      religious_practice: storage.box.read(kReligiousPractice),
+      work: storage.box.read(kWork),
+      job_title: storage.box.read(kJobTitle),
+      martial_status: storage.box.read(kMartial_Statius),
+      imageUrl: storage.box.read(kImageUrl),
+      phone_number: storage.box.read(kPhone),
+      income: storage.box.read(kIncome),
+      uid: FirebaseAuth.instance.currentUser!.uid,
+      password: EncryptData.encryptData(password: passwordController.text),
+    );
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .set(userModel.toMap())
+        .then((value) => Get.off(() => Bismillah_Screen()));
+  }
+
+  int age = 0;
+  RxString birthdayDate = 'Select date'.obs;
+  datePicker(BuildContext context) {
+    DatePicker.showDatePicker(context, showTitleActions: true,
+        onChanged: (date) {
+      DateTime currentDate = DateTime.now();
+      age = currentDate.year - date.year;
+      update();
+      int month1 = currentDate.month;
+      int month2 = date.month;
+      if (month2 > month1) {
+        age--;
+        update();
+      } else if (month1 == month2) {
+        int day1 = currentDate.day;
+        int day2 = date.day;
+        if (day2 > day1) {
+          age--;
+          update();
+        }
+      }
+      update();
+      print("age" + age.toString());
+      print(date.minute);
+    }, onConfirm: (date) {
+      birthdayDate.value = DateFormat.yMMMd().format(date);
+      update();
+    }, currentTime: DateTime.now(), locale: LocaleType.en);
+  }
+
+//add the user details while signup
   Future addUserdetails() async {
     FirebaseAuth _fireAuth = FirebaseAuth.instance;
     User? user = _fireAuth.currentUser;
     UserModel userModel = UserModel(
       height: storage.box.read(kHeight),
       name: storage.box.read(kFull_name),
+      imagesList: [],
       about: storage.box.read(kAbout),
       address: storage.box.read(kAddress),
-      age: int.parse(storage.box.read(kAge)),
+      age: age,
+      birthday: storage.box.read(kAge),
       caste: storage.box.read(kCaste),
-      creativity: storage.box.read(kCreativity),
+      job_title: storage.box.read(kJobTitle),
       education: storage.box.read(kEducation),
       email: user!.email.toString(),
       fcm_token: await FirebaseMessaging.instance.getToken(),
       gender: storage.box.read(kGender),
-      smoking: storage.box.read(kSmoke),
-      star_sign: storage.box.read(kStar_sign),
+      religious_practice: storage.box.read(kReligiousPractice),
+      languages: storage.box.read(kLanguage),
       religion: storage.box.read(kReligion),
       hobbies: [],
-      sports: storage.box.read(kSports),
+      childerns: storage.box.read(kchildern),
+      industry: storage.box.read(kIndustry),
       work: storage.box.read(kWork),
       martial_status: storage.box.read(kMartial_Statius),
       imageUrl: storage.box.read(kImageUrl),
@@ -456,7 +614,7 @@ class RegisterController extends GetxController {
 
   User? user = FirebaseAuth.instance.currentUser;
   bool isUpdatePassLoad = false;
-  updatePassword(BuildContext context) async {
+  Future updatePassword(BuildContext context) async {
     var token = await FirebaseMessaging.instance.getToken();
     try {
       isUpdatePassLoad = true;
@@ -494,6 +652,102 @@ class RegisterController extends GetxController {
       update();
       log(e.toString());
       snackBar(context, 'Something went wrong!', Colors.pink);
+    }
+  }
+
+  Future updatePasswordRegister(BuildContext context) async {
+    var token = await FirebaseMessaging.instance.getToken();
+    try {
+      isUpdatePassLoad = true;
+      update();
+      log("<------------------earlier true----------------->");
+      await FirebaseAuth.instance.currentUser!
+          .updatePassword(ConfirmPassController.value.text.toString());
+      log("<------------------second earlier true----------------->");
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({
+        'fcm_token': token,
+        'password':
+            EncryptData.encryptData(password: ConfirmPassController.value.text)
+                .toString()
+      });
+      log("<------------------Final earlier true----------------->");
+      ConfirmPassController.clear();
+      passController.clear();
+      isUpdatePassLoad = false;
+      update();
+      showDialog(
+          context: context,
+          builder: (builder) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+      Get.offAll(() => LoginScreen2());
+    } catch (e) {
+      isUpdatePassLoad = false;
+      update();
+      log(e.toString());
+      snackBar(context, 'Something went wrong!', Colors.pink);
+    }
+  }
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  bool isLoaderGoogle = false;
+
+  Future<String?> signInwithGoogle() async {
+    try {
+      isLoaderGoogle = true;
+      update();
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount!.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+      await auth.signInWithCredential(credential).then((value) async {
+        User? user = FirebaseAuth.instance.currentUser;
+        try {
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(user!.uid)
+              .get()
+              .then((value) async {
+            if (value.exists) {
+              Get.find<GetSTorageController>()
+                  .box
+                  .write(kFull_name, user.displayName.toString());
+              Get.find<GetSTorageController>()
+                  .box
+                  .write(kPhone, user.phoneNumber.toString());
+              if (value.get("age") == null) {
+                Get.off(() => Register_screen());
+              } else {
+                if (value.get("imageUrl") == null) {
+                  Get.off(() => Complete_Profile1());
+                } else {
+                  Get.offAll(() => Home());
+                }
+              }
+            } else {
+              await addUserdetails();
+            }
+            Get.find<GetSTorageController>().box.write("loggedin", "loggedin");
+          });
+        } catch (e) {
+          log(e.toString());
+        }
+      });
+    } on FirebaseAuthException catch (e) {
+      isLoaderGoogle = false;
+      update();
+      print(e.message);
+      throw e;
     }
   }
 

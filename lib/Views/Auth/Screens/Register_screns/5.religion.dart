@@ -30,9 +30,9 @@ class Register_Religion extends StatelessWidget {
               AppComponents().sizedBox50,
               Center(
                   child: kCustomButton(
-                label: "Islam",
+                label: "Shia",
                 ontap: () {
-                  storageController.box.write(kReligion, "Islam");
+                  storageController.box.write(kReligion, "Shia");
                   controller
                       .setRegisterViewPage(RegisterViewEnum.RegisterView6);
                 },
@@ -41,9 +41,9 @@ class Register_Religion extends StatelessWidget {
               AppComponents().sizedBox15,
               Center(
                   child: kCustomButton(
-                label: "Christianity",
+                label: "Sunni",
                 ontap: () {
-                  storageController.box.write(kReligion, "Christianity");
+                  storageController.box.write(kReligion, "Sunni");
                   controller
                       .setRegisterViewPage(RegisterViewEnum.RegisterView6);
                 },
@@ -52,9 +52,9 @@ class Register_Religion extends StatelessWidget {
               AppComponents().sizedBox15,
               Center(
                   child: kCustomButton(
-                label: "Judaisim",
+                label: "Christian",
                 ontap: () {
-                  storageController.box.write(kReligion, "Judaisim");
+                  storageController.box.write(kReligion, "Christian");
                   controller
                       .setRegisterViewPage(RegisterViewEnum.RegisterView6);
                 },
@@ -63,9 +63,9 @@ class Register_Religion extends StatelessWidget {
               AppComponents().sizedBox15,
               Center(
                   child: kCustomButton(
-                label: "Hinduism",
+                label: "Hindu",
                 ontap: () {
-                  storageController.box.write(kReligion, "Hinduism");
+                  storageController.box.write(kReligion, "Hindu");
                   controller
                       .setRegisterViewPage(RegisterViewEnum.RegisterView6);
                 },
@@ -74,9 +74,20 @@ class Register_Religion extends StatelessWidget {
               AppComponents().sizedBox15,
               Center(
                   child: kCustomButton(
-                label: "Prefer not to say",
+                label: "Ahmadi",
                 ontap: () {
-                  storageController.box.write(kReligion, "Prefer not to say");
+                  storageController.box.write(kReligion, "Ahmadi");
+                  controller
+                      .setRegisterViewPage(RegisterViewEnum.RegisterView6);
+                },
+                isRegister: true,
+              )),
+              AppComponents().sizedBox15,
+              Center(
+                  child: kCustomButton(
+                label: "Sikh",
+                ontap: () {
+                  storageController.box.write(kReligion, "Sikh");
                   controller
                       .setRegisterViewPage(RegisterViewEnum.RegisterView6);
                 },

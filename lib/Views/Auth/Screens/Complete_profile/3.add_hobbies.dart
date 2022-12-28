@@ -6,6 +6,7 @@ import 'package:jabwemeet/Models/Hobbies_Model.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/Profile_Controller.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 
 class Add_Hoobies extends StatefulWidget {
   const Add_Hoobies({Key? key}) : super(key: key);
@@ -75,7 +76,7 @@ class _Add_HoobiesState extends State<Add_Hoobies> {
                               });
                             },
                             color: controller.selectedList.contains(topic)
-                                ? butoncolor
+                                ? primarycolor
                                 : Colors.grey.shade300,
                           ),
                         );
@@ -90,7 +91,7 @@ class _Add_HoobiesState extends State<Add_Hoobies> {
                               snackBar(
                                   context, "Select Interests", Colors.pink);
                             } else
-                              Get.back();
+                              Get.off(() => Complete_Profile1());
                           }),
                     )
                   ],

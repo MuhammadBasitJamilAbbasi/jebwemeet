@@ -16,6 +16,37 @@ import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
 
 class ProfileController extends GetxController {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    Get.find<GetSTorageController>().box.write(kImageUrl, "").toString();
+    Get.find<GetSTorageController>().box.write(kImageUrl, "").toString();
+    Get.find<GetSTorageController>().box.write(kWork, "").toString();
+    Get.find<GetSTorageController>().box.write(kIncome, "").toString();
+    Get.find<GetSTorageController>().box.write(kSports, "").toString();
+    Get.find<GetSTorageController>().box.write(kHobbies, "").toString();
+    Get.find<GetSTorageController>().box.write(kAbout, "").toString();
+    Get.find<GetSTorageController>().box.write(kJobTitle, "").toString();
+    Get.find<GetSTorageController>().box.write(kIndustry, "").toString();
+  }
+
+  bool pickImagestatus = false;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    Get.find<GetSTorageController>().box.write(kImageUrl, "").toString();
+    Get.find<GetSTorageController>().box.write(kWork, "").toString();
+    Get.find<GetSTorageController>().box.write(kIncome, "").toString();
+    Get.find<GetSTorageController>().box.write(kSports, "").toString();
+    Get.find<GetSTorageController>().box.write(kHobbies, "").toString();
+    Get.find<GetSTorageController>().box.write(kAbout, "").toString();
+    Get.find<GetSTorageController>().box.write(kJobTitle, "").toString();
+    Get.find<GetSTorageController>().box.write(kIndustry, "").toString();
+  }
+
   TextEditingController workController = TextEditingController();
   TextEditingController heightController = TextEditingController();
   TextEditingController casteController = TextEditingController();
@@ -23,11 +54,14 @@ class ProfileController extends GetxController {
   TextEditingController aboutController = TextEditingController();
   TextEditingController moviesController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController jobtitleController = TextEditingController();
+  TextEditingController addindustryController = TextEditingController();
   String? selectedMartialStatus = "Select Status";
   String? selectedReligion = "Select Religion";
   String? selectedCaste = "Select Caste";
   String? selectedCity = "Select City";
   var selectedImagePath = "";
+  var selectedReligiousPractice = 0.0;
   bool isLoader = false;
   bool isImageLoading = false;
   ImagePicker imagePicker = ImagePicker();
@@ -51,6 +85,11 @@ class ProfileController extends GetxController {
 */
   selectedMartialFunction(String? value) {
     selectedMartialStatus = value;
+    update();
+  }
+
+  selectedReligiousPracticeFunction(value) {
+    selectedReligiousPractice = value;
     update();
   }
 
@@ -169,9 +208,57 @@ class ProfileController extends GetxController {
     update();
   }
 
-//----------->//
+  List<XFile> filesImage = [];
+  List<String>? multipleImagesDownloadLinks;
+  Future<List<XFile>> pickImage(
+      {ImageSource imageSource = ImageSource.gallery,
+      bool multiple = false}) async {
+    if (multiple) {
+      return imagePicker.pickMultiImage();
+    }
+    update();
+    final singleImage = await imagePicker.pickImage(source: imageSource);
+    update();
+    if (singleImage != null) {
+      return [singleImage];
+    } else
+      return [];
+  }
+
+  List<String>? imagelist;
+  // createPostController.images
+  //     .addAll(files.map((e) => File(e.path)).toList());
+  Future<List<String>?> uploadImages(BuildContext context) async {
+    multipleImagesDownloadLinks = [];
+    try {
+      Reference ref;
+      for (var filesImage in filesImage) {
+        ref = FirebaseStorage.instance
+            .ref()
+            .child('profilePics')
+            .child(FirebaseAuth.instance.currentUser!.uid);
+
+        await ref.putFile(File(filesImage.path)).whenComplete(() async {
+          await ref.getDownloadURL().then((value) {
+            multipleImagesDownloadLinks!.add(value);
+            update();
+          });
+        });
+        log(" uploading images succesffully");
+
+        // snackBar(context, "Images uploaded Successfully", Colors.pink);
+      }
+    } catch (e) {
+      log(e.toString());
+      log("Error in uploading images");
+    }
+    update();
+    debugPrint("multiple images are ${multipleImagesDownloadLinks}");
+    return multipleImagesDownloadLinks;
+  }
+
   submitProfile(BuildContext context) async {
-    if (file.toString() == "") {
+    if (selectedImagePath.toString() == "") {
       snackBar(context, "Please Select your image", Colors.pink);
     } else if (Get.find<GetSTorageController>().box.read(kAbout).toString() ==
             "" ||
@@ -200,16 +287,41 @@ class ProfileController extends GetxController {
         Get.find<GetSTorageController>().box.read(kHeight).toString() ==
             "null") {
       snackBar(context, "Please Enter your Height", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kSports).toString() ==
+    } else if (Get.find<GetSTorageController>()
+                .box
+                .read(kLanguage)
+                .toString() ==
             "" ||
-        Get.find<GetSTorageController>().box.read(kSports).toString() ==
+        Get.find<GetSTorageController>().box.read(kLanguage).toString() ==
             "null") {
-      snackBar(context, "Please add your sports", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kMovies).toString() ==
+      snackBar(context, "Please add your Language", Colors.pink);
+    } else if (Get.find<GetSTorageController>()
+                .box
+                .read(kJobTitle)
+                .toString() ==
             "" ||
-        Get.find<GetSTorageController>().box.read(kMovies).toString() ==
+        Get.find<GetSTorageController>().box.read(kJobTitle).toString() ==
             "null") {
-      snackBar(context, "Please add your movies", Colors.pink);
+      snackBar(context, "Please add your Job title", Colors.pink);
+    } else if (Get.find<GetSTorageController>()
+                .box
+                .read(kReligiousPractice)
+                .toString() ==
+            "" ||
+        Get.find<GetSTorageController>()
+                .box
+                .read(kReligiousPractice)
+                .toString() ==
+            "null") {
+      snackBar(context, "Please add your Religious Practice", Colors.pink);
+    } else if (Get.find<GetSTorageController>()
+                .box
+                .read(kIndustry)
+                .toString() ==
+            "" ||
+        Get.find<GetSTorageController>().box.read(kIndustry).toString() ==
+            "null") {
+      snackBar(context, "Please add your Industry", Colors.pink);
     } else {
       User? user = FirebaseAuth.instance.currentUser!;
       try {
@@ -226,18 +338,31 @@ class ProfileController extends GetxController {
                 .box
                 .read(kEducation)
                 .toString(),
+            "imagesList": multipleImagesDownloadLinks,
+            "job_title":
+                Get.find<GetSTorageController>().box.read(kJobTitle).toString(),
+            "industry":
+                Get.find<GetSTorageController>().box.read(kIndustry).toString(),
+            "languages":
+                Get.find<GetSTorageController>().box.read(kLanguage).toString(),
             "height":
                 Get.find<GetSTorageController>().box.read(kHeight).toString(),
             "hobbies": getList,
+            "martial_status": Get.find<GetSTorageController>()
+                .box
+                .read(kMartial_Statius)
+                .toString(),
             "imageUrl":
                 Get.find<GetSTorageController>().box.read(kImageUrl).toString(),
             "income":
                 Get.find<GetSTorageController>().box.read(kIncome).toString(),
-            "sports":
-                Get.find<GetSTorageController>().box.read(kSports).toString(),
+            "religious_practice": Get.find<GetSTorageController>()
+                .box
+                .read(kReligiousPractice)
+                .toString(),
             "work": Get.find<GetSTorageController>().box.read(kWork).toString(),
-            "movies":
-                Get.find<GetSTorageController>().box.read(kMovies).toString()
+            "childerns":
+                Get.find<GetSTorageController>().box.read(kchildern).toString()
           }).then((value) => Get.offAll(() => Home()));
         });
 
@@ -292,15 +417,15 @@ class ProfileController extends GetxController {
 //----------->//
   }
 
-  Future getImage(BuildContext context) async {
+  Future getImage(BuildContext context, ImageSource imageSource) async {
     try {
-      XFile? imagePick =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
+      XFile? imagePick = await ImagePicker().pickImage(source: imageSource);
 
       if (imagePick != null) {
         File convertedFile = File(imagePick.path);
         file = convertedFile;
         selectedImagePath = imagePick.path;
+        pickImagestatus = false;
         /*      await uploadProfile(context);*/
         update();
       } else {
@@ -325,11 +450,7 @@ class ProfileController extends GetxController {
       update();
       if (data.state == TaskState.success) {
         percentage = null;
-        snackBar(
-          context,
-          'Profile image uploaded successfully',
-          butoncolor,
-        );
+        log(" uploading image succesffully");
         update();
         log('Our image uploading done');
       }
@@ -341,7 +462,6 @@ class ProfileController extends GetxController {
     listenEvent.cancel();
     Get.find<GetSTorageController>().box.write(kImageUrl, downloadUrl);
     log(downloadUrl);
-
     //upload the data
     // await FirebaseFirestore.instance.collection('users').doc(user.uid).update(({
     //       'profilePic': downloadUrl,

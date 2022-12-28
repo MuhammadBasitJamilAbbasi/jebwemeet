@@ -22,7 +22,7 @@ class Register_Name extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Text(
-                  "My full name is",
+                  "My username is",
                   style: k25styleblack,
                 ),
               ),
@@ -31,40 +31,46 @@ class Register_Name extends StatelessWidget {
                   child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25),
                 child: kCustomTextField(
-                    hinttext: "Full name",
+                    hinttext: "username",
                     controller: controller.nameController,
                     validator: (value) {
                       return "";
                     }),
               )),
               AppComponents().sizedBox30,
-              controller.nameController.value.text.isNotEmpty
-                  ? Center(
-                      child: kCustomButton(
-                        label: "Continue",
-                        ontap: () async {
-                          if (controller.nameController.value.text.isNotEmpty) {
-                            Get.find<GetSTorageController>().box.write(
-                                kFull_name,
-                                controller.nameController.value.text);
-                            if (Get.find<GetSTorageController>()
-                                    .box
-                                    .read("isPhone") ==
-                                "isPhone") {
-                              Get.find<LoginController>()
-                                  .addUserdetailsPhoneUpdate();
-                            } else
-                              controller.setRegisterViewPage(
-                                  RegisterViewEnum.RegisterView12);
-                          } else {
-                            snackBar(
-                                context, "Please Enter your Name", Colors.pink);
-                          }
-                        },
-                        isRegister: true,
-                      ),
-                    )
-                  : SizedBox.shrink()
+              Center(
+                child: kCustomButton(
+                  label: "Continue",
+                  ontap: () async {
+                    if (controller.nameController.value.text.isNotEmpty &&
+                        controller.nameController.value.text.contains(" ") ==
+                            false) {
+                      if (controller.userNamesList.contains(
+                              controller.nameController.value.text.trim()) ==
+                          false) {
+                        Get.find<GetSTorageController>().box.write(kFull_name,
+                            controller.nameController.value.text.trim());
+                        if (Get.find<GetSTorageController>()
+                                .box
+                                .read("isPhone") ==
+                            "isPhone") {
+                          Get.find<LoginController>()
+                              .addUserdetailsPhoneUpdate();
+                        } else
+                          controller.setRegisterViewPage(
+                              RegisterViewEnum.RegisterView12);
+                      } else {
+                        snackBar(context, "Please Enter another username",
+                            Colors.pink);
+                      }
+                    } else {
+                      snackBar(context, "Please Enter username without space",
+                          Colors.pink);
+                    }
+                  },
+                  isRegister: true,
+                ),
+              )
             ],
           ),
         ),

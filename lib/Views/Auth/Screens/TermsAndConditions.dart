@@ -92,7 +92,9 @@ class _TermsAndConiditonsState extends State<TermsAndConiditons> {
                             height: MediaQuery.of(context).size.height * 0.055,
                             width: MediaQuery.of(context).size.width * 0.33,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.back();
+                              },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(

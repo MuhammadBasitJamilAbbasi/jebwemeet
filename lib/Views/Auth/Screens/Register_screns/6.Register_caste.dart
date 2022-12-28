@@ -47,8 +47,9 @@ class Register_caste extends StatelessWidget {
                                   "Select Caste") {
                             Get.find<GetSTorageController>().box.write(
                                 kCaste, controller.selectedValue.toString());
+                            controller.getAllEmails(context);
                             controller.setRegisterViewPage(
-                                RegisterViewEnum.RegisterView7);
+                                RegisterViewEnum.RegisterView10);
                           } else {
                             snackBar(context, "Please Select your Caste",
                                 Colors.pink);

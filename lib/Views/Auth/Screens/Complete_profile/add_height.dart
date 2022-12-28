@@ -4,6 +4,7 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 
 class Add_Height extends StatelessWidget {
   @override
@@ -52,7 +53,7 @@ class Add_Height extends StatelessWidget {
                                 Get.find<GetSTorageController>().box.write(
                                     kHeight,
                                     controller.selectedHeight.toString());
-                                Get.back();
+                                Get.off(() => Complete_Profile1());
                               } else {
                                 snackBar(context, "Please Select your height",
                                     Colors.pink);

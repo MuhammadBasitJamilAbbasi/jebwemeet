@@ -4,6 +4,7 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 
 class Add_Work extends StatelessWidget {
   @override
@@ -51,7 +52,7 @@ class Add_Work extends StatelessWidget {
                                   "Select Occupation Sector") {
                                 Get.find<GetSTorageController>().box.write(
                                     kWork, controller.selectedwork.toString());
-                                Get.back();
+                                Get.off(() => Complete_Profile1());
                               } else {
                                 snackBar(
                                     context,

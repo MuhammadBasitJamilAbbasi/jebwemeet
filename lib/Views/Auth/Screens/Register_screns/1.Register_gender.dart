@@ -41,7 +41,7 @@ class Register_Gender extends StatelessWidget {
                           .box
                           .write(kGender, "Woman");
                   controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView2);
+                      .setRegisterViewPage(RegisterViewEnum.RegisterView3);
                 },
                 isRegister: true,
               )),
@@ -58,7 +58,7 @@ class Register_Gender extends StatelessWidget {
                           .box
                           .write(kGender, "Man");
                   controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView2);
+                      .setRegisterViewPage(RegisterViewEnum.RegisterView3);
                 },
                 isRegister: true,
               )),

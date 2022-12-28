@@ -6,7 +6,7 @@ import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 
-class Add_Caste extends StatelessWidget {
+class Add_Languages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storageController = Get.find<GetSTorageController>();
@@ -26,38 +26,38 @@ class Add_Caste extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
                     child: Text(
-                      "My Caste is",
+                      "My Language is",
                       style: k25styleblack,
                     ),
                   ),
                   AppComponents().sizedBox50,
                   Center(
                     child: buildRegisterDropDown(
-                        text: "Select Caste",
-                        list: kcasteList!,
-                        value: controller.selectedValue,
+                        text: "Select Language",
+                        list: kLanguageList!,
+                        value: controller.selectedLanguage,
                         onchange: (value) {
-                          controller.selectedCasteFunction(value);
+                          controller.selectedLanguageFunction(value);
                         },
                         controller: controller),
                   ),
                   AppComponents().sizedBox30,
-                  controller.selectedValue != "Select Caste"
+                  controller.selectedLanguage != "Select Language"
                       ? Center(
                           child: kCustomButton(
                             label: "Save",
                             ontap: () {
-                              if (controller.selectedValue
+                              if (controller.selectedLanguage
                                       .toString()
                                       .isNotEmpty &&
-                                  controller.selectedValue.toString() !=
-                                      "Select Caste") {
+                                  controller.selectedLanguage.toString() !=
+                                      "Select Language") {
                                 Get.find<GetSTorageController>().box.write(
-                                    kCaste,
-                                    controller.selectedValue.toString());
+                                    kLanguage,
+                                    controller.selectedLanguage.toString());
                                 Get.off(() => Complete_Profile1());
                               } else {
-                                snackBar(context, "Please Select your Caste",
+                                snackBar(context, "Please Select your Language",
                                     Colors.pink);
                               }
                             },

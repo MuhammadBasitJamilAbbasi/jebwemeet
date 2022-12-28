@@ -6,7 +6,7 @@ import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 
-class Add_Caste extends StatelessWidget {
+class Add_Childern extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storageController = Get.find<GetSTorageController>();
@@ -22,42 +22,39 @@ class Add_Caste extends StatelessWidget {
                 children: [
                   AppComponents().sizedBox30,
                   AppComponents().backIcon(),
-                  AppComponents().sizedBox50,
+                  AppComponents().sizedBox20,
+                  AppComponents().sizedBox10,
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
                     child: Text(
-                      "My Caste is",
+                      "My Childern is",
                       style: k25styleblack,
                     ),
                   ),
                   AppComponents().sizedBox50,
                   Center(
                     child: buildRegisterDropDown(
-                        text: "Select Caste",
-                        list: kcasteList!,
-                        value: controller.selectedValue,
+                        text: "0",
+                        list: kChildernList!,
+                        value: controller.selectedChild,
                         onchange: (value) {
-                          controller.selectedCasteFunction(value);
+                          controller.selectedChildFunction(value);
                         },
                         controller: controller),
                   ),
                   AppComponents().sizedBox30,
-                  controller.selectedValue != "Select Caste"
+                  controller.selectedChild != "0"
                       ? Center(
                           child: kCustomButton(
                             label: "Save",
                             ontap: () {
-                              if (controller.selectedValue
-                                      .toString()
-                                      .isNotEmpty &&
-                                  controller.selectedValue.toString() !=
-                                      "Select Caste") {
+                              if (controller.selectedChild.toString() != "0") {
                                 Get.find<GetSTorageController>().box.write(
-                                    kCaste,
-                                    controller.selectedValue.toString());
+                                    kchildern,
+                                    controller.selectedChild.toString());
                                 Get.off(() => Complete_Profile1());
                               } else {
-                                snackBar(context, "Please Select your Caste",
+                                snackBar(context, "Please Select your Child",
                                     Colors.pink);
                               }
                             },

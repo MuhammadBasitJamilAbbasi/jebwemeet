@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
@@ -22,46 +23,28 @@ class Register_Age extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30),
                   child: Text(
-                    "My age is",
+                    "My Birthday is",
                     style: k25styleblack,
                   ),
                 ),
                 AppComponents().sizedBox50,
                 Center(
-                    child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  child: kCustomTextField(
-                      hinttext: "Age",
-                      isLength: true,
-                      controller: controller.ageController,
-                      validator: (value) {
-                        return "";
-                      }),
-                )),
+                  child: kCustomButton(
+                      ontap: () {
+                        controller.datePicker(context);
+                      },
+                      label: controller.birthdayDate.value),
+                ),
                 AppComponents().sizedBox15,
-                controller.ageController.value.text.isNotEmpty
+                controller.birthdayDate.value != "Select date"
                     ? Center(
                         child: kCustomButton(
                           label: "Continue",
                           ontap: () {
-                            if (controller.ageController.value.text.isEmpty) {
-                              snackBar(context, "Please Enter your age",
-                                  Colors.pink);
-                            } else {
-                              if (int.parse(
-                                      controller.ageController.value.text) >=
-                                  18) {
-                                Get.find<GetSTorageController>().box.write(
-                                    kAge, controller.ageController.value.text);
-                                controller.setRegisterViewPage(
-                                    RegisterViewEnum.RegisterView4);
-                              } else {
-                                snackBar(
-                                    context,
-                                    "Please Enter your age above 18",
-                                    Colors.pink);
-                              }
-                            }
+                            controller.setRegisterViewPage(
+                                RegisterViewEnum.RegisterView4);
+                            Get.find<GetSTorageController>().box.write(
+                                kAge, controller.birthdayDate.value.toString());
                           },
                           isRegister: true,
                         ),

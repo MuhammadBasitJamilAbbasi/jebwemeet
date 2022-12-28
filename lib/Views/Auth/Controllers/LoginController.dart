@@ -12,7 +12,9 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
+import 'package:jabwemeet/Views/Auth/Controllers/Password_encyption.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Register_screns/Bismillah_Screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
 
@@ -96,13 +98,25 @@ class LoginController extends GetxController {
         password: password.text.trim(),
       )
           .then((value) async {
+        Get.find<GetSTorageController>().box.write(kEmail, email.value.text);
+        Get.find<GetSTorageController>()
+            .box
+            .write(kPassword, password.value.text);
         await FirebaseFirestore.instance
             .collection('users')
             .doc(value.user!.uid)
-            .update({
-          'fcm_token': await FirebaseMessaging.instance.getToken()
-        }).whenComplete(() {
-          log("User Firebase Messaging Token Updated: ");
+            .get()
+            .then((snapshot) async {
+          if (snapshot.exists) {
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(value.user!.uid)
+                .update({
+              'fcm_token': await FirebaseMessaging.instance.getToken()
+            }).whenComplete(() {
+              log("User Firebase Messaging Token Updated: ");
+            });
+          }
         });
       });
       showDialog(
@@ -119,17 +133,54 @@ class LoginController extends GetxController {
             .doc(user!.uid)
             .get()
             .then((value) async {
-          Get.find<GetSTorageController>().box.write("loggedin", "loggedin");
-          if (value.get("imageUrl") == null) {
-            Get.offAll(() => Complete_Profile1());
+          if (value.exists) {
+            Get.find<GetSTorageController>().box.write("loggedin", "loggedin");
+            if (value.get("age") == null) {
+              Get.offAll(() => Bismillah_Screen());
+            } else {
+              if (value.get("imageUrl") == null) {
+                Get.offAll(() => Complete_Profile1());
+              } else {
+                Get.offAll(() => Home());
+              }
+            }
           } else {
-            Get.offAll(() => Home());
+            UserModel userModel = UserModel(
+                height: null,
+                name: null,
+                about: null,
+                imagesList: [],
+                address: storage.box.read(kAddress),
+                age: null,
+                caste: "",
+                childerns: "",
+                education: "",
+                email: email.value.text.trim(),
+                fcm_token: await FirebaseMessaging.instance.getToken(),
+                gender: "",
+                industry: null,
+                job_title: null,
+                religion: null,
+                hobbies: [],
+                languages: null,
+                work: null,
+                martial_status: null,
+                imageUrl: null,
+                phone_number: null,
+                income: null,
+                religious_practice: null,
+                uid: FirebaseAuth.instance.currentUser!.uid,
+                password: EncryptData.encryptData(password: password.text));
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(user.uid)
+                .set(userModel.toMap());
+            Get.offAll(() => Bismillah_Screen());
           }
         });
       } catch (e) {
         log(e.toString());
       }
-      ;
 
       email.clear();
       password.clear();
@@ -153,13 +204,20 @@ class LoginController extends GetxController {
         case 'wrong-password':
           message = "Wrong password";
       }
-
       showDialog(
           context: context,
           builder: (builder) {
             return AlertDialog(
+              shape: Border.all(
+                color: Colors.red,
+              ),
               title: const Text('Login failed'),
               content: Text(message ?? 'No internet'),
+              icon: Image.asset(
+                "assets/appicon.png",
+                height: 40,
+                width: 40,
+              ),
             );
           });
     } finally {
@@ -202,10 +260,10 @@ class LoginController extends GetxController {
                   .box
                   .write(kPhone, user.phoneNumber.toString());
               if (value.get("age") == null) {
-                Get.offAll(() => Register_screen());
+                Get.off(() => Register_screen());
               } else {
                 if (value.get("imageUrl") == null) {
-                  Get.offAll(() => Complete_Profile1());
+                  Get.off(() => Complete_Profile1());
                 } else {
                   Get.offAll(() => Home());
                 }
@@ -237,24 +295,26 @@ class LoginController extends GetxController {
         height: null,
         name: user!.displayName,
         about: null,
+        imagesList: [],
         address: storage.box.read(kAddress),
         age: null,
         caste: "",
-        creativity: "",
+        childerns: "",
         education: "",
         email: user.email,
         fcm_token: await FirebaseMessaging.instance.getToken(),
         gender: "",
-        smoking: null,
-        star_sign: null,
+        industry: null,
+        job_title: null,
         religion: null,
         hobbies: [],
-        sports: null,
+        languages: null,
         work: null,
         martial_status: null,
         imageUrl: null,
         phone_number: null,
         income: null,
+        religious_practice: null,
         uid: FirebaseAuth.instance.currentUser!.uid,
         password: null);
     await FirebaseFirestore.instance
@@ -401,25 +461,27 @@ class LoginController extends GetxController {
       height: storage.box.read(kHeight),
       name: storage.box.read(kFull_name),
       about: storage.box.read(kAbout),
+      imagesList: [],
       address: storage.box.read(kAddress),
       age: storage.box.read(kAge),
       caste: storage.box.read(kCaste),
-      creativity: storage.box.read(kCreativity),
+      job_title: storage.box.read(kJobTitle),
       education: storage.box.read(kEducation),
       email: storage.box.read(kEmail),
       fcm_token: await FirebaseMessaging.instance.getToken(),
       gender: storage.box.read(kGender),
-      smoking: storage.box.read(kSmoke),
-      star_sign: storage.box.read(kStar_sign),
+      industry: storage.box.read(kIndustry),
+      childerns: storage.box.read(kchildern),
       religion: storage.box.read(kReligion),
       hobbies: [],
-      sports: storage.box.read(kSports),
+      languages: storage.box.read(kLanguage),
       work: storage.box.read(kWork),
       martial_status: storage.box.read(kMartial_Statius),
       imageUrl: storage.box.read(kImageUrl),
       phone_number: storage.box.read(kPhone),
       income: storage.box.read(kIncome),
       uid: user.uid,
+      religious_practice: storage.box.read(kReligiousPractice),
       password: storage.box.read(kPassword),
     );
     Get.find<GetSTorageController>().box.write("isPhone", "isPhone");
@@ -436,12 +498,12 @@ class LoginController extends GetxController {
               .collection('users')
               .doc(user.uid)
               .set(userModel.toMap())
-              .then((value) => Get.offAll(() => Register_screen()));
+              .then((value) => Get.off(() => Register_screen()));
         } else {
           if (value.get("age") == null) {
-            Get.offAll(() => Register_screen());
+            Get.off(() => Register_screen());
           } else if (value.get("imageUrl") == null) {
-            Get.offAll(() => Complete_Profile1());
+            Get.off(() => Complete_Profile1());
           } else {
             Get.offAll(() => Home());
           }
@@ -462,16 +524,17 @@ class LoginController extends GetxController {
       address: storage.box.read(kAddress),
       age: int.parse(storage.box.read(kAge)),
       caste: storage.box.read(kCaste),
-      creativity: storage.box.read(kCreativity),
+      imagesList: [],
+      religious_practice: storage.box.read(kReligiousPractice),
       education: storage.box.read(kEducation),
       email: storage.box.read(kEmail),
       fcm_token: await FirebaseMessaging.instance.getToken(),
       gender: storage.box.read(kGender),
-      smoking: storage.box.read(kSmoke),
-      star_sign: storage.box.read(kStar_sign),
+      languages: storage.box.read(kLanguage),
+      childerns: storage.box.read(kchildern),
       religion: storage.box.read(kReligion),
       hobbies: [],
-      sports: storage.box.read(kSports),
+      industry: storage.box.read(kIndustry),
       work: storage.box.read(kWork),
       martial_status: storage.box.read(kMartial_Statius),
       imageUrl: storage.box.read(kImageUrl),
@@ -479,6 +542,7 @@ class LoginController extends GetxController {
       income: storage.box.read(kIncome),
       uid: user.uid,
       password: "",
+      job_title: storage.box.read(kJobTitle),
     );
     Get.find<GetSTorageController>().box.write("isPhone", "isPhone");
     await FirebaseFirestore.instance

@@ -7,8 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Utils/constants.dart';
-import 'package:jabwemeet/Views/Auth/Controllers/Profile_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
+import 'package:jabwemeet/Views/Home/Controllers/Edit_profile_controller.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -175,6 +175,7 @@ class kPasswordTextField extends StatelessWidget {
       controller: controller,
       style: TextStyle(color: Colors.black, fontSize: 14),
       decoration: InputDecoration(
+        hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
         suffixIcon: IconButton(
             icon: isObsecure
                 ? Icon(
@@ -279,15 +280,19 @@ class Essential_Widget extends StatelessWidget {
   final title;
   final leadingImage;
   final onTap;
+  final iconfil;
   Essential_Widget(
-      {required this.title, required this.leadingImage, required this.onTap});
+      {required this.title,
+      required this.leadingImage,
+      required this.onTap,
+      required this.iconfil});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        top: 8,
-        bottom: 8,
+        top: 12,
+        bottom: 12,
       ),
       child: InkWell(
         onTap: onTap,
@@ -314,7 +319,7 @@ class Essential_Widget extends StatelessWidget {
             Expanded(
                 flex: 1,
                 child: Icon(
-                  Icons.arrow_forward_ios_outlined,
+                  iconfil,
                   color: butoncolor,
                   size: 18,
                 )),
@@ -847,7 +852,7 @@ class buildFilterDropDown extends StatelessWidget {
 }
 
 class buildProfileDropDown extends StatelessWidget {
-  ProfileController controller;
+  EditProfileController controller;
   List<String> list;
   final onchange;
   final text;

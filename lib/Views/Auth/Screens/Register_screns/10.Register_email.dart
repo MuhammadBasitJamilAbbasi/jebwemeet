@@ -21,18 +21,21 @@ class Register_email extends StatelessWidget {
             children: [
               AppComponents().backIcon(),
               AppComponents().sizedBox50,
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Text(
-                  Get.find<GetSTorageController>().box.read("isPhone") ==
-                          "isPhone"
-                      ? "My email is"
-                      : user == null
-                          ? "My email & Phone Number is"
-                          : "My Phone Number is",
-                  style: k25styleblack,
-                ),
-              ),
+              Get.find<GetSTorageController>().box.read("isPhone") == "isPhone"
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        "My email is",
+                        style: k25styleblack,
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 30),
+                      child: Text(
+                        "My Phone Number is",
+                        style: k25styleblack,
+                      ),
+                    ),
               AppComponents().sizedBox50,
               Get.find<GetSTorageController>().box.read("isPhone") == "isPhone"
                   ? Center(
@@ -45,25 +48,21 @@ class Register_email extends StatelessWidget {
                             return "";
                           }),
                     ))
-                  : user == null
-                      ? Center(
-                          child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 25),
-                          child: kCustomTextField(
-                              hinttext: "Email",
-                              controller: controller.emailController,
-                              validator: (value) {
-                                return "";
-                              }),
-                        ))
-                      : SizedBox.shrink(),
-              AppComponents().sizedBox15,
-              Get.find<GetSTorageController>().box.read("isPhone") == "isPhone"
-                  ? SizedBox.shrink()
                   : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: IntlPhoneField(
+                        style: k16styleblack,
+                        dropdownTextStyle: k16styleblack,
+                        textAlignVertical: TextAlignVertical.center,
+                        textAlign: TextAlign.start,
                         decoration: InputDecoration(
+                          floatingLabelStyle: k14styleblack,
+                          labelStyle: k16styleblack,
+                          helperStyle: k16styleblack,
+                          hintStyle: k16styleblack,
+                          prefixStyle: k16styleblack,
+                          suffixStyle: k16styleblack,
+                          counterStyle: k14styleblack,
                           filled: true,
                           contentPadding:
                               EdgeInsets.only(top: 10, bottom: 10, left: 10),
@@ -95,49 +94,32 @@ class Register_email extends StatelessWidget {
                       child: kCustomButton(
                         label: "Continue",
                         ontap: () {
+                          if (controller
+                                  .emailController.value.text.isNotEmpty &&
+                              controller.emailController.value.text.isEmail !=
+                                  false) {
+                            Get.find<GetSTorageController>().box.write(
+                                kEmail, controller.emailController.value.text);
+                            controller.setRegisterViewPage(
+                                RegisterViewEnum.RegisterView11);
+                          } else {
+                            snackBar(context, "Please Enter Valid Email",
+                                Colors.pink);
+                          }
+                        },
+                        isRegister: true,
+                      ),
+                    )
+                  : Center(
+                      child: kCustomButton(
+                        label: "Continue",
+                        ontap: () {
                           controller.setRegisterViewPage(
                               RegisterViewEnum.RegisterView11);
                         },
                         isRegister: true,
                       ),
                     )
-                  : user == null
-                      ? controller.emailController.value.text.isNotEmpty
-                          ? Center(
-                              child: kCustomButton(
-                                label: "Continue",
-                                ontap: () {
-                                  if (controller.emailController.value.text
-                                          .isNotEmpty &&
-                                      controller.emailController.value.text
-                                              .isEmail !=
-                                          false) {
-                                    Get.find<GetSTorageController>().box.write(
-                                        kEmail,
-                                        controller.emailController.value.text);
-                                    controller.setRegisterViewPage(
-                                        RegisterViewEnum.RegisterView11);
-                                  } else {
-                                    snackBar(
-                                        context,
-                                        "Please Enter Valid Email",
-                                        Colors.pink);
-                                  }
-                                },
-                                isRegister: true,
-                              ),
-                            )
-                          : SizedBox.shrink()
-                      : Center(
-                          child: kCustomButton(
-                            label: "Continue",
-                            ontap: () {
-                              controller.setRegisterViewPage(
-                                  RegisterViewEnum.RegisterView11);
-                            },
-                            isRegister: true,
-                          ),
-                        )
             ],
           ),
         ),

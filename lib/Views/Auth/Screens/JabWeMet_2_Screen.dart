@@ -4,6 +4,7 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Screens/TermsAndConditions.dart';
 import 'package:jabwemeet/Views/Auth/Screens/login_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/sign_up_screen.dart';
 
 class JabWeMet_Screen2 extends StatefulWidget {
   const JabWeMet_Screen2({Key? key}) : super(key: key);
@@ -76,10 +77,10 @@ class _JabWeMet_Screen2State extends State<JabWeMet_Screen2> {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (builder) => const TermsAndConiditons()));
+                          builder: (builder) => SignUpScreen()));
                     },
                     child: Text(
-                      "Create Profile",
+                      "Sign Up",
                       style: TextStyle(
                           color: butoncolor, fontWeight: FontWeight.w600),
                     ),

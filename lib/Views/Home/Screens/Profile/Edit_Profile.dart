@@ -1,13 +1,19 @@
+import 'dart:io';
+
+import 'package:avatar_glow/avatar_glow.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Utils/constants.dart';
-import 'package:jabwemeet/Views/Auth/Controllers/Profile_Controller.dart';
+import 'package:jabwemeet/Views/Home/Controllers/Edit_profile_controller.dart';
 
 class Edit_Profile extends StatelessWidget {
   UserModel userModel;
+
   Edit_Profile({required this.userModel});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,9 +21,9 @@ class Edit_Profile extends StatelessWidget {
         physics: BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: GetBuilder<ProfileController>(
+          child: GetBuilder<EditProfileController>(
+            init: EditProfileController(userModel: userModel),
             builder: (controller) {
-              controller.nameController.text = userModel.name.toString();
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,6 +61,66 @@ class Edit_Profile extends StatelessWidget {
                     ],
                   ),
                   AppComponents().sizedBox20,
+                  Center(
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          width: 160,
+                          height: 160,
+                          child: AvatarGlow(
+                            glowColor: Color.fromARGB(255, 15, 233, 106),
+                            endRadius: 90.0,
+                            duration: Duration(milliseconds: 2000),
+                            repeat: true,
+                            showTwoGlows: true,
+                            repeatPauseDuration: Duration(milliseconds: 100),
+                            child: DottedBorder(
+                              radius: Radius.circular(10),
+                              color: Colors.blue,
+                              strokeWidth: 8,
+                              borderType: BorderType.Circle,
+                              dashPattern: [1, 12],
+                              strokeCap: StrokeCap.butt,
+                              child: Center(
+                                child: SizedBox(
+                                  width: 130,
+                                  height: 130,
+                                  child: controller.selectedImagePath
+                                              .toString() ==
+                                          ""
+                                      ? CircleAvatar(
+                                          foregroundImage: NetworkImage(
+                                              userModel.imageUrl.toString()),
+                                          radius: 10,
+                                        )
+                                      : CircleAvatar(
+                                          foregroundImage: FileImage(File(
+                                              controller.selectedImagePath)),
+                                          radius: 10,
+                                        ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 20,
+                          right: 10,
+                          child: SizedBox(
+                            height: 30,
+                            width: 30,
+                            child: InkWell(
+                              onTap: () {
+                                controller.getImage(context);
+                              },
+                              child: Image.asset("assets/camera.png"),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  AppComponents().sizedBox20,
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
                     child: Text(
@@ -85,7 +151,8 @@ class Edit_Profile extends StatelessWidget {
                           ? kMartial_StatusList![0]
                           : controller.selectedMartialStatus,
                       onchange: (value) {
-                        controller.selectedMartialFunction(value.toString());
+                        controller.selectedMartialStatus = value;
+                        controller.update();
                       },
                       controller: controller),
                   AppComponents().sizedBox20,
@@ -147,7 +214,13 @@ class Edit_Profile extends StatelessWidget {
                       controller: controller),
                   AppComponents().sizedBox30,
                   Center(
-                    child: kCustomButton(label: "Save", ontap: () {}),
+                    child: controller.isLoader
+                        ? CircularProgressIndicator()
+                        : kCustomButton(
+                            label: "Save",
+                            ontap: () {
+                              controller.submitProfile(context);
+                            }),
                   )
                 ],
               );

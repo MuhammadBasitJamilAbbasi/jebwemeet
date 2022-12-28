@@ -6,7 +6,7 @@ import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/Profile_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 
-class Add_About extends StatelessWidget {
+class Add_RangePractice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storageController = Get.find<GetSTorageController>();
@@ -27,35 +27,36 @@ class Add_About extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      "About me",
+                      "Add Religious Practice",
                       style: k25styleblack,
                     ),
                   ),
                   AppComponents().sizedBox40,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: kCustomTextField(
-                        hinttext: "Add about me",
-                        controller: controller.aboutController,
-                        isValidator: false,
-                        maxlines: 7,
-                        validator: (val) {
-                          return "";
-                        }),
+                  Slider(
+                    value: controller.selectedReligiousPractice,
+                    onChanged: (value) {
+                      controller.selectedReligiousPracticeFunction(value);
+                    },
+                    min: 0,
+                    max: 100,
+                    divisions: 4,
+                    autofocus: true,
+                    thumbColor: Colors.deepOrange,
+                    label: controller.selectedReligiousPractice
+                            .round()
+                            .toString() +
+                        "%",
                   ),
                   AppComponents().sizedBox30,
                   Center(
                     child: kCustomButton(
                       label: "Save",
                       ontap: () {
-                        if (controller.aboutController.value.text.isNotEmpty) {
-                          Get.find<GetSTorageController>().box.write(
-                              kAbout, controller.aboutController.value.text);
-                          Get.off(() => Complete_Profile1());
-                        } else {
-                          snackBar(context, "Please enter about yourself",
-                              Colors.pink);
-                        }
+                        Get.find<GetSTorageController>().box.write(
+                            kReligiousPractice,
+                            controller.selectedReligiousPractice.toString() +
+                                "%");
+                        Get.off(() => Complete_Profile1());
                       },
                       isRegister: true,
                     ),

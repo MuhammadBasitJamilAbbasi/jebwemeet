@@ -3,69 +3,38 @@ import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
+import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 
-class Add_Education extends StatelessWidget {
-  const Add_Education({Key? key}) : super(key: key);
-
+class Add_Martial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storageController = Get.find<GetSTorageController>();
-
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
+      body: GetBuilder<RegisterController>(builder: (controller) {
+        return SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppComponents().sizedBox30,
+                AppComponents().sizedBox50,
                 AppComponents().backIcon(),
-                AppComponents().sizedBox20,
-                Center(
-                    child: Image.asset(
-                  "assets/education.png",
-                  height: 41,
-                  width: 48,
-                )),
-                AppComponents().sizedBox10,
+                AppComponents().sizedBox50,
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30),
-                  child: Center(
-                    child: Text(
-                      "Education",
-                      style: k25styleblack,
-                    ),
+                  child: Text(
+                    "My maritial status is",
+                    style: k25styleblack,
                   ),
                 ),
                 AppComponents().sizedBox50,
                 Center(
                     child: kCustomButton(
-                  label: "High School",
-                  ontap: () {
-                    storageController.box.write(kEducation, "High School");
-                    Get.back();
-                  },
-                  isRegister: true,
-                )),
-                AppComponents().sizedBox15,
-                Center(
-                    child: kCustomButton(
-                  label: "Diploma",
-                  ontap: () {
-                    storageController.box.write(kEducation, "Diploma");
-                    Get.off(() => Complete_Profile1());
-                  },
-                  isRegister: true,
-                )),
-                AppComponents().sizedBox15,
-                Center(
-                    child: kCustomButton(
-                  label: "Bachelor’s degree",
+                  label: "Never Married",
                   ontap: () {
                     storageController.box
-                        .write(kEducation, "Bachelor’s degree");
+                        .write(kMartial_Statius, "Never Married");
                     Get.off(() => Complete_Profile1());
                   },
                   isRegister: true,
@@ -73,9 +42,9 @@ class Add_Education extends StatelessWidget {
                 AppComponents().sizedBox15,
                 Center(
                     child: kCustomButton(
-                  label: "Master’s degree",
+                  label: "Divorced",
                   ontap: () {
-                    storageController.box.write(kEducation, "Master’s degree");
+                    storageController.box.write(kMartial_Statius, "Divorced");
                     Get.off(() => Complete_Profile1());
                   },
                   isRegister: true,
@@ -83,18 +52,39 @@ class Add_Education extends StatelessWidget {
                 AppComponents().sizedBox15,
                 Center(
                     child: kCustomButton(
-                  label: "PhD",
+                  label: "Seperated",
                   ontap: () {
-                    storageController.box.write(kEducation, "PhD");
+                    storageController.box.write(kMartial_Statius, "Seperated");
                     Get.off(() => Complete_Profile1());
                   },
                   isRegister: true,
                 )),
+                AppComponents().sizedBox15,
+                Center(
+                    child: kCustomButton(
+                  label: "Annulled",
+                  ontap: () {
+                    storageController.box.write(kMartial_Statius, "Annulled");
+                    Get.off(() => Complete_Profile1());
+                  },
+                  isRegister: true,
+                )),
+                AppComponents().sizedBox15,
+                Center(
+                    child: kCustomButton(
+                  label: "Widowed",
+                  ontap: () {
+                    storageController.box.write(kMartial_Statius, "Widowed");
+                    Get.off(() => Complete_Profile1());
+                  },
+                  isRegister: true,
+                )),
+                AppComponents().sizedBox30,
               ],
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

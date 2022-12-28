@@ -8,14 +8,10 @@ import 'package:jabwemeet/Views/Auth/Screens/Register_screns/1.Register_gender.d
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/10.Register_email.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/11.Register_name.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/12.Register_password.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Register_screns/2.Register_martial.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/3.age.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/4.address.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/5.religion.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/6.Register_caste.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Register_screns/7.Register_StarSign.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Register_screns/8.Register_Smoke.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Register_screns/9.Register_Creativity.dart';
 
 class Register_screen extends StatelessWidget {
   const Register_screen({Key? key}) : super(key: key);
@@ -58,8 +54,6 @@ class Register_screen extends StatelessWidget {
                               color: registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView1 ||
                                       registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView2 ||
-                                      registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView3 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView4 ||
@@ -67,41 +61,6 @@ class Register_screen extends StatelessWidget {
                                           RegisterViewEnum.RegisterView5 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView6 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView7 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView8 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView9 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView10 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView11 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView12
-                                  ? butoncolor
-                                  : Colors.grey.shade200),
-                          progressIndicator(
-                              context: context,
-                              ontap: () =>
-                                  registerController.setRegisterViewPage(
-                                      RegisterViewEnum.RegisterView2),
-                              color: registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView2 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView3 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView4 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView5 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView6 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView7 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView8 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView9 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView10 ||
                                       registerController.getRegisterViewPage ==
@@ -124,12 +83,6 @@ class Register_screen extends StatelessWidget {
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView6 ||
                                       registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView7 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView8 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView9 ||
-                                      registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView10 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView11 ||
@@ -149,12 +102,6 @@ class Register_screen extends StatelessWidget {
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView6 ||
                                       registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView7 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView8 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView9 ||
-                                      registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView10 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView11 ||
@@ -172,12 +119,6 @@ class Register_screen extends StatelessWidget {
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView6 ||
                                       registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView7 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView8 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView9 ||
-                                      registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView10 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView11 ||
@@ -192,63 +133,6 @@ class Register_screen extends StatelessWidget {
                                       RegisterViewEnum.RegisterView6),
                               color: registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView6 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView7 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView8 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView9 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView10 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView11 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView12
-                                  ? butoncolor
-                                  : Colors.grey.shade200),
-                          progressIndicator(
-                              context: context,
-                              ontap: () =>
-                                  registerController.setRegisterViewPage(
-                                      RegisterViewEnum.RegisterView7),
-                              color: registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView7 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView8 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView9 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView10 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView11 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView12
-                                  ? butoncolor
-                                  : Colors.grey.shade200),
-                          progressIndicator(
-                              context: context,
-                              ontap: () =>
-                                  registerController.setRegisterViewPage(
-                                      RegisterViewEnum.RegisterView8),
-                              color: registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView8 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView9 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView10 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView11 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView12
-                                  ? butoncolor
-                                  : Colors.grey.shade200),
-                          progressIndicator(
-                              context: context,
-                              ontap: () =>
-                                  registerController.setRegisterViewPage(
-                                      RegisterViewEnum.RegisterView9),
-                              color: registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView9 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView10 ||
                                       registerController.getRegisterViewPage ==
@@ -311,8 +195,8 @@ class Register_screen extends StatelessWidget {
     switch (getView) {
       case RegisterViewEnum.RegisterView1:
         return Register_Gender();
-      case RegisterViewEnum.RegisterView2:
-        return Register_Martial();
+      // case RegisterViewEnum.RegisterView2:
+      //   return Register_Martial();
       case RegisterViewEnum.RegisterView3:
         return Register_Age();
       case RegisterViewEnum.RegisterView4:
@@ -321,12 +205,12 @@ class Register_screen extends StatelessWidget {
         return Register_Religion();
       case RegisterViewEnum.RegisterView6:
         return Register_caste();
-      case RegisterViewEnum.RegisterView7:
-        return Register_Star();
-      case RegisterViewEnum.RegisterView8:
-        return Register_Smoke();
-      case RegisterViewEnum.RegisterView9:
-        return Register_Creativity();
+      // case RegisterViewEnum.RegisterView7:
+      //   return Register_Star();
+      // case RegisterViewEnum.RegisterView8:
+      //   return Register_Smoke();
+      // case RegisterViewEnum.RegisterView9:
+      //   return Register_Creativity();
       case RegisterViewEnum.RegisterView10:
         return Register_email();
       case RegisterViewEnum.RegisterView11:
