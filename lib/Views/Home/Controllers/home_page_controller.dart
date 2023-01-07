@@ -8,6 +8,7 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Models/chatroom.model.dart';
 import 'package:jabwemeet/Models/likes_model.dart';
+import 'package:jabwemeet/Views/Home/Screens/Likes/LIke.dart';
 import 'package:uuid/uuid.dart';
 
 class Home_page_controller extends GetxController {
@@ -178,8 +179,15 @@ class Home_page_controller extends GetxController {
     return chatRoom;
   }
 
-  Future<LikesModel?> getLikes(
-      var opponent_id, var fcm_token, BuildContext context) async {
+  Future<LikesModel?> getLikes({
+    required var opponent_id,
+    required var fcm_token,
+    required BuildContext context,
+    required isSenderImage,
+    required isSenderName,
+    required isRecImage,
+    required isRecName,
+  }) async {
     LikesModel likesModel = LikesModel();
     User? user = FirebaseAuth.instance.currentUser;
     QuerySnapshot snapshotData = await FirebaseFirestore.instance
@@ -221,6 +229,7 @@ class Home_page_controller extends GetxController {
                 .update({
               'participants.${user.uid}': true,
             });
+            Get.to(() => LikesView());
             snackBar(context, "You like the profile", Colors.pink);
           });
         } else {
@@ -256,6 +265,7 @@ class Home_page_controller extends GetxController {
                   .update({
                 'participants.${user.uid}': true,
               });
+              Get.to(() => LikesView());
               snackBar(context, "You like the profile", Colors.pink);
             });
           }
@@ -308,6 +318,7 @@ class Home_page_controller extends GetxController {
                   .update({
                 'participants.${user.uid}': true,
               });
+              Get.to(() => LikesView());
               snackBar(context, "You like the profile", Colors.pink);
             });
           } else {
@@ -357,21 +368,24 @@ class Home_page_controller extends GetxController {
         log('you have already a likes data');
       } else {
         LikesModel newLikeCollection = LikesModel(
-          likeId: Uuid().v1(),
-          participants: {
-            user.uid: true,
-            opponent_id: false,
-          },
-          isSender: user.uid,
-          isReceiver: opponent_id,
-        );
+            likeId: Uuid().v1(),
+            participants: {
+              user.uid: true,
+              opponent_id: false,
+            },
+            isSender: user.uid,
+            isReceiver: opponent_id,
+            isReceiverImage: isRecImage,
+            isReceiverName: isRecName,
+            isSenderImage: isSenderImage,
+            isSenderName: isSenderName);
         await FirebaseFirestore.instance
             .collection('likes')
             .doc(newLikeCollection.likeId)
             .set(newLikeCollection.toMap());
         likesModel = newLikeCollection;
-
         log('likes created');
+        Get.to(() => LikesView());
       }
 
       return likesModel;

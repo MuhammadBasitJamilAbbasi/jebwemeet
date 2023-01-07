@@ -84,6 +84,11 @@ TextStyle k18stylePrimary = TextStyle(
     color: butoncolor,
     fontFamily: "Gilroy-Bold",
     fontWeight: FontWeight.w800);
+TextStyle k14stylePrimary = TextStyle(
+    fontSize: 14,
+    color: butoncolor,
+    fontFamily: "Gilroy-Bold",
+    fontWeight: FontWeight.w800);
 TextStyle k10stylePrimary =
     TextStyle(fontSize: 10, color: butoncolor, fontFamily: "Gilroy-Bold");
 TextStyle k10styleWhite =

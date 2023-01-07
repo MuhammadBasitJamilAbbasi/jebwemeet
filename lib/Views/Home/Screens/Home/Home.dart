@@ -65,7 +65,7 @@ class Home extends StatelessWidget {
                             );
                           }
                           return PageView.builder(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: BouncingScrollPhysics(),
                             itemCount: snapshot.data!.docs.length,
                             controller: pagecontroller,
                             onPageChanged: (page) {
@@ -276,13 +276,28 @@ class Home extends StatelessWidget {
                                                                     () async {
                                                                   log("1");
                                                                   LikesModel? chatRoom = await controller.getLikes(
-                                                                      userModel
+                                                                      opponent_id: userModel
                                                                           .uid
                                                                           .toString(),
-                                                                      userModel
+                                                                      fcm_token: userModel
                                                                           .fcm_token
                                                                           .toString(),
-                                                                      context);
+                                                                      context:
+                                                                          context,
+                                                                      isSenderImage: controller
+                                                                          .userModel
+                                                                          .imageUrl
+                                                                          .toString(),
+                                                                      isSenderName: controller
+                                                                          .userModel
+                                                                          .name
+                                                                          .toString(),
+                                                                      isRecImage: userModel
+                                                                          .imageUrl
+                                                                          .toString(),
+                                                                      isRecName: userModel
+                                                                          .name
+                                                                          .toString());
                                                                   log("2");
                                                                   if ((chatRoom !=
                                                                       null)) {

@@ -83,7 +83,7 @@ class _kCustomBottomNavBarState extends State<kCustomBottomNavBar> {
           CustomNavigationBarItem(
             icon: InkWell(
               onTap: () {
-                Get.to(() => NotificationView());
+                Get.to(() => LikesView());
               },
               child: Container(
                 height: 45,

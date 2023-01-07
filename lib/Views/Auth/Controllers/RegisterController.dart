@@ -358,8 +358,8 @@ class RegisterController extends GetxController {
   int age = 0;
   RxString birthdayDate = 'Select date'.obs;
   datePicker(BuildContext context) {
-    DatePicker.showDatePicker(context, showTitleActions: true,
-        onChanged: (date) {
+    DatePicker.showDatePicker(context,
+        showTitleActions: true, maxTime: DateTime.now(), onChanged: (date) {
       DateTime currentDate = DateTime.now();
       age = currentDate.year - date.year;
       update();

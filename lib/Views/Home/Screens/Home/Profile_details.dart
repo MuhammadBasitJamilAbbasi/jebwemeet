@@ -108,8 +108,8 @@ class ProfileDetails extends StatelessWidget {
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
                                             colors: [
-                                              Color(0xFF202293),
-                                              Color(0xFF6366D3),
+                                              butoncolor.withOpacity(0.3),
+                                              butoncolor.withOpacity(0.1),
                                             ],
                                           )),
                                       child: Image.network(
