@@ -22,7 +22,9 @@ class ForgetPasswordEmail_Screen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AppComponents().sizedBox30,
-                      AppComponents().backIcon(),
+                      AppComponents().backIcon(() {
+                        Get.back();
+                      }),
                       SizedBox(
                         height: 50,
                       ),

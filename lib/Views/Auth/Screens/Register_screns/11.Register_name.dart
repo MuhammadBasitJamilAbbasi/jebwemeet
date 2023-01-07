@@ -4,7 +4,6 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Utils/enums.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
-import 'package:jabwemeet/Views/Auth/Controllers/LoginController.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 
 class Register_Name extends StatelessWidget {
@@ -17,7 +16,9 @@ class Register_Name extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppComponents().backIcon(),
+              AppComponents().backIcon(() {
+                controller.setRegisterViewPage(RegisterViewEnum.RegisterView10);
+              }),
               AppComponents().sizedBox50,
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30),
@@ -54,11 +55,9 @@ class Register_Name extends StatelessWidget {
                                 .box
                                 .read("isPhone") ==
                             "isPhone") {
-                          Get.find<LoginController>()
-                              .addUserdetailsPhoneUpdate();
+                          await controller.addUserdetails();
                         } else
-                          controller.setRegisterViewPage(
-                              RegisterViewEnum.RegisterView12);
+                          await controller.addUserdetails();
                       } else {
                         snackBar(context, "Please Enter another username",
                             Colors.pink);

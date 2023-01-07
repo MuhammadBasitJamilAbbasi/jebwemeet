@@ -11,17 +11,22 @@ import 'package:jabwemeet/Models/likes_model.dart';
 import 'package:uuid/uuid.dart';
 
 class Home_page_controller extends GetxController {
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getUserDetails();
+  }
+
+  int selectedIndex = 0;
   String? selectedMartialStatus = "Select Status";
   String? selectedReligion = "Select Religion";
   String? selectedCaste = "Select Caste";
   String? selectedCity = "Select City";
   var lowerValue = 18.0.obs;
   var upperValue = 60.0.obs;
-  Stream<QuerySnapshot<Map<String, dynamic>>> queryValue = FirebaseFirestore
-      .instance
-      .collection("users")
-      .where("age", isGreaterThanOrEqualTo: 18)
-      .snapshots();
+  String? gender = "";
+  Stream<QuerySnapshot<Map<String, dynamic>>>? queryValue;
   UserModel userModel = UserModel();
 
   getUserDetails() async {
@@ -32,23 +37,26 @@ class Home_page_controller extends GetxController {
         .then((value) {
       userModel = UserModel.fromMap(value.data()!);
       update();
+      if (userModel.gender.toString() == "Man") {
+        gender = "Woman";
+        update();
+        print("Woman=" + gender.toString());
+      }
+      if (userModel.gender.toString() == "Woman") {
+        gender = "Man";
+        update();
+        print("Man" + gender.toString());
+      }
       log(userModel.gender.toString());
+      log("Init Call Start");
+      log(gender.toString());
+      queryValue = FirebaseFirestore.instance
+          .collection("users")
+          .where("age", isGreaterThanOrEqualTo: 18)
+          .where("gender", isEqualTo: gender)
+          .snapshots();
+      log("Init Call End");
     });
-    if (userModel.gender.toString() == "Man") {
-      gender = "Female";
-      update();
-    }
-    if (userModel.gender.toString() == "Female") {
-      gender = "Man";
-      update();
-    }
-  }
-
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    getUserDetails();
   }
 
   clearAll(BuildContext context) {
@@ -74,20 +82,20 @@ class Home_page_controller extends GetxController {
   String? filterCity = null;
   var filterlowerValue = 18.0;
   var filterupperValue = 70.0;
-  String? gender = "Man";
-  query() {
+
+  query() async {
     if (filterMartialStatus == "Select Status" ||
         filterReligion == "Select Religion" ||
         filterCaste == "Select Caste" ||
         filterCity == "Select City") {
       filterMartialStatus = null;
       filterReligion = null;
-      gender = "Female";
+      gender = "Woman";
       filterCaste = null;
       filterCity = null;
       update();
     }
-
+    log("in Query Check gender " + gender.toString());
     queryValue = FirebaseFirestore.instance
         .collection("users")
         .where("age", isGreaterThanOrEqualTo: filterlowerValue.round())
@@ -170,7 +178,8 @@ class Home_page_controller extends GetxController {
     return chatRoom;
   }
 
-  Future<LikesModel?> getLikes(var opponent_id, BuildContext context) async {
+  Future<LikesModel?> getLikes(
+      var opponent_id, var fcm_token, BuildContext context) async {
     LikesModel likesModel = LikesModel();
     User? user = FirebaseAuth.instance.currentUser;
     QuerySnapshot snapshotData = await FirebaseFirestore.instance

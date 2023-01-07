@@ -30,7 +30,9 @@ class SignUpPhoneScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     // AppComponents().sizedBox50,
-                    AppComponents().backIcon(),
+                    AppComponents().backIcon(() {
+                      Get.back();
+                    }),
                     AppComponents().sizedBox50,
                     Text(
                       "Sign in with phone number",

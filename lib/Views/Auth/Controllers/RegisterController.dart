@@ -212,12 +212,16 @@ class RegisterController extends GetxController {
           email: emailController.value.text.trim(),
           password: passwordController.value.text.trim());
       try {
+        Get.find<GetSTorageController>()
+            .box
+            .write(kPassword, passwordController.text);
         final user = FirebaseAuth.instance.currentUser!;
         await user.sendEmailVerification();
         Get.off(() => Bismillah_Screen());
         await Future.delayed(Duration(seconds: 5));
       } catch (e) {
-        snackBar(context, e.toString(), Colors.pink);
+        print(e);
+        // snackBar(context, e.toString(), Colors.pink);
       }
       // await helpers.getName();
     } on FirebaseAuthException catch (e) {
@@ -264,63 +268,6 @@ class RegisterController extends GetxController {
     }
   }
 
-  Future register(BuildContext context) async {
-    try {
-      loading = true;
-      update();
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.value.text.trim(),
-          password: passwordController.value.text.trim());
-      await addUserdetails();
-      Get.offAll(() => LoginScreen2());
-
-      showDialog(
-          context: context,
-          builder: (builder) {
-            return AlertDialog(
-              title: Text('Profile created Successfully'),
-            );
-          });
-
-      // await helpers.getName();
-    } on FirebaseAuthException catch (e) {
-      // ignore: avoid_print
-      print(e);
-      String? errorMessage;
-
-      switch (e.code) {
-        case 'email-already-in-use':
-          errorMessage = 'Email already registered';
-          break;
-
-        case 'invalid-email':
-          errorMessage = "Invalid Email address";
-          break;
-
-        case 'operation-not-allowed':
-          errorMessage = "Operation not allowed";
-          break;
-
-        case 'weak-password':
-          errorMessage =
-              'Weak password, please enter a strong password minimum 8 characters and combination of special characters,alphabets and numbers make it more strong';
-      }
-
-      showDialog(
-        context: context,
-        builder: (builder) {
-          return AlertDialog(
-            title: const Text('Registeration failed!'),
-            content: Text(errorMessage ?? ''),
-          );
-        },
-      );
-    } finally {
-      loading = false;
-      update();
-    }
-  }
-
   List userNamesList = [];
   //get all the users username
   Future<QuerySnapshot?> getAllEmails(BuildContext context) async {
@@ -359,6 +306,8 @@ class RegisterController extends GetxController {
 //add the user details while signup
   final storage = Get.find<GetSTorageController>();
   Future addsignupdetails() async {
+    isUpdatePassLoad = true;
+    update();
     FirebaseAuth fireAuth = FirebaseAuth.instance;
     User? user = fireAuth.currentUser;
     UserModel userModel = UserModel(
@@ -387,13 +336,23 @@ class RegisterController extends GetxController {
       phone_number: storage.box.read(kPhone),
       income: storage.box.read(kIncome),
       uid: FirebaseAuth.instance.currentUser!.uid,
-      password: EncryptData.encryptData(password: passwordController.text),
+      password: EncryptData.encryptData(
+              password: Get.find<GetSTorageController>().box.read(kPassword))
+          .toString(),
     );
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .set(userModel.toMap())
-        .then((value) => Get.off(() => Bismillah_Screen()));
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set(userModel.toMap())
+          .then((value) {
+        isUpdatePassLoad = false;
+        update();
+      });
+    } catch (e) {
+      isUpdatePassLoad = false;
+      update();
+    }
   }
 
   int age = 0;
@@ -419,7 +378,6 @@ class RegisterController extends GetxController {
       }
       update();
       print("age" + age.toString());
-      print(date.minute);
     }, onConfirm: (date) {
       birthdayDate.value = DateFormat.yMMMd().format(date);
       update();
@@ -456,12 +414,13 @@ class RegisterController extends GetxController {
       phone_number: storage.box.read(kPhone),
       income: storage.box.read(kIncome),
       uid: FirebaseAuth.instance.currentUser!.uid,
-      password: EncryptData.encryptData(password: storage.box.read(kPassword)),
+      password: EncryptData.encryptData(
+          password: storage.box.read(kPassword).toString()),
     );
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
-        .set(userModel.toMap())
+        .update(userModel.toMap())
         .then((value) => Get.offAll(() => Complete_Profile1()));
   }
 
@@ -629,45 +588,6 @@ class RegisterController extends GetxController {
           .updatePassword(ConfirmPassController.value.text.toString());
       log("<------------------second earlier true----------------->");
       await FirebaseFirestore.instance.collection('users').doc(uiddd).update({
-        'fcm_token': token,
-        'password':
-            EncryptData.encryptData(password: ConfirmPassController.value.text)
-                .toString()
-      });
-      log("<------------------Final earlier true----------------->");
-      ConfirmPassController.clear();
-      passController.clear();
-      isUpdatePassLoad = false;
-      update();
-      showDialog(
-          context: context,
-          builder: (builder) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          });
-      Get.offAll(() => LoginScreen2());
-    } catch (e) {
-      isUpdatePassLoad = false;
-      update();
-      log(e.toString());
-      snackBar(context, 'Something went wrong!', Colors.pink);
-    }
-  }
-
-  Future updatePasswordRegister(BuildContext context) async {
-    var token = await FirebaseMessaging.instance.getToken();
-    try {
-      isUpdatePassLoad = true;
-      update();
-      log("<------------------earlier true----------------->");
-      await FirebaseAuth.instance.currentUser!
-          .updatePassword(ConfirmPassController.value.text.toString());
-      log("<------------------second earlier true----------------->");
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update({
         'fcm_token': token,
         'password':
             EncryptData.encryptData(password: ConfirmPassController.value.text)

@@ -7,7 +7,6 @@ import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/1.Register_gender.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/10.Register_email.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/11.Register_name.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Register_screns/12.Register_password.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/3.age.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/4.address.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/5.religion.dart';
@@ -44,6 +43,7 @@ class Register_screen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      AppComponents().sizedBox10,
                       Row(
                         children: [
                           progressIndicator(
@@ -64,9 +64,7 @@ class Register_screen extends StatelessWidget {
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView10 ||
                                       registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView11 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView12
+                                          RegisterViewEnum.RegisterView11
                                   ? butoncolor
                                   : Colors.grey.shade200),
                           progressIndicator(
@@ -85,9 +83,7 @@ class Register_screen extends StatelessWidget {
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView10 ||
                                       registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView11 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView12
+                                          RegisterViewEnum.RegisterView11
                                   ? butoncolor
                                   : Colors.grey.shade200),
                           progressIndicator(
@@ -104,9 +100,7 @@ class Register_screen extends StatelessWidget {
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView10 ||
                                       registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView11 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView12
+                                          RegisterViewEnum.RegisterView11
                                   ? butoncolor
                                   : Colors.grey.shade200),
                           progressIndicator(
@@ -121,9 +115,7 @@ class Register_screen extends StatelessWidget {
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView10 ||
                                       registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView11 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView12
+                                          RegisterViewEnum.RegisterView11
                                   ? butoncolor
                                   : Colors.grey.shade200),
                           progressIndicator(
@@ -136,9 +128,7 @@ class Register_screen extends StatelessWidget {
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView10 ||
                                       registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView11 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView12
+                                          RegisterViewEnum.RegisterView11
                                   ? butoncolor
                                   : Colors.grey.shade200),
                           progressIndicator(
@@ -149,9 +139,7 @@ class Register_screen extends StatelessWidget {
                               color: registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView10 ||
                                       registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView11 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView12
+                                          RegisterViewEnum.RegisterView11
                                   ? butoncolor
                                   : Colors.grey.shade200),
                           progressIndicator(
@@ -160,18 +148,7 @@ class Register_screen extends StatelessWidget {
                                   registerController.setRegisterViewPage(
                                       RegisterViewEnum.RegisterView11),
                               color: registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView11 ||
-                                      registerController.getRegisterViewPage ==
-                                          RegisterViewEnum.RegisterView12
-                                  ? butoncolor
-                                  : Colors.grey.shade200),
-                          progressIndicator(
-                              context: context,
-                              ontap: () =>
-                                  registerController.setRegisterViewPage(
-                                      RegisterViewEnum.RegisterView12),
-                              color: registerController.getRegisterViewPage ==
-                                      RegisterViewEnum.RegisterView12
+                                      RegisterViewEnum.RegisterView11
                                   ? butoncolor
                                   : Colors.grey.shade200),
                         ],
@@ -215,8 +192,6 @@ class Register_screen extends StatelessWidget {
         return Register_email();
       case RegisterViewEnum.RegisterView11:
         return Register_Name();
-      case RegisterViewEnum.RegisterView12:
-        return Register_Password();
     }
   }
 }

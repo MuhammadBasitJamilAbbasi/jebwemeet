@@ -117,7 +117,9 @@ class _kCustomGoogleMapState extends State<kCustomGoogleMap> {
               ),
               Padding(
                 padding: const EdgeInsets.all(18.0),
-                child: AppComponents().backIcon(),
+                child: AppComponents().backIcon(() {
+                  Get.back();
+                }),
               ),
             ],
           ),

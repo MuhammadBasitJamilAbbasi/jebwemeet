@@ -19,7 +19,9 @@ class Register_email extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppComponents().backIcon(),
+              AppComponents().backIcon(() {
+                controller.setRegisterViewPage(RegisterViewEnum.RegisterView6);
+              }),
               AppComponents().sizedBox50,
               Get.find<GetSTorageController>().box.read("isPhone") == "isPhone"
                   ? Padding(

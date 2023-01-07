@@ -1,11 +1,12 @@
 import 'dart:core';
 
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:jabwemeet/Services/Services.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 import 'package:jabwemeet/Views/Home/Controllers/Edit_profile_controller.dart';
@@ -13,7 +14,7 @@ import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppComponents {
-  Row backIcon() {
+  Row backIcon(void Function()? ontap) {
     return Row(
       children: [
         Container(
@@ -30,9 +31,7 @@ class AppComponents {
                   color: Colors.white,
                 ),
               ),
-              onTap: () {
-                Get.back();
-              },
+              onTap: ontap,
             ),
           ),
         ),
@@ -255,12 +254,15 @@ progressIndicator({
 }) =>
     Expanded(
       flex: 1,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 2, vertical: 5),
-        height: 8,
-        width: MediaQuery.of(context).size.width / 9,
-        decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(25)),
+      child: InkWell(
+        onTap: ontap,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 2, vertical: 5),
+          height: 8,
+          width: MediaQuery.of(context).size.width / 9,
+          decoration: BoxDecoration(
+              color: color, borderRadius: BorderRadius.circular(25)),
+        ),
       ),
     );
 
@@ -347,7 +349,7 @@ class outlined_button extends StatelessWidget {
         icon: icon ?? Container(),
         label: Text(
           txt,
-          style: TextStyle(color: color, fontSize: 20),
+          style: k14styleWhite,
           textAlign: TextAlign.center,
         ),
         style: ButtonStyle(
@@ -703,6 +705,37 @@ class Linear_Profile_Tile extends StatelessWidget {
   }
 }
 
+class Detail_Profile_Tile extends StatelessWidget {
+  const Detail_Profile_Tile({
+    required this.value,
+    required this.ontap,
+  });
+
+  final value;
+  final ontap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: ontap,
+      child: Container(
+        margin: EdgeInsets.only(bottom: 10),
+        height: 40,
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              value,
+              style: k14styleblack,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class kChatTextField extends StatelessWidget {
   final isPassword;
   final inputType;
@@ -1040,6 +1073,130 @@ class buildRegisterDropDown extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class OtherNotificationWidget extends StatelessWidget {
+  final String text;
+  final String? postedTime;
+  final Widget pic;
+  final Color color;
+  final String? profileImg;
+  final String? message;
+  final String? receiverUserId;
+  final String? notificationId;
+
+  const OtherNotificationWidget(
+      {Key? key,
+      this.profileImg,
+      required this.text,
+      this.postedTime,
+      required this.pic,
+      required this.color,
+      required this.message,
+      required this.receiverUserId,
+      required this.notificationId})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Services().readNotification(
+            receiverUserID: receiverUserId!, notificationId: notificationId!);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        height: 80,
+        width: MediaQuery.of(context).size.width * 1,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AvatarWidget(
+              backgroundColor: color,
+              imageWidget: pic,
+              profileImg: profileImg!,
+            ),
+            SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      child: Text(
+                    text,
+                    style: k14styleblack,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )),
+                  SizedBox(
+                    height: 2,
+                  ),
+                  Container(
+                      child: Text(
+                    message!,
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )),
+                ],
+              ),
+            ),
+            Text(
+              // postedTime.toString(),
+              postedTime ?? '',
+              style: k10stylePrimary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AvatarWidget extends StatelessWidget {
+  final Widget imageWidget;
+  final Color backgroundColor;
+  final String profileImg;
+  const AvatarWidget({
+    Key? key,
+    required this.imageWidget,
+    required this.backgroundColor,
+    required this.profileImg,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 55,
+          child: Stack(
+            children: [
+              CircleAvatar(
+                radius: 25,
+                backgroundImage: CachedNetworkImageProvider(profileImg),
+                backgroundColor: kBaseGrey,
+              ),
+              Positioned(
+                bottom: -1,
+                right: 3,
+                child: CircleAvatar(
+                  radius: 16,
+                  backgroundColor: Colors.white,
+                  child: CircleAvatar(
+                    radius: 14,
+                    backgroundColor: backgroundColor,
+                    child: imageWidget,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

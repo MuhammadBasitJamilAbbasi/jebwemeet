@@ -1,8 +1,10 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/plan_subscription.dart';
 import 'package:range_slider_flutter/range_slider_flutter.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -160,12 +162,12 @@ class _FilterScreenState extends State<FilterScreen> {
                         },
                         controller: controller),
                     AppComponents().sizedBox20,
-                    Text(
-                      "Select City is",
-                      style: k20styleblack,
-                    ),
-                    AppComponents().sizedBox10,
-                    buildFilterDropDown(
+                    // Text(
+                    //   "Select City is",
+                    //   style: k20styleblack,
+                    // ),
+                    // AppComponents().sizedBox10,
+                    /*  buildFilterDropDown(
                         text: "Select City",
                         list: kCityList!,
                         value: controller.selectedCity == ""
@@ -178,7 +180,33 @@ class _FilterScreenState extends State<FilterScreen> {
                           controller.query();
                         },
                         controller: controller),
-                    AppComponents().sizedBox20,
+                    AppComponents().sizedBox20,*/
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(() => ChooseYourPlan());
+                        },
+                        child: DottedBorder(
+                          color: Colors.deepOrange,
+                          radius: Radius.circular(100),
+                          strokeWidth: 2,
+                          strokeCap: StrokeCap.butt,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            alignment: Alignment.center,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.deepOrange.withOpacity(0.1),
+                            ),
+                            child: Text(
+                              "Buy Plan Subscription for more filters",
+                              style: k14styleblack,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ]),
             ),
           );

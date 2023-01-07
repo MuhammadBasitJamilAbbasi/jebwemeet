@@ -19,7 +19,9 @@ class Add_Martial extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppComponents().sizedBox50,
-                AppComponents().backIcon(),
+                AppComponents().backIcon(() {
+                  Get.back();
+                }),
                 AppComponents().sizedBox50,
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30),

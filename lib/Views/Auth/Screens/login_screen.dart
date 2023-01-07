@@ -33,7 +33,11 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(flex: 1, child: AppComponents().backIcon()),
+                    Expanded(
+                        flex: 1,
+                        child: AppComponents().backIcon(() {
+                          Get.back();
+                        })),
                     Expanded(
                       flex: 1,
                       child: Text(

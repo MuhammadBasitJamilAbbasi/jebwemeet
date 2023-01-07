@@ -4,8 +4,8 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/LoginController.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Forgot_password_screen/ForgotPass_email_screen.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Register_screns/Bismillah_Screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Signup_with_phone.dart';
+import 'package:jabwemeet/Views/Auth/Screens/sign_up_screen.dart';
 
 class LoginScreen2 extends StatelessWidget {
   @override
@@ -27,7 +27,9 @@ class LoginScreen2 extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      AppComponents().backIcon(),
+                      AppComponents().backIcon(() {
+                        Get.back();
+                      }),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.065,
                       ),
@@ -126,7 +128,7 @@ class LoginScreen2 extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Get.to(() => Bismillah_Screen());
+                                Get.to(() => SignUpScreen());
                               },
                               child: Text(
                                 "Sign Up",

@@ -18,7 +18,7 @@
 //           child: Column(
 //             crossAxisAlignment: CrossAxisAlignment.start,
 //             children: [
-//               AppComponents().backIcon(),
+//               AppComponents().backIcon((){Get.back();}),
 //               AppComponents().sizedBox50,
 //               Padding(
 //                 padding: EdgeInsets.symmetric(horizontal: 30),

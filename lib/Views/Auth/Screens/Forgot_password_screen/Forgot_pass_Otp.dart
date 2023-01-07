@@ -38,7 +38,9 @@ class _ForgetPassword_OTP_viewState extends State<ForgetPassword_OTP_view> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AppComponents().sizedBox30,
-                      AppComponents().backIcon(),
+                      AppComponents().backIcon(() {
+                        Get.back();
+                      }),
                       SizedBox(
                         height: 50,
                       ),

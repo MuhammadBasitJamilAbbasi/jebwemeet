@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
+import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 
 class TermsAndConiditons extends StatefulWidget {
@@ -11,9 +12,10 @@ class TermsAndConiditons extends StatefulWidget {
 }
 
 class _TermsAndConiditonsState extends State<TermsAndConiditons> {
+  final controller = Get.find<RegisterController>();
+
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<RegisterController>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -28,7 +30,9 @@ class _TermsAndConiditonsState extends State<TermsAndConiditons> {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              AppComponents().backIcon(),
+              AppComponents().backIcon(() {
+                Get.back();
+              }),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.025,
               ),
@@ -69,6 +73,15 @@ class _TermsAndConiditonsState extends State<TermsAndConiditons> {
                               onPressed: () {
                                 Get.find<RegisterController>().isAccept.value =
                                     true;
+                                Get.find<GetSTorageController>()
+                                    .box
+                                    .write("isAccept", "true");
+                                print("isAccept" +
+                                    Get.find<RegisterController>()
+                                        .isAccept
+                                        .value
+                                        .toString());
+                                controller.update();
                               },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all<
@@ -129,6 +142,12 @@ class _TermsAndConiditonsState extends State<TermsAndConiditons> {
                                   value: controller.isTerm.value,
                                   onChanged: (val) {
                                     controller.isTerm.value = val!;
+                                    print("Terms Check" +
+                                        controller.isTerm.value.toString());
+                                    controller.update();
+                                    Get.find<GetSTorageController>()
+                                        .box
+                                        .write("isTerm", val.toString());
                                   }),
                               SizedBox(
                                 width: 10,
@@ -146,6 +165,11 @@ class _TermsAndConiditonsState extends State<TermsAndConiditons> {
                                   value: controller.isPolicy.value,
                                   onChanged: (val) {
                                     controller.isPolicy.value = val!;
+                                    Get.find<GetSTorageController>()
+                                        .box
+                                        .write("isPolicy", val.toString());
+
+                                    controller.update();
                                   }),
                               SizedBox(
                                 width: 10,

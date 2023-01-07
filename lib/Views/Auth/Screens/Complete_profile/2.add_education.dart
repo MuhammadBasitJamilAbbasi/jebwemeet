@@ -21,7 +21,9 @@ class Add_Education extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppComponents().sizedBox30,
-                AppComponents().backIcon(),
+                AppComponents().backIcon(() {
+                  Get.back();
+                }),
                 AppComponents().sizedBox20,
                 Center(
                     child: Image.asset(

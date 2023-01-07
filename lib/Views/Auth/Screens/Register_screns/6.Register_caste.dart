@@ -16,7 +16,9 @@ class Register_caste extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppComponents().backIcon(),
+              AppComponents().backIcon(() {
+                controller.setRegisterViewPage(RegisterViewEnum.RegisterView5);
+              }),
               AppComponents().sizedBox50,
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30),

@@ -9,7 +9,6 @@ class EncryptData {
     final encryptor = Encrypter(AES(key));
     final encryptedPassword = encryptor.encrypt(password, iv: iv);
     log("Encrypted Password Is with base 64 : ${encryptedPassword.base64}");
-    log("Encrypted Password Is without base 64: ${encryptedPassword.toString()}");
     return encryptedPassword.base64;
   }
 

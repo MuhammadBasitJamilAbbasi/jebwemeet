@@ -83,6 +83,7 @@ class LoginController extends GetxController {
   void loginbutton(BuildContext context) {
     final isValid = loginFormKey.currentState!.validate();
     if (isValid) {
+      Get.find<GetSTorageController>().box.write(kPassword, password.text);
       login(context);
     } else
       print("Not Valid");
@@ -135,7 +136,7 @@ class LoginController extends GetxController {
             .then((value) async {
           if (value.exists) {
             Get.find<GetSTorageController>().box.write("loggedin", "loggedin");
-            if (value.get("age") == null) {
+            if (value.get("age") == null || value.get("age") == 0) {
               Get.offAll(() => Bismillah_Screen());
             } else {
               if (value.get("imageUrl") == null) {

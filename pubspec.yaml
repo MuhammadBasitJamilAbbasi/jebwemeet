@@ -68,6 +68,9 @@ dependencies:
   cached_network_image:
   range_slider_flutter: ^0.0.2
   flutter_datetime_picker: ^1.5.1
+  pay:
+  font_awesome_flutter:
+  carousel_slider:
 dev_dependencies:
   flutter_test:
     sdk: flutter

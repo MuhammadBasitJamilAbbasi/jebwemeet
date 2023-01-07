@@ -31,7 +31,9 @@ class _Add_HoobiesState extends State<Add_Hoobies> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppComponents().sizedBox30,
-                    AppComponents().backIcon(),
+                    AppComponents().backIcon(() {
+                      Get.back();
+                    }),
                     AppComponents().sizedBox20,
                     Center(
                         child: Image.asset(

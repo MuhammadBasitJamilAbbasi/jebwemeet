@@ -19,7 +19,9 @@ class Register_Gender extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppComponents().backIcon(),
+              AppComponents().backIcon(() {
+                Get.back();
+              }),
               AppComponents().sizedBox50,
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30),
@@ -33,13 +35,7 @@ class Register_Gender extends StatelessWidget {
                   child: kCustomButton(
                 label: "Man",
                 ontap: () {
-                  controller.getGender == gender.Man
-                      ? Get.find<GetSTorageController>()
-                          .box
-                          .write(kGender, "Man")
-                      : Get.find<GetSTorageController>()
-                          .box
-                          .write(kGender, "Woman");
+                  Get.find<GetSTorageController>().box.write(kGender, "Man");
                   controller
                       .setRegisterViewPage(RegisterViewEnum.RegisterView3);
                 },
@@ -50,13 +46,7 @@ class Register_Gender extends StatelessWidget {
                   child: kCustomButton(
                 label: "Woman",
                 ontap: () {
-                  controller.getGender == gender.Women
-                      ? Get.find<GetSTorageController>()
-                          .box
-                          .write(kGender, "Woman")
-                      : Get.find<GetSTorageController>()
-                          .box
-                          .write(kGender, "Man");
+                  Get.find<GetSTorageController>().box.write(kGender, "Woman");
                   controller
                       .setRegisterViewPage(RegisterViewEnum.RegisterView3);
                 },

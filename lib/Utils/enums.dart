@@ -22,5 +22,4 @@ enum RegisterViewEnum {
   // RegisterView9,
   RegisterView10,
   RegisterView11,
-  RegisterView12,
 }

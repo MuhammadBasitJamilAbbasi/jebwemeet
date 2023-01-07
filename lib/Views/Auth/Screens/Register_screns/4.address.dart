@@ -17,7 +17,9 @@ class Register_address extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              AppComponents().backIcon(),
+              AppComponents().backIcon(() {
+                controller.setRegisterViewPage(RegisterViewEnum.RegisterView3);
+              }),
               AppComponents().sizedBox50,
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30),

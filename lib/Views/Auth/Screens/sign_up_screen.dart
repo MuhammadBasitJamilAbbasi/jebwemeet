@@ -25,7 +25,9 @@ class SignUpScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      AppComponents().backIcon(),
+                      AppComponents().backIcon(() {
+                        Get.back();
+                      }),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.065,
                       ),
