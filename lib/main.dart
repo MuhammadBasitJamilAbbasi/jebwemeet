@@ -5,9 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:jabwemeet/Bindings/Bindings.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Splash_Screen.dart';
 
+import 'Services/notification/firebase_notifications/notification_service.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await NotificationService.initialize();
   runApp(const MyApp());
 }
 

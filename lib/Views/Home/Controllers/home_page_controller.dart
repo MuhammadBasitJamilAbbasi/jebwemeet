@@ -11,6 +11,8 @@ import 'package:jabwemeet/Models/likes_model.dart';
 import 'package:jabwemeet/Views/Home/Screens/Likes/LIke.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../Services/Notification_api_hitting.dart';
+
 class Home_page_controller extends GetxController {
   @override
   void onInit() {
@@ -230,6 +232,17 @@ class Home_page_controller extends GetxController {
               'participants.${user.uid}': true,
             });
             Get.to(() => LikesView());
+//
+            bool isNotificationSet = await NotificationApiHitting()
+                .callOnFcmApiSendPushNotifications(
+              fcmToken: fcm_token,
+              jwm_message: "Your Profile was Liked.",
+            );
+            if (isNotificationSet) {
+              log("Notification Sent:");
+            } else {
+              log("Notification Not Sent:");
+            }
             snackBar(context, "You like the profile", Colors.pink);
           });
         } else {

@@ -57,7 +57,6 @@ dependencies:
   firebase_core: ^2.3.0
   cloud_firestore:
   encrypt:
-  firebase_messaging:
   firebase_storage:
   google_sign_in:
   url_launcher:
@@ -71,6 +70,8 @@ dependencies:
   pay:
   font_awesome_flutter:
   carousel_slider:
+  flutter_local_notifications: ^9.8.0+1
+  firebase_messaging: ^14.1.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
