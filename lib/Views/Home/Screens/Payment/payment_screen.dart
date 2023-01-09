@@ -60,7 +60,18 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
       await Stripe.instance
           .initPaymentSheet(
               paymentSheetParameters: SetupPaymentSheetParameters(
+                  billingDetails: BillingDetails(
+                      name: "Sajawal",
+                      address: Address(
+                          city: "Islamabad",
+                          country: "Islamabad",
+                          line1: "Islamabad",
+                          line2: "Islamabad",
+                          postalCode: "Islamabad",
+                          state: "Islamabad"),
+                      email: "Sajawalahmad485@gmail.com"),
                   paymentIntentClientSecret: paymentIntent!['client_secret'],
+
                   // applePay: const PaymentSheetApplePay(merchantCountryCode: '+92',),
                   // googlePay: const PaymentSheetGooglePay(testEnv: true, currencyCode: "US", merchantCountryCode: "+92"),
                   style: ThemeMode.light,

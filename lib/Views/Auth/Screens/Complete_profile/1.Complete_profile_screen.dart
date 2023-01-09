@@ -420,6 +420,28 @@ class Complete_Profile1 extends StatelessWidget {
                                     ? Icons.arrow_forward_ios_outlined
                                     : Icons.check,
                               ),
+                              Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kHeight)
+                                              .toString() ==
+                                          "" ||
+                                      Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kHeight)
+                                              .toString() ==
+                                          "null"
+                                  ? SizedBox.shrink()
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40),
+                                      child: Text(
+                                        Get.find<GetSTorageController>()
+                                            .box
+                                            .read(kHeight)
+                                            .toString(),
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
                               Essential_Widget(
                                 leadingImage: "assets/Vector.png",
                                 title: "Add Martial Status",
@@ -439,6 +461,28 @@ class Complete_Profile1 extends StatelessWidget {
                                     ? Icons.arrow_forward_ios_outlined
                                     : Icons.check,
                               ),
+                              Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kMartial_Statius)
+                                              .toString() ==
+                                          "" ||
+                                      Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kMartial_Statius)
+                                              .toString() ==
+                                          "null"
+                                  ? SizedBox.shrink()
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40),
+                                      child: Text(
+                                        Get.find<GetSTorageController>()
+                                            .box
+                                            .read(kMartial_Statius)
+                                            .toString(),
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
                               Get.find<GetSTorageController>()
                                               .box
                                               .read(kMartial_Statius)
@@ -531,6 +575,28 @@ class Complete_Profile1 extends StatelessWidget {
                                     ? Icons.arrow_forward_ios_outlined
                                     : Icons.check,
                               ),
+                              Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kEducation)
+                                              .toString() ==
+                                          "" ||
+                                      Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kEducation)
+                                              .toString() ==
+                                          "null"
+                                  ? SizedBox.shrink()
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40),
+                                      child: Text(
+                                        Get.find<GetSTorageController>()
+                                            .box
+                                            .read(kEducation)
+                                            .toString(),
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
                             ],
                           ),
                         ),
@@ -571,6 +637,28 @@ class Complete_Profile1 extends StatelessWidget {
                                     ? Icons.arrow_forward_ios_outlined
                                     : Icons.check,
                               ),
+                              Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kReligion)
+                                              .toString() ==
+                                          "" ||
+                                      Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kReligion)
+                                              .toString() ==
+                                          "null"
+                                  ? SizedBox.shrink()
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40),
+                                      child: Text(
+                                        Get.find<GetSTorageController>()
+                                            .box
+                                            .read(kReligion)
+                                            .toString(),
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
                               Essential_Widget(
                                 leadingImage: "assets/work.png",
                                 title: "Add Religious Practice",
@@ -590,6 +678,28 @@ class Complete_Profile1 extends StatelessWidget {
                                     ? Icons.arrow_forward_ios_outlined
                                     : Icons.check,
                               ),
+                              Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kReligiousPractice)
+                                              .toString() ==
+                                          "" ||
+                                      Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kReligiousPractice)
+                                              .toString() ==
+                                          "null"
+                                  ? SizedBox.shrink()
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40),
+                                      child: Text(
+                                        Get.find<GetSTorageController>()
+                                            .box
+                                            .read(kReligiousPractice)
+                                            .toString(),
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
                               Essential_Widget(
                                 leadingImage: "assets/caste.png",
                                 title: "Add caste",
@@ -609,6 +719,28 @@ class Complete_Profile1 extends StatelessWidget {
                                     ? Icons.arrow_forward_ios_outlined
                                     : Icons.check,
                               ),
+                              Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kCaste)
+                                              .toString() ==
+                                          "" ||
+                                      Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kCaste)
+                                              .toString() ==
+                                          "null"
+                                  ? SizedBox.shrink()
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40),
+                                      child: Text(
+                                        Get.find<GetSTorageController>()
+                                            .box
+                                            .read(kCaste)
+                                            .toString(),
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
                               Essential_Widget(
                                 leadingImage: "assets/caste.png",
                                 title: "Add Languages",
@@ -668,6 +800,28 @@ class Complete_Profile1 extends StatelessWidget {
                                     ? Icons.arrow_forward_ios_outlined
                                     : Icons.check,
                               ),
+                              Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kWork)
+                                              .toString() ==
+                                          "" ||
+                                      Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kWork)
+                                              .toString() ==
+                                          "null"
+                                  ? SizedBox.shrink()
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40),
+                                      child: Text(
+                                        Get.find<GetSTorageController>()
+                                            .box
+                                            .read(kWork)
+                                            .toString(),
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
                               Essential_Widget(
                                 leadingImage: "assets/Group 30.png",
                                 title: "Add Job Title",
@@ -679,6 +833,17 @@ class Complete_Profile1 extends StatelessWidget {
                                     ? Icons.arrow_forward_ios_outlined
                                     : Icons.check,
                               ),
+                              controller.jobtitleController.value.text.isEmpty
+                                  ? SizedBox.shrink()
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40),
+                                      child: Text(
+                                        controller
+                                            .jobtitleController.value.text,
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
                               Essential_Widget(
                                 leadingImage: "assets/Group 30.png",
                                 title: "Add Industry",
@@ -690,6 +855,18 @@ class Complete_Profile1 extends StatelessWidget {
                                     ? Icons.arrow_forward_ios_outlined
                                     : Icons.check,
                               ),
+                              controller
+                                      .addindustryController.value.text.isEmpty
+                                  ? SizedBox.shrink()
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40),
+                                      child: Text(
+                                        controller
+                                            .addindustryController.value.text,
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
                               Essential_Widget(
                                   leadingImage: "assets/Group 30.png",
                                   title: "Add Income",
@@ -708,6 +885,28 @@ class Complete_Profile1 extends StatelessWidget {
                                               "null"
                                       ? Icons.arrow_forward_ios_outlined
                                       : Icons.check),
+                              Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kIncome)
+                                              .toString() ==
+                                          "" ||
+                                      Get.find<GetSTorageController>()
+                                              .box
+                                              .read(kIncome)
+                                              .toString() ==
+                                          "null"
+                                  ? SizedBox.shrink()
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40),
+                                      child: Text(
+                                        Get.find<GetSTorageController>()
+                                            .box
+                                            .read(kIncome)
+                                            .toString(),
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
                             ],
                           ),
                         ),

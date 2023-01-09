@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jabwemeet/Bindings/Bindings.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Splash_Screen.dart';
+
 import 'Services/notification/firebase_notifications/notification_service.dart';
 import 'Utils/constants.dart';
-import 'Views/Home/Screens/Payment/payment_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: Splash_Screen(),
-      /*Code Added By Kamran*/
       // home: StripePaymentScreen(),
       /*=============================*/
     );

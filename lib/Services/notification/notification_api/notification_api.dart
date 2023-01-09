@@ -15,7 +15,7 @@ class NotificationApiHitting {
       "collapse_key": "type_a",
       "notification": {
         "title": 'JabWeMeet',
-        "body": 'JabWeMeet Notification Alert',
+        "body": jwm_message,
       },
       "priority": "high",
       "data": {"jwm_message": jwm_message}

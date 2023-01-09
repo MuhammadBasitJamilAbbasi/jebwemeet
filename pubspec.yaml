@@ -73,6 +73,7 @@ dependencies:
   flutter_local_notifications: ^9.8.0+1
   firebase_messaging: ^14.1.4
   flutter_stripe: ^7.0.0
+  contained_tab_bar_view:
 
 dev_dependencies:
   flutter_test:
