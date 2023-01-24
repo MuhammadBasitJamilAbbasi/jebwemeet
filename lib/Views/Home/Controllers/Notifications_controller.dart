@@ -8,6 +8,7 @@ class NotificationController extends GetxController {
 
   List<String> imageUrl = [];
   List<String> name = [];
+
   Future getAllUsers(docid) async {
     await FirebaseFirestore.instance
         .collection("users")

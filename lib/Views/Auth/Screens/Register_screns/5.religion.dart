@@ -19,7 +19,7 @@ class Register_Religion extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppComponents().backIcon(() {
-                controller.setRegisterViewPage(RegisterViewEnum.RegisterView4);
+                controller.setRegisterViewPage(RegisterViewEnum.RegisterView3);
               }),
               AppComponents().sizedBox50,
               Padding(
@@ -36,7 +36,7 @@ class Register_Religion extends StatelessWidget {
                 ontap: () {
                   storageController.box.write(kReligion, "Shia");
                   controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView6);
+                      .setRegisterViewPage(RegisterViewEnum.RegisterView5);
                 },
                 isRegister: true,
               )),
@@ -47,7 +47,7 @@ class Register_Religion extends StatelessWidget {
                 ontap: () {
                   storageController.box.write(kReligion, "Sunni");
                   controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView6);
+                      .setRegisterViewPage(RegisterViewEnum.RegisterView5);
                 },
                 isRegister: true,
               )),
@@ -58,7 +58,7 @@ class Register_Religion extends StatelessWidget {
                 ontap: () {
                   storageController.box.write(kReligion, "Christian");
                   controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView6);
+                      .setRegisterViewPage(RegisterViewEnum.RegisterView5);
                 },
                 isRegister: true,
               )),
@@ -69,7 +69,7 @@ class Register_Religion extends StatelessWidget {
                 ontap: () {
                   storageController.box.write(kReligion, "Hindu");
                   controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView6);
+                      .setRegisterViewPage(RegisterViewEnum.RegisterView5);
                 },
                 isRegister: true,
               )),
@@ -80,7 +80,7 @@ class Register_Religion extends StatelessWidget {
                 ontap: () {
                   storageController.box.write(kReligion, "Ahmadi");
                   controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView6);
+                      .setRegisterViewPage(RegisterViewEnum.RegisterView5);
                 },
                 isRegister: true,
               )),
@@ -91,7 +91,7 @@ class Register_Religion extends StatelessWidget {
                 ontap: () {
                   storageController.box.write(kReligion, "Sikh");
                   controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView6);
+                      .setRegisterViewPage(RegisterViewEnum.RegisterView5);
                 },
                 isRegister: true,
               ))

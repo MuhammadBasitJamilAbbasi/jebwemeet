@@ -41,35 +41,39 @@ class ForgetPasswordEmail_Screen extends StatelessWidget {
                         height: 20,
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
                         child: kCustomTextField(
                             hinttext: "johndoe@gmail.com",
+                            labeltext: "Email",
                             controller: resetController.resetemailController,
                             validator: (value) {
                               return resetController.validateEmail(value);
                             }),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 30,
                       ),
                       resetController.isResetLoad
                           ? Center(child: CircularProgressIndicator.adaptive())
                           : Center(
-                              child: kCustomButton(
-                                  label: "Continue",
-                                  ontap: () async {
-                                    if (resetController
-                                        .resetFormKey.currentState!
-                                        .validate()) {
-                                      //  await  resetController.resetPassword();
-                                      // await sendOTP(context);
-                                      await resetController
-                                          .getNumberAndPassword(context);
-                                      await resetController.sendOTP(
-                                          phoneNumber: resetController.number,
-                                          context: context);
-                                    } else {}
-                                  }),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: kAppButton(
+                                    buttonText: "Continue",
+                                    onButtonPressed: () async {
+                                      if (resetController
+                                          .resetFormKey.currentState!
+                                          .validate()) {
+                                        //  await  resetController.resetPassword();
+                                        // await sendOTP(context);
+                                        await resetController
+                                            .getNumberAndPassword(context);
+                                        await resetController.sendOTP(
+                                            phoneNumber: resetController.number,
+                                            context: context);
+                                      } else {}
+                                    }),
+                              ),
                             ),
                     ],
                   ),

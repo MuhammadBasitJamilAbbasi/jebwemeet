@@ -6,7 +6,12 @@ import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 
-class Add_Caste extends StatelessWidget {
+class Add_Caste extends StatefulWidget {
+  @override
+  State<Add_Caste> createState() => _Add_CasteState();
+}
+
+class _Add_CasteState extends State<Add_Caste> {
   @override
   Widget build(BuildContext context) {
     final storageController = Get.find<GetSTorageController>();

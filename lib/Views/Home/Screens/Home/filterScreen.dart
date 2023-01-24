@@ -39,7 +39,8 @@ class _FilterScreenState extends State<FilterScreen> {
                         InkWell(
                           onTap: () {
                             controller.clearAll(context);
-                            controller.query();
+                            controller.getData();
+                            Get.back();
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -82,11 +83,11 @@ class _FilterScreenState extends State<FilterScreen> {
                                   color: Colors.deepOrange,
                                   borderRadius: BorderRadius.circular(25)))),
                       max: 80,
-                      textPositionTop: -80,
-                      handlerHeight: 30,
+                      textPositionTop: -60,
+                      handlerHeight: 20,
                       trackBar: RangeSliderFlutterTrackBar(
-                        activeTrackBarHeight: 10,
-                        inactiveTrackBarHeight: 10,
+                        activeTrackBarHeight: 6,
+                        inactiveTrackBarHeight: 6,
                         activeTrackBar:
                             BoxDecoration(gradient: kLinearGradient()),
                         inactiveTrackBar: BoxDecoration(
@@ -101,28 +102,32 @@ class _FilterScreenState extends State<FilterScreen> {
                         controller.filterlowerValue = lowerValue;
                         controller.filterupperValue = upperValue;
                         controller.update();
-                        controller.query();
                       },
                     ),
                     AppComponents().sizedBox20,
                     Text(
-                      "Martial Status is",
+                      "Range in miles is",
                       style: k20styleblack,
                     ),
                     AppComponents().sizedBox10,
-                    buildFilterDropDown(
-                        text: "Select Status",
-                        list: kMartial_StatusList!,
-                        value: controller.selectedMartialStatus == ""
-                            ? kMartial_StatusList![0]
-                            : controller.selectedMartialStatus,
-                        onchange: (value) {
-                          controller.selectedMartialFunction(value.toString());
-                          controller.filterMartialStatus = value.toString();
-                          controller.update();
-                          controller.query();
-                        },
-                        controller: controller),
+                    Slider(
+                      value: controller.selectedMilesRange,
+                      onChanged: (value) {
+                        controller.selectedMilesRangeFunction(value);
+                      },
+                      min: 500,
+                      max: 1000,
+                      divisions: 1,
+                      autofocus: true,
+                      thumbColor: Colors.deepOrange,
+                      label: controller.selectedMilesRange.round().toString() +
+                          " Miles",
+                    ),
+                    Center(
+                      child: Text(
+                          controller.selectedMilesRange.round().toString() +
+                              " Miles"),
+                    ),
                     AppComponents().sizedBox20,
                     Text(
                       "Select Religion is",
@@ -139,11 +144,38 @@ class _FilterScreenState extends State<FilterScreen> {
                           controller.selectedReligionFunction(value.toString());
                           controller.filterReligion = value.toString();
                           controller.update();
-                          controller.query();
                         },
                         controller: controller),
-                    AppComponents().sizedBox20,
+                    /*    AppComponents().sizedBox20,
                     Text(
+                      "Martial Status is",
+                      style: k20styleblack,
+                    ),
+                    AppComponents().sizedBox10,
+                    buildFilterDropDown(
+                        text: "Select Status",
+                        list: kMartial_StatusList!,
+                        value: controller.selectedMartialStatus == ""
+                            ? kMartial_StatusList![0]
+                            : controller.selectedMartialStatus,
+                        onchange: (value) {
+                          controller.selectedMartialFunction(value.toString());
+                          controller.filterMartialStatus = value.toString();
+                          controller.update();
+                        },
+                        controller: controller),*/
+                    AppComponents().sizedBox20,
+                    Center(
+                      child: kCustomButton(
+                        label: "Apply Filter",
+                        ontap: () {
+                          controller.getData();
+                          Get.back();
+                        },
+                      ),
+                    ),
+                    /* AppComponents().sizedBox20,*/
+                    /*    Text(
                       "Select Caste is",
                       style: k20styleblack,
                     ),
@@ -158,9 +190,8 @@ class _FilterScreenState extends State<FilterScreen> {
                           controller.selectedCasteFunction(value.toString());
                           controller.filterCaste = value.toString();
                           controller.update();
-                          controller.query();
                         },
-                        controller: controller),
+                        controller: controller),*/
                     AppComponents().sizedBox20,
                     // Text(
                     //   "Select City is",
@@ -200,7 +231,7 @@ class _FilterScreenState extends State<FilterScreen> {
                               color: Colors.deepOrange.withOpacity(0.1),
                             ),
                             child: Text(
-                              "Buy Plan Subscription for more filters",
+                              "Buy plan for Membership Perks, Verified tick, Unlimited Likes, Read Receipts, Advance Preference",
                               style: k14styleblack,
                             ),
                           ),

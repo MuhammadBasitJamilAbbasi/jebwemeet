@@ -11,7 +11,8 @@ import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/JabWeMetScreen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
-import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
+import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 
 import '../../../Services/notification/local_notifications/local_notification_service.dart';
 import '../../Home/Screens/Likes/LIke.dart';
@@ -52,6 +53,7 @@ class _Splash_ScreenState extends State<Splash_Screen>
     // TODO: implement initState
     super.initState();
     // getposition();
+    Get.find<Home_page_controller>().getData();
     Timer(Duration(seconds: 5), () async {
       if (getStorageController.box.read("loggedin").toString() == "loggedin") {
         await initFunction();
@@ -70,11 +72,12 @@ class _Splash_ScreenState extends State<Splash_Screen>
         .then((value) async => {
               if (value.exists)
                 {
-                  if (value.get("age") == null)
+                  if (value.get("age") == 0)
                     {Get.offAll(() => Register_screen())}
                   else
                     {
-                      if (value.get("imageUrl") == null)
+                      if (value.get("imageUrl") == null ||
+                          value.get("imageUrl") == "null")
                         {Get.offAll(() => Complete_Profile1())}
                       else
                         {Get.offAll(() => Home())}

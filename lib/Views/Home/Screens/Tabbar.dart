@@ -7,7 +7,7 @@ import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Controllers/message_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/message.view.dart';
-import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 import 'package:jabwemeet/Views/Home/Screens/Likes/LIke.dart';
 import 'package:jabwemeet/Views/Home/Screens/Profile/Profile.dart';
 

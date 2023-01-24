@@ -8,18 +8,20 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Models/chatroom.model.dart';
 import 'package:jabwemeet/Models/likes_model.dart';
+import 'package:jabwemeet/Utils/locations.dart';
+import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Likes/LIke.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../Services/notification/notification_api/notification_api.dart';
 
-
 class Home_page_controller extends GetxController {
   @override
-  void onInit() {
+  void onInit() async {
     // TODO: implement onInit
     super.onInit();
-    getUserDetails();
+    await getUserDetails();
+    await getData();
   }
 
   int selectedIndex = 0;
@@ -33,12 +35,70 @@ class Home_page_controller extends GetxController {
   Stream<QuerySnapshot<Map<String, dynamic>>>? queryValue;
   UserModel userModel = UserModel();
 
+  List<QueryDocumentSnapshot> userList = [];
+  final storageController = Get.find<GetSTorageController>();
+  Future getData() async {
+    userList.clear();
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('visits')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        visitedList!.add(element.id);
+        update();
+      });
+      print("VisitedList1:  " + visitedList!.length.toString());
+    });
+    await FirebaseFirestore.instance
+        .collection("users")
+        .limit(50)
+        .get()
+        .then((snapshot) {
+      snapshot.docs.forEach((element) {
+        if (visitedList!.contains(element.id) == false) {
+          if (element.get('age') >= filterlowerValue.round() &&
+                  element.get('gender') == gender &&
+                  element.get('age') < filterupperValue.round() ||
+              element.get('martial_status') == filterMartialStatus ||
+              element.get('address') == filterCity ||
+              element.get('religion') == filterReligion) {
+            double datainMeter = GetLocation.DistanceInMeters(
+                double.parse(element.get('latitude')),
+                double.parse(element.get('longitude')),
+                double.parse(userModel.latitude.toString()),
+                double.parse(userModel.longitude.toString()));
+            print("datainMeter: " + datainMeter.toString());
+            print("selectedMilesRangeDefault: " +
+                selectedMilesRangeDefault.toString());
+            if (datainMeter < selectedMilesRangeDefault) {
+              if (userList.contains(element.id) == true) {
+                userList.remove(element);
+                update();
+                print("remove element");
+              } else {
+                userList.add(element);
+                update();
+                print("Add element");
+              }
+            }
+          }
+        }
+      });
+      update();
+      print("Length: " + userList.length.toString());
+    });
+    return userList;
+  }
+
+  List<String>? visitedList = [];
   getUserDetails() async {
     await FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get()
-        .then((value) {
+        .then((value) async {
       userModel = UserModel.fromMap(value.data()!);
       update();
       if (userModel.gender.toString() == "Man") {
@@ -76,8 +136,20 @@ class Home_page_controller extends GetxController {
     filterCity = null;
     filterlowerValue = 18.0;
     filterupperValue = 70.0;
+    filterlowerValueMiles = 300.0;
+    filterupperValueMiles = 700.0;
+    selectedMilesRange = 500.0;
+    selectedMilesRangeDefault = 2490000.0;
     update();
     snackBar(context, "Filters Clear", Colors.pink);
+  }
+
+  var selectedMilesRange = 500.0;
+  var selectedMilesRangeDefault = 2490000.0;
+  selectedMilesRangeFunction(value) {
+    selectedMilesRange = value;
+    selectedMilesRangeDefault = value;
+    update();
   }
 
   String? filterMartialStatus = null;
@@ -86,7 +158,8 @@ class Home_page_controller extends GetxController {
   String? filterCity = null;
   var filterlowerValue = 18.0;
   var filterupperValue = 70.0;
-
+  var filterlowerValueMiles = 300.0;
+  var filterupperValueMiles = 700.0;
   query() async {
     if (filterMartialStatus == "Select Status" ||
         filterReligion == "Select Religion" ||

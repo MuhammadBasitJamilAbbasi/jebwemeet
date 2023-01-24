@@ -17,7 +17,7 @@ class Register_caste extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppComponents().backIcon(() {
-                controller.setRegisterViewPage(RegisterViewEnum.RegisterView5);
+                controller.setRegisterViewPage(RegisterViewEnum.RegisterView4);
               }),
               AppComponents().sizedBox50,
               Padding(
@@ -51,7 +51,7 @@ class Register_caste extends StatelessWidget {
                                 kCaste, controller.selectedValue.toString());
                             controller.getAllEmails(context);
                             controller.setRegisterViewPage(
-                                RegisterViewEnum.RegisterView10);
+                                RegisterViewEnum.RegisterView6);
                           } else {
                             snackBar(context, "Please Select your Caste",
                                 Colors.pink);

@@ -37,7 +37,7 @@ class Register_Gender extends StatelessWidget {
                 ontap: () {
                   Get.find<GetSTorageController>().box.write(kGender, "Man");
                   controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView3);
+                      .setRegisterViewPage(RegisterViewEnum.RegisterView2);
                 },
                 isRegister: true,
               )),
@@ -48,7 +48,7 @@ class Register_Gender extends StatelessWidget {
                 ontap: () {
                   Get.find<GetSTorageController>().box.write(kGender, "Woman");
                   controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView3);
+                      .setRegisterViewPage(RegisterViewEnum.RegisterView2);
                 },
                 isRegister: true,
               )),

@@ -123,6 +123,26 @@ class Edit_Profile extends StatelessWidget {
                   AppComponents().sizedBox20,
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "My Profile Blur",
+                          style: k20styleblack,
+                        ),
+                        Switch(
+                          value: controller.isBlured,
+                          onChanged: (value) {
+                            controller.blurFunction(value);
+                          },
+                          activeTrackColor: Colors.deepOrange.shade200,
+                          activeColor: primarycolor,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30),
                     child: Text(
                       "My Name is",
                       style: k20styleblack,
@@ -132,7 +152,8 @@ class Edit_Profile extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 25, vertical: 10),
                     child: kCustomTextField(
-                        hinttext: "Name",
+                        hinttext: "John Doe",
+                        labeltext: "Name",
                         controller: controller.nameController,
                         validator: () {}),
                   ),

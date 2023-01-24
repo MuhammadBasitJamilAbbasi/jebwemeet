@@ -1,5 +1,7 @@
 class UserModel {
   String? gender;
+  bool? subscribe;
+  bool? blur;
   String? martial_status;
   int? age;
   String? birthday;
@@ -18,17 +20,21 @@ class UserModel {
   String? about;
   String? height;
   String? income;
-  String? languages;
+  List<dynamic>? languages;
   String? work;
   String? imageUrl;
   String? phone_number;
   String? uid;
+  String? longitude;
+  String? latitude;
   String? religious_practice;
   List<dynamic>? imagesList;
 
   UserModel({
     this.name,
     this.address,
+    this.subscribe,
+    this.blur,
     this.age,
     this.birthday,
     this.imagesList,
@@ -50,6 +56,8 @@ class UserModel {
     this.education,
     this.income,
     this.imageUrl,
+    this.longitude,
+    this.latitude,
     this.phone_number,
     this.uid,
     this.religious_practice,
@@ -61,9 +69,14 @@ class UserModel {
     imagesList = map['imagesList'];
     income = map['income'];
     education = map['education'];
+    subscribe = map['subscribe'];
+    blur = map['blur'];
+    education = map['education'];
     address = map['address'];
     password = map['password'];
     gender = map['gender'];
+    latitude = map['latitude'];
+    longitude = map['longitude'];
     age = map['age'];
     birthday = map['birthday'];
     imageUrl = map['imageUrl'];
@@ -88,6 +101,11 @@ class UserModel {
     return {
       "phone_number": phone_number,
       "email": email,
+      "name": name,
+      "longitude": longitude,
+      "latitude": latitude,
+      "name": name,
+      "blur": blur,
       "name": name,
       "income": income,
       "imagesList": imagesList,

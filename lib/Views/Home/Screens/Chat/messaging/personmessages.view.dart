@@ -471,6 +471,17 @@ class _PersonMessageViewState extends State<PersonMessageView> {
                               child: Column(
                                 children: [
                                   AppComponents().sizedBox30,
+                                  Center(
+                                    child: SizedBox(
+                                      width: 130,
+                                      height: 130,
+                                      child: CircleAvatar(
+                                        foregroundImage: NetworkImage(
+                                            userModel!.imageUrl.toString()),
+                                        radius: 10,
+                                      ),
+                                    ),
+                                  )
                                   // Container(
                                   //   height: 300,
                                   //   child: Stack(children: [
@@ -561,6 +572,7 @@ class _PersonMessageViewState extends State<PersonMessageView> {
                                   //     )
                                   //   ]),
                                   // ),
+                                  ,
                                   userModel!.about.toString() == "null"
                                       ? SizedBox.shrink()
                                       : Align(

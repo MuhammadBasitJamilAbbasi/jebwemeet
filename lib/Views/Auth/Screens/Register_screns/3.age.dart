@@ -46,7 +46,7 @@ class Register_Age extends StatelessWidget {
                           Get.find<GetSTorageController>().box.write(
                               kAge, controller.birthdayDate.value.toString());
                           controller.setRegisterViewPage(
-                              RegisterViewEnum.RegisterView4);
+                              RegisterViewEnum.RegisterView3);
                         },
                         isRegister: true,
                       ),

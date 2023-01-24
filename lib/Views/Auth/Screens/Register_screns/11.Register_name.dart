@@ -17,7 +17,7 @@ class Register_Name extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppComponents().backIcon(() {
-                controller.setRegisterViewPage(RegisterViewEnum.RegisterView10);
+                controller.setRegisterViewPage(RegisterViewEnum.RegisterView6);
               }),
               AppComponents().sizedBox50,
               Padding(
@@ -32,7 +32,8 @@ class Register_Name extends StatelessWidget {
                   child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25),
                 child: kCustomTextField(
-                    hinttext: "username",
+                    hinttext: "johndoe",
+                    labeltext: "username",
                     controller: controller.nameController,
                     validator: (value) {
                       return "";

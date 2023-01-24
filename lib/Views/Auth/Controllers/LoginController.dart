@@ -16,7 +16,7 @@ import 'package:jabwemeet/Views/Auth/Controllers/Password_encyption.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/Bismillah_Screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
-import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 
 class LoginController extends GetxController {
   TextEditingController email = TextEditingController();
@@ -150,6 +150,8 @@ class LoginController extends GetxController {
                 height: null,
                 name: null,
                 about: null,
+                subscribe: false,
+                blur: false,
                 imagesList: [],
                 address: storage.box.read(kAddress),
                 age: null,
@@ -163,7 +165,7 @@ class LoginController extends GetxController {
                 job_title: null,
                 religion: null,
                 hobbies: [],
-                languages: null,
+                languages: [],
                 work: null,
                 martial_status: null,
                 imageUrl: null,
@@ -297,6 +299,8 @@ class LoginController extends GetxController {
         name: user!.displayName,
         about: null,
         imagesList: [],
+        subscribe: false,
+        blur: false,
         address: storage.box.read(kAddress),
         age: null,
         caste: "",
@@ -309,7 +313,7 @@ class LoginController extends GetxController {
         job_title: null,
         religion: null,
         hobbies: [],
-        languages: null,
+        languages: [],
         work: null,
         martial_status: null,
         imageUrl: null,
@@ -463,6 +467,8 @@ class LoginController extends GetxController {
       name: storage.box.read(kFull_name),
       about: storage.box.read(kAbout),
       imagesList: [],
+      subscribe: false,
+      blur: false,
       address: storage.box.read(kAddress),
       age: storage.box.read(kAge),
       caste: storage.box.read(kCaste),
@@ -475,7 +481,7 @@ class LoginController extends GetxController {
       childerns: storage.box.read(kchildern),
       religion: storage.box.read(kReligion),
       hobbies: [],
-      languages: storage.box.read(kLanguage),
+      languages: [],
       work: storage.box.read(kWork),
       martial_status: storage.box.read(kMartial_Statius),
       imageUrl: storage.box.read(kImageUrl),
@@ -526,12 +532,14 @@ class LoginController extends GetxController {
       age: int.parse(storage.box.read(kAge)),
       caste: storage.box.read(kCaste),
       imagesList: [],
+      subscribe: false,
+      blur: false,
       religious_practice: storage.box.read(kReligiousPractice),
       education: storage.box.read(kEducation),
       email: storage.box.read(kEmail),
       fcm_token: await FirebaseMessaging.instance.getToken(),
       gender: storage.box.read(kGender),
-      languages: storage.box.read(kLanguage),
+      languages: [],
       childerns: storage.box.read(kchildern),
       religion: storage.box.read(kReligion),
       hobbies: [],

@@ -72,6 +72,7 @@ class Profile extends StatelessWidget {
                         ? ""
                         : userModel!.address.toString(),
                     age: userModel!.age.toString(),
+                    imagesList: userModel!.imagesList!,
                     education: userModel!.education.toString(),
                     gender: userModel!.gender.toString(),
                     martial_status: userModel!.martial_status.toString(),

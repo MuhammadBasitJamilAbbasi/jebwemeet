@@ -12,14 +12,10 @@ enum communityType { Public, private }
 
 enum RegisterViewEnum {
   RegisterView1,
-  // RegisterView2,
+  RegisterView2,
   RegisterView3,
   RegisterView4,
   RegisterView5,
   RegisterView6,
-  // RegisterView7,
-  // RegisterView8,
-  // RegisterView9,
-  RegisterView10,
-  RegisterView11,
+  RegisterView7,
 }

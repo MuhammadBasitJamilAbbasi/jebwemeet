@@ -2,13 +2,16 @@ import 'dart:core';
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dotted_border/dotted_border.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jabwemeet/Services/Services.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
+import 'package:jabwemeet/Views/Auth/Screens/LoginScreen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/sign_up_screen.dart';
 import 'package:jabwemeet/Views/Home/Controllers/Edit_profile_controller.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,9 +21,9 @@ class AppComponents {
     return Row(
       children: [
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Color(0xfFf1565A),
+            color: primarycolor,
           ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(5, 5, 5, 3),
@@ -99,16 +102,20 @@ class kCustomTextField extends StatelessWidget {
   final hinttext;
   final controller;
   final validator;
+  final labeltext;
   final maxlines;
   bool isLength;
   bool isValidator;
+
   kCustomTextField(
       {required this.hinttext,
       required this.controller,
+      required this.labeltext,
       this.isLength = false,
       this.maxlines = 1,
       this.isValidator = false,
       required this.validator});
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -116,20 +123,22 @@ class kCustomTextField extends StatelessWidget {
       validator: isValidator ? validator : null,
       maxLength: isLength ? 2 : null,
       maxLines: maxlines,
-      style: TextStyle(color: Colors.black, fontSize: 14),
+      style: TextStyle(
+          color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
       keyboardType: isLength ? TextInputType.number : TextInputType.text,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
         hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
         filled: true,
-        fillColor: Color(0xFFF4F0EE),
+        fillColor: Colors.white,
         hintText: hinttext,
+        labelText: labeltext,
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1.0),
+          borderSide: BorderSide(color: textcolor, width: 1.5),
           borderRadius: BorderRadius.circular(25.0),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1.0),
+          borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
           borderRadius: BorderRadius.circular(25.0),
         ),
         border: OutlineInputBorder(
@@ -149,6 +158,7 @@ class kCustomTextField extends StatelessWidget {
 
 class kPasswordTextField extends StatelessWidget {
   final validator;
+  final labeltext;
   bool isObsecure;
   var onpress;
   final TextEditingController controller;
@@ -159,6 +169,7 @@ class kPasswordTextField extends StatelessWidget {
   kPasswordTextField(
       {required this.validator,
       required this.controller,
+      required this.labeltext,
       required this.hintText,
       this.label,
       this.isObsecure = false,
@@ -192,14 +203,15 @@ class kPasswordTextField extends StatelessWidget {
             onPressed: onpress),
         contentPadding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
         filled: true,
-        fillColor: Color(0xFFF4F0EE),
+        fillColor: Colors.white,
         hintText: hintText,
+        labelText: labeltext,
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1.0),
+          borderSide: BorderSide(color: textcolor, width: 1.5),
           borderRadius: BorderRadius.circular(25.0),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey.shade200, width: 1.0),
+          borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
           borderRadius: BorderRadius.circular(25.0),
         ),
         border: OutlineInputBorder(
@@ -221,8 +233,10 @@ class kCustomButton extends StatelessWidget {
   final label;
   final ontap;
   bool isRegister;
+
   kCustomButton(
       {required this.label, required this.ontap, this.isRegister = false});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -240,6 +254,10 @@ class kCustomButton extends StatelessWidget {
         // color: butoncolor,
       ),
       child: InkWell(
+        highlightColor: Colors.deepOrange.withOpacity(0.3),
+        splashColor: Colors.deepOrange.withOpacity(0.5),
+        focusColor: Colors.deepOrange.withOpacity(0.0),
+        hoverColor: Colors.deepOrange.withOpacity(0.5),
         onTap: ontap,
         child: Center(child: Text(label, style: k14styleWhite)),
       ),
@@ -283,6 +301,7 @@ class Essential_Widget extends StatelessWidget {
   final leadingImage;
   final onTap;
   final iconfil;
+
   Essential_Widget(
       {required this.title,
       required this.leadingImage,
@@ -337,6 +356,7 @@ class outlined_button extends StatelessWidget {
   final ontap;
   final Widget? icon;
   final Color color;
+
   outlined_button(
       {required this.txt,
       required this.ontap,
@@ -456,7 +476,7 @@ kCustomButton2({
         ),
         decoration: BoxDecoration(
           border: Border.all(color: borderColor!),
-          // color: primaryColor,
+// color: primaryColor,
           gradient: RadialGradient(colors: [
             Color(0xFFEA7C4A),
             Color(0xFFF1565A),
@@ -479,6 +499,7 @@ class UserProfile extends StatefulWidget {
     required this.gender,
     required this.address,
     required this.education,
+    required this.imagesList,
     required this.phone_number,
   });
   final String imageUrl;
@@ -492,6 +513,7 @@ class UserProfile extends StatefulWidget {
   final String martial_status;
   final String gender;
   final String hobbies;
+  final List<dynamic> imagesList;
   final String phone_number;
 
   @override
@@ -516,37 +538,44 @@ class _UserProfile extends State<UserProfile> {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 2),
       child: Column(
         children: [
-          SizedBox(
-            width: 160,
-            height: 160,
-            child: AvatarGlow(
-              glowColor: Color.fromARGB(255, 15, 233, 106),
-              endRadius: 90.0,
-              duration: Duration(milliseconds: 2000),
-              repeat: true,
-              showTwoGlows: true,
-              repeatPauseDuration: Duration(milliseconds: 100),
-              child: DottedBorder(
-                radius: Radius.circular(10),
-                color: Colors.blue,
-                strokeWidth: 8,
-                borderType: BorderType.Circle,
-                dashPattern: [1, 12],
-                strokeCap: StrokeCap.butt,
-                child: Center(
+          Container(
+            height: 250,
+            child: Stack(
+              children: [
+                Container(
+                    height: 200,
+                    child: kSliderImages(imagesList: widget.imagesList)),
+                Positioned(
+                  top: 100,
+                  left: 0,
+                  right: 0,
                   child: SizedBox(
-                    width: 130,
-                    height: 130,
-                    child: CircleAvatar(
-                      foregroundImage: NetworkImage(widget.imageUrl),
-                      radius: 10,
+                    width: 160,
+                    height: 160,
+                    child: AvatarGlow(
+                      glowColor: Color.fromARGB(255, 15, 233, 106),
+                      endRadius: 90.0,
+                      duration: Duration(milliseconds: 2000),
+                      repeat: true,
+                      showTwoGlows: true,
+                      repeatPauseDuration: Duration(milliseconds: 100),
+                      child: Center(
+                        child: SizedBox(
+                          width: 130,
+                          height: 130,
+                          child: CircleAvatar(
+                            foregroundImage: NetworkImage(widget.imageUrl),
+                            radius: 10,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
           SizedBox(
@@ -570,94 +599,101 @@ class _UserProfile extends State<UserProfile> {
                 style:
                     TextStyle(color: butoncolor, fontWeight: FontWeight.bold),
               )),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Name",
-              style: TextStyle(fontWeight: FontWeight.bold),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Name",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Detail_Profile_Tile(
+                  value: widget.name,
+                  ontap: () {},
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Occupation",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Detail_Profile_Tile(
+                  value: widget.designation,
+                  ontap: () {},
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Gendar",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Detail_Profile_Tile(
+                  value: widget.gender,
+                  ontap: () {},
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Age",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Detail_Profile_Tile(
+                  value: widget.age,
+                  ontap: () {},
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Martial Status",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Detail_Profile_Tile(
+                  value: widget.martial_status,
+                  ontap: () {},
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Address",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Detail_Profile_Tile(
+                  value: widget.address,
+                  ontap: () {},
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Height",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Detail_Profile_Tile(
+                  value: widget.height,
+                  ontap: () {},
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Education",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Detail_Profile_Tile(
+                  value: widget.education,
+                  ontap: () {},
+                ),
+              ],
             ),
-          ),
-          Linear_Profile_Tile(
-            value: widget.name,
-            ontap: () {},
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Occupation",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Linear_Profile_Tile(
-            value: widget.designation,
-            ontap: () {},
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Gendar",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Linear_Profile_Tile(
-            value: widget.gender,
-            ontap: () {},
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Age",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Linear_Profile_Tile(
-            value: widget.age,
-            ontap: () {},
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Martial Status",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Linear_Profile_Tile(
-            value: widget.martial_status,
-            ontap: () {},
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Address",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Linear_Profile_Tile(
-            value: widget.address,
-            ontap: () {},
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Height",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Linear_Profile_Tile(
-            value: widget.height,
-            ontap: () {},
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Education",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Linear_Profile_Tile(
-            value: widget.education,
-            ontap: () {},
-          ),
+          )
         ],
       ),
     );
@@ -842,7 +878,7 @@ class buildFilterDropDown extends StatelessWidget {
               Icons.arrow_drop_down_outlined,
             ),
             dropdownMaxHeight: dropDownHeight,
-            // dropdownWidth: 247,
+// dropdownWidth: 247,
             iconSize: 24,
             iconEnabledColor: Colors.white,
             iconDisabledColor: Colors.grey,
@@ -938,7 +974,7 @@ class buildProfileDropDown extends StatelessWidget {
               Icons.arrow_drop_down_outlined,
             ),
             dropdownMaxHeight: dropDownHeight,
-            // dropdownWidth: 247,
+// dropdownWidth: 247,
             iconSize: 24,
             iconEnabledColor: Colors.black,
             iconDisabledColor: Colors.grey.shade200,
@@ -951,25 +987,25 @@ class buildProfileDropDown extends StatelessWidget {
             buttonDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(40),
               color: Color(0xFFF4F0EE),
-              // gradient: LinearGradient(
-              //     begin: Alignment.topLeft,
-              //     end: Alignment.bottomRight,
-              //     colors: [
-              //       Color(0xFFEA7C4A),
-              //       Color(0xFFF1565A),
-              //     ]),
+// gradient: LinearGradient(
+//     begin: Alignment.topLeft,
+//     end: Alignment.bottomRight,
+//     colors: [
+//       Color(0xFFEA7C4A),
+//       Color(0xFFF1565A),
+//     ]),
             ),
             itemHeight: 47,
             itemPadding: const EdgeInsets.only(left: 14, right: 14),
             dropdownDecoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4), color: Color(0xFFF4F0EE)
-                // gradient: LinearGradient(
-                //     begin: Alignment.topLeft,
-                //     end: Alignment.bottomRight,
-                //     colors: [
-                //       Color(0xFFEA7C4A),
-                //       Color(0xFFF1565A),
-                //     ]),
+// gradient: LinearGradient(
+//     begin: Alignment.topLeft,
+//     end: Alignment.bottomRight,
+//     colors: [
+//       Color(0xFFEA7C4A),
+//       Color(0xFFF1565A),
+//     ]),
                 ),
             scrollbarRadius: const Radius.circular(40),
             scrollbarThickness: 6,
@@ -1035,7 +1071,7 @@ class buildRegisterDropDown extends StatelessWidget {
               Icons.arrow_drop_down_outlined,
             ),
             dropdownMaxHeight: dropDownHeight,
-            // dropdownWidth: 247,
+// dropdownWidth: 247,
             iconSize: 24,
             iconEnabledColor: Colors.white,
             iconDisabledColor: Colors.grey,
@@ -1145,7 +1181,7 @@ class OtherNotificationWidget extends StatelessWidget {
               ),
             ),
             Text(
-              // postedTime.toString(),
+// postedTime.toString(),
               postedTime ?? '',
               style: k10stylePrimary,
             ),
@@ -1209,4 +1245,162 @@ LinearGradient kLinearGradient() {
         Color(0xFFEA7C4A),
         Color(0xFFF1565A),
       ]);
+}
+
+class kSliderImages extends StatefulWidget {
+  List<dynamic>? imagesList;
+  bool islandscape;
+  kSliderImages({required this.imagesList, this.islandscape = false});
+  @override
+  State<kSliderImages> createState() => _kSliderImagesState();
+}
+
+class _kSliderImagesState extends State<kSliderImages> {
+  int _currentIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider(
+      options: CarouselOptions(
+        autoPlay: true,
+        pauseAutoPlayOnManualNavigate: true,
+        viewportFraction: 1,
+        initialPage: _currentIndex,
+        scrollPhysics: BouncingScrollPhysics(),
+        aspectRatio: 1.5,
+        pauseAutoPlayOnTouch: true,
+// aspectRatio: 2.3,
+        enableInfiniteScroll: true,
+        scrollDirection: Axis.horizontal,
+        autoPlayInterval: Duration(seconds: 5),
+        autoPlayAnimationDuration: Duration(milliseconds: 800),
+        autoPlayCurve: Curves.easeIn,
+        onPageChanged: (index, reason) {
+          setState(
+            () {
+              _currentIndex = index;
+            },
+          );
+        },
+      ),
+      items: widget.imagesList!
+          .map(
+            (item) => Container(
+              alignment: Alignment.bottomCenter,
+              padding: EdgeInsets.only(bottom: 20),
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  color: primarycolor,
+                  borderRadius: BorderRadius.circular(16.0),
+                  image: DecorationImage(
+                      image: NetworkImage(item), fit: BoxFit.fill)),
+            ),
+          )
+          .toList(),
+    );
+  }
+}
+
+class kAppButton extends StatelessWidget {
+  String buttonText;
+  final onButtonPressed;
+  bool buttonstyleSmall;
+  bool roundedRight;
+
+  kAppButton(
+      {Key? key,
+      required this.buttonText,
+      this.buttonstyleSmall = false,
+      required this.onButtonPressed,
+      this.roundedRight = false})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: buttonstyleSmall ? Colors.white : textcolor,
+        elevation: 0,
+        textStyle: buttonstyleSmall
+            ? TextStyle(
+                color: textcolor, fontWeight: FontWeight.w600, fontSize: 16)
+            : TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+              color: buttonstyleSmall ? Colors.grey.shade200 : textcolor),
+          borderRadius: roundedRight
+              ? BorderRadius.only(
+                  topRight: Radius.circular(16),
+                  bottomRight: Radius.circular(16))
+              : BorderRadius.all(Radius.circular(16)),
+        ),
+      ),
+      onPressed: onButtonPressed,
+      child: Container(
+        height: 56,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.all(10.0),
+        alignment: Alignment.center,
+        child: Text(
+          buttonText,
+          style: buttonstyleSmall
+              ? TextStyle(
+                  color: textcolor, fontWeight: FontWeight.w600, fontSize: 16)
+              : TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16),
+        ),
+      ),
+    );
+  }
+}
+
+Align alreadyHaveAnAccount(BuildContext context) {
+  return Align(
+    alignment: Alignment.center,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          "Already have an account? ",
+        ),
+        GestureDetector(
+          onTap: () {
+            Get.to(() => LoginScreen2());
+          },
+          child: Text(
+            "Sign in",
+            style: TextStyle(
+                fontWeight: FontWeight.w700, color: primarycolor, fontSize: 14),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Align kdontHaveAnAccount(BuildContext context) {
+  return Align(
+    alignment: Alignment.center,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          "Don't have an account ",
+        ),
+        GestureDetector(
+          onTap: () {
+            Get.to(() => SignUpScreen());
+          },
+          child: Text(
+            "Sign up",
+            style: TextStyle(
+                fontWeight: FontWeight.w700, color: textcolor, fontSize: 14),
+          ),
+        ),
+      ],
+    ),
+  );
 }

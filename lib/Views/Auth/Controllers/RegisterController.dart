@@ -19,10 +19,10 @@ import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/Password_encyption.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Forgot_password_screen/Forgot_pass_Otp.dart';
-import 'package:jabwemeet/Views/Auth/Screens/LoginScreen2.dart';
+import 'package:jabwemeet/Views/Auth/Screens/LoginScreen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/Bismillah_Screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
-import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 
 class RegisterController extends GetxController {
   final resetFormKey = GlobalKey<FormState>();
@@ -313,7 +313,11 @@ class RegisterController extends GetxController {
     UserModel userModel = UserModel(
       height: storage.box.read(kHeight),
       name: storage.box.read(kFull_name),
+      latitude: storage.box.read(P_LATITUDE),
+      longitude: storage.box.read(P_LONGITUDE),
       imagesList: [],
+      subscribe: false,
+      blur: false,
       about: storage.box.read(kAbout),
       address: storage.box.read(kAddress),
       age: age,
@@ -325,7 +329,7 @@ class RegisterController extends GetxController {
       fcm_token: await FirebaseMessaging.instance.getToken(),
       gender: storage.box.read(kGender),
       childerns: storage.box.read(kchildern),
-      languages: storage.box.read(kLanguage),
+      languages: [],
       religion: storage.box.read(kReligion),
       hobbies: [],
       religious_practice: storage.box.read(kReligiousPractice),
@@ -389,12 +393,16 @@ class RegisterController extends GetxController {
     FirebaseAuth _fireAuth = FirebaseAuth.instance;
     User? user = _fireAuth.currentUser;
     UserModel userModel = UserModel(
-      height: storage.box.read(kHeight),
-      name: storage.box.read(kFull_name),
+      height: storage.box.read(kHeight).toString(),
+      name: storage.box.read(kFull_name).toString(),
       imagesList: [],
+      latitude: storage.box.read("latitude").toString(),
+      longitude: storage.box.read("longitude").toString(),
       about: storage.box.read(kAbout),
       address: storage.box.read(kAddress),
       age: age,
+      subscribe: false,
+      blur: false,
       birthday: storage.box.read(kAge),
       caste: storage.box.read(kCaste),
       job_title: storage.box.read(kJobTitle),
@@ -403,7 +411,7 @@ class RegisterController extends GetxController {
       fcm_token: await FirebaseMessaging.instance.getToken(),
       gender: storage.box.read(kGender),
       religious_practice: storage.box.read(kReligiousPractice),
-      languages: storage.box.read(kLanguage),
+      languages: [],
       religion: storage.box.read(kReligion),
       hobbies: [],
       childerns: storage.box.read(kchildern),
@@ -422,6 +430,49 @@ class RegisterController extends GetxController {
         .doc(user.uid)
         .update(userModel.toMap())
         .then((value) => Get.offAll(() => Complete_Profile1()));
+  }
+
+  Future addUserdetailsSend() async {
+    FirebaseAuth _fireAuth = FirebaseAuth.instance;
+    User? user = _fireAuth.currentUser;
+    UserModel userModel = UserModel(
+      height: storage.box.read(kHeight).toString(),
+      name: storage.box.read(kFull_name).toString(),
+      imagesList: [],
+      latitude: storage.box.read("latitude").toString(),
+      longitude: storage.box.read("longitude").toString(),
+      about: storage.box.read(kAbout),
+      address: storage.box.read(kAddress),
+      age: age,
+      subscribe: false,
+      blur: false,
+      birthday: storage.box.read(kAge),
+      caste: storage.box.read(kCaste),
+      job_title: storage.box.read(kJobTitle),
+      education: storage.box.read(kEducation),
+      email: user!.email.toString(),
+      fcm_token: await FirebaseMessaging.instance.getToken(),
+      gender: storage.box.read(kGender),
+      religious_practice: storage.box.read(kReligiousPractice),
+      languages: [],
+      religion: storage.box.read(kReligion),
+      hobbies: [],
+      childerns: storage.box.read(kchildern),
+      industry: storage.box.read(kIndustry),
+      work: storage.box.read(kWork),
+      martial_status: storage.box.read(kMartial_Statius),
+      imageUrl: storage.box.read(kImageUrl),
+      phone_number: storage.box.read(kPhone),
+      income: storage.box.read(kIncome),
+      uid: FirebaseAuth.instance.currentUser!.uid,
+      password: EncryptData.encryptData(
+          password: storage.box.read(kPassword).toString()),
+    );
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .set(userModel.toMap())
+        .then((value) => Get.offAll(() => Register_screen()));
   }
 
   //sajawal
@@ -447,6 +498,7 @@ class RegisterController extends GetxController {
           update();
         }
       } else {
+        isResetLoad = false;
         update();
         snackBar(context, "Your Profile not found", Colors.deepOrange);
       }
@@ -645,17 +697,18 @@ class RegisterController extends GetxController {
               Get.find<GetSTorageController>()
                   .box
                   .write(kPhone, user.phoneNumber.toString());
-              if (value.get("age") == null) {
-                Get.off(() => Register_screen());
+              if (value.get("age") == 0 || value.get("age") == null) {
+                Get.offAll(() => Register_screen());
               } else {
                 if (value.get("imageUrl") == null) {
-                  Get.off(() => Complete_Profile1());
+                  Get.offAll(() => Complete_Profile1());
                 } else {
                   Get.offAll(() => Home());
                 }
               }
             } else {
-              await addUserdetails();
+              print("agaya");
+              await addUserdetailsSend();
             }
             Get.find<GetSTorageController>().box.write("loggedin", "loggedin");
           });

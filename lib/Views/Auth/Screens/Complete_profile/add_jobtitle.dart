@@ -37,6 +37,7 @@ class Add_JobTitle extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: kCustomTextField(
+                      labeltext: "Job Title",
                         hinttext: "Type here",
                         controller: controller.jobtitleController,
                         isValidator: false,

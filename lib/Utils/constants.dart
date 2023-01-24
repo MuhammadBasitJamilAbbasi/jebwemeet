@@ -35,15 +35,16 @@ const String kIncome = "income";
 const String kHobbies = "hobby";
 const String kMovies = "movies";
 
-Color primarycolor = Color(0xfFf1565A);
-Color butoncolor = Color(0XFFFA2A39);
+Color primarycolor = Color(0xfFE94057);
+Color textcolor = Color(0xfFE94057);
+Color butoncolor = Color(0XFFA2A39);
 Color secoundrycolor = Color(0XFFF36F21);
 Color kinputbgcolor = Color(0XFFD9D9D9);
 Color normaltextcolor = Color(0XFF7A7A7A);
 Color whitecolor = Color(0XFFFFFFFF);
 Color blackcolor = Color(0XFF000000);
 Color dividercolor = Color(0XFFC4C4C4);
-Color selectedCategoryBackground = Color(0xFFF36F21);
+Color selectedCategoryBackground = Color(0xFFFA2A39);
 const Color kBaseGrey = Color(0XFFEBEBF0);
 
 TextStyle k14styleWhite =
@@ -428,7 +429,6 @@ List<String>? kAgeList = [
   "80",
 ];
 List<String>? kLanguageList = [
-  "Select Language",
   "Urdu",
   "Punjabi",
   "Saraiki",

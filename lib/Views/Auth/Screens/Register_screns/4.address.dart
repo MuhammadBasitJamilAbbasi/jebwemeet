@@ -18,7 +18,7 @@ class Register_address extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               AppComponents().backIcon(() {
-                controller.setRegisterViewPage(RegisterViewEnum.RegisterView3);
+                controller.setRegisterViewPage(RegisterViewEnum.RegisterView2);
               }),
               AppComponents().sizedBox50,
               Padding(
@@ -51,7 +51,7 @@ class Register_address extends StatelessWidget {
                             Get.find<GetSTorageController>().box.write(
                                 kAddress, controller.selectedCity.toString());
                             controller.setRegisterViewPage(
-                                RegisterViewEnum.RegisterView5);
+                                RegisterViewEnum.RegisterView4);
                           } else {
                             snackBar(context, "Please Select your City",
                                 Colors.pink);

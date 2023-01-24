@@ -13,9 +13,25 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/Hobbies_Model.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
-import 'package:jabwemeet/Views/Home/Screens/Home/Home.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 
 class ProfileController extends GetxController {
+  ScrollController scrollController = ScrollController();
+  scrollAnimate() {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 500),
+    );
+    update();
+  }
+
+  bool isBlured = false;
+  blurFunction(bool value) {
+    isBlured = value;
+    update();
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -56,6 +72,7 @@ class ProfileController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController jobtitleController = TextEditingController();
   TextEditingController addindustryController = TextEditingController();
+  List<String>? kList = [];
   String? selectedMartialStatus = "Select Status";
   String? selectedReligion = "Select Religion";
   String? selectedCaste = "Select Caste";
@@ -209,7 +226,7 @@ class ProfileController extends GetxController {
   }
 
   List<XFile> filesImage = [];
-  List<String>? multipleImagesDownloadLinks;
+  List<String>? multipleImagesDownloadLinks = [];
   Future<List<XFile>> pickImage(
       {ImageSource imageSource = ImageSource.gallery,
       bool multiple = false}) async {
@@ -260,6 +277,8 @@ class ProfileController extends GetxController {
   submitProfile(BuildContext context) async {
     if (selectedImagePath.toString() == "") {
       snackBar(context, "Please Select your image", Colors.pink);
+    } else if (multipleImagesDownloadLinks!.isEmpty) {
+      snackBar(context, "Please Add your images", Colors.pink);
     } else if (Get.find<GetSTorageController>().box.read(kAbout).toString() ==
             "" ||
         Get.find<GetSTorageController>().box.read(kAbout).toString() ==
@@ -287,13 +306,7 @@ class ProfileController extends GetxController {
         Get.find<GetSTorageController>().box.read(kHeight).toString() ==
             "null") {
       snackBar(context, "Please Enter your Height", Colors.pink);
-    } else if (Get.find<GetSTorageController>()
-                .box
-                .read(kLanguage)
-                .toString() ==
-            "" ||
-        Get.find<GetSTorageController>().box.read(kLanguage).toString() ==
-            "null") {
+    } else if (kList!.length == 0) {
       snackBar(context, "Please add your Language", Colors.pink);
     } else if (Get.find<GetSTorageController>()
                 .box
@@ -339,12 +352,12 @@ class ProfileController extends GetxController {
                 .read(kEducation)
                 .toString(),
             "imagesList": multipleImagesDownloadLinks,
+            "blur": isBlured,
             "job_title":
                 Get.find<GetSTorageController>().box.read(kJobTitle).toString(),
             "industry":
                 Get.find<GetSTorageController>().box.read(kIndustry).toString(),
-            "languages":
-                Get.find<GetSTorageController>().box.read(kLanguage).toString(),
+            "languages": kList,
             "height":
                 Get.find<GetSTorageController>().box.read(kHeight).toString(),
             "hobbies": getList,

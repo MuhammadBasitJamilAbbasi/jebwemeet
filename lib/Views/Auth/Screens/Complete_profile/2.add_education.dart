@@ -47,7 +47,7 @@ class Add_Education extends StatelessWidget {
                   label: "High School",
                   ontap: () {
                     storageController.box.write(kEducation, "High School");
-                    Get.back();
+                    Get.off(() => Complete_Profile1());
                   },
                   isRegister: true,
                 )),

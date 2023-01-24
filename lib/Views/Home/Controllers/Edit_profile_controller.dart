@@ -17,6 +17,12 @@ import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 class EditProfileController extends GetxController {
   EditProfileController({required this.userModel});
   UserModel userModel;
+  bool isBlured = false;
+  blurFunction(bool value) {
+    isBlured = value;
+    update();
+  }
+
   TextEditingController nameController = TextEditingController();
   String? selectedMartialStatus = "Select Status";
   String? selectedReligion = "Select Religion";
@@ -128,6 +134,7 @@ class EditProfileController extends GetxController {
         "name": nameController.value.text,
         "martial_status": selectedMartialStatus,
         "religion": selectedReligion,
+        "blur": isBlured,
         "caste": selectedCaste,
         "address": selectedCity
       }).then((value) => Get.back());

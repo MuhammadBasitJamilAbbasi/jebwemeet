@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
+import 'package:jabwemeet/Views/Auth/Controllers/Profile_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
 
@@ -10,7 +11,7 @@ class Add_Work extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storageController = Get.find<GetSTorageController>();
-
+    final profileController = Get.find<ProfileController>();
     return Scaffold(body: GetBuilder<RegisterController>(
       builder: (controller) {
         return SafeArea(
@@ -52,7 +53,7 @@ class Add_Work extends StatelessWidget {
                             ontap: () {
                               if (controller.selectedwork.toString() !=
                                   "Select Occupation Sector") {
-                                Get.find<GetSTorageController>().box.write(
+                                storageController.box.write(
                                     kWork, controller.selectedwork.toString());
                                 Get.off(() => Complete_Profile1());
                               } else {

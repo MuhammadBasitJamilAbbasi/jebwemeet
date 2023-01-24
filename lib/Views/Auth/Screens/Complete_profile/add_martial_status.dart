@@ -20,7 +20,7 @@ class Add_Martial extends StatelessWidget {
               children: [
                 AppComponents().sizedBox50,
                 AppComponents().backIcon(() {
-                  Get.back();
+                  Get.off(() => Complete_Profile1());
                 }),
                 AppComponents().sizedBox50,
                 Padding(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
-import 'package:jabwemeet/Views/Auth/Screens/LoginScreen2.dart';
+import 'package:jabwemeet/Views/Auth/Screens/LoginScreen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Signup_with_phone.dart';
 import 'package:jabwemeet/Views/Auth/Screens/TermsAndConditions.dart';
 import 'package:jabwemeet/Views/Auth/Screens/sign_up_screen.dart';
 
@@ -16,111 +18,132 @@ class _JabWeMet_ScreenState extends State<JabWeMet_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(
-                    "assets/jabwemet.png",
-                  ),
-                  fit: BoxFit.cover)),
-          child: Container(
-            color: Color(0xFFF15759).withOpacity(0.10),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
+          child: Column(
+            children: [
+              AppComponents().sizedBox50,
+              AppComponents().sizedBox50,
+               Image.asset(
+                  "assets/logonew.png",
+                 height: 78,
+                 width: 134,
                 ),
-                const Image(
-                  image: AssetImage(
-                    "assets/logo_full.png",
-                  ),
-                ),
-                Expanded(child: Container()),
-                SizedBox(
-                  height: 40,
-                  width: 260,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.to(() => LoginScreen2());
-                    },
-                    child: Text("Login", style: k14styleWhite),
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          side: BorderSide(color: Color(0xfFf1565A)),
-                        ),
+              AppComponents().sizedBox50,
+              Text("Sign up to continue",style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w700),),
+              AppComponents().sizedBox50,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: kAppButton(
+                    buttonText: "Continue with email", onButtonPressed: (){
+                  Get.to(()=> SignUpScreen());
+                }),
+              ),
+              AppComponents().sizedBox30,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: kAppButton(
+                  buttonstyleSmall: true,
+                    buttonText: "Use phone number", onButtonPressed: (){
+                  Get.to(() => SignUpPhoneScreen());
+                }),
+              ),
+              AppComponents().sizedBox50,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 0.3,
+                        color: Colors.grey,
                       ),
-                      backgroundColor:
-                          MaterialStateProperty.all(Color(0xfFf1565A)),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.02,
-                ),
-                SizedBox(
-                  height: 40,
-                  width: 260,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.to(() => SignUpScreen());
-                    },
-                    child: Text(
-                      "Sign Up",
-                      style: TextStyle(
-                          color: butoncolor, fontWeight: FontWeight.w600),
+                    Text(
+                      "  Or sign up with  ",
+                      style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 12),
                     ),
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          side: BorderSide(color: Colors.white),
-                        ),
+                    Expanded(
+                      child: Container(
+                        height: 0.3,
+                        color: Colors.grey,
                       ),
-                      backgroundColor: MaterialStateProperty.all(Colors.white),
                     ),
-                  ),
+                  ],
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.015,
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: const Text(
-                    "Forgot password",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        decoration: TextDecoration.underline,
-                        color: Colors.white,
-                        fontSize: 12),
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.015,
-                ),
-                InkWell(
-                  onTap: () {
-                    Get.to(() => TermsAndConiditons());
-                  },
-                  child: const Text(
-                    "By continuing you agree to our Terms and \nPrivacy Policy",
-                    style: TextStyle(
+              ),
+              AppComponents().sizedBox20,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 64,
+                    height: 64,
+                    padding: EdgeInsets.all(18),
+                    decoration: BoxDecoration(
                       color: Colors.white,
-                      fontSize: 10,
-                      decoration: TextDecoration.underline,
+                      border: Border.all(color: Colors.grey.shade200),
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    textAlign: TextAlign.center,
+                    child: Image.asset(
+                      "assets/facebook.png",
+                    ),
                   ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Container(
+                    width: 64,
+                    height: 64,
+                    padding: EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade200),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Image.asset(
+                      "assets/google.png",
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Container(
+                    width: 64,
+                    height: 64,
+                    padding: EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade200),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Image.asset(
+                      "assets/apple.png",
+                    ),
+                  ),                ],
+              ),
+              AppComponents().sizedBox30,
+              InkWell(
+                onTap: () {
+                  Get.to(() => TermsAndConiditons());
+                },
+                child:  Text(
+                  "By continuing you agree to our Terms and \nPrivacy Policy",
+                  style: TextStyle(
+                    color: textcolor,
+                    fontSize: 10,
+                    decoration: TextDecoration.underline,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.02,
-                ),
-              ],
-            ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+            ],
           ),
         ),
       ),

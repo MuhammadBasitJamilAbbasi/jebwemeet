@@ -37,7 +37,7 @@ class Add_Religion extends StatelessWidget {
                   label: "Shia",
                   ontap: () {
                     storageController.box.write(kReligion, "Shia");
-                    Get.off(() => Complete_Profile1());
+                    Get.back();
                   },
                   isRegister: true,
                 )),
@@ -47,7 +47,7 @@ class Add_Religion extends StatelessWidget {
                   label: "Sunni",
                   ontap: () {
                     storageController.box.write(kReligion, "Sunni");
-                    Get.off(() => Complete_Profile1());
+                    Get.back();
                   },
                   isRegister: true,
                 )),
@@ -57,7 +57,7 @@ class Add_Religion extends StatelessWidget {
                   label: "Christian",
                   ontap: () {
                     storageController.box.write(kReligion, "Christian");
-                    Get.off(() => Complete_Profile1());
+                    Get.back();
                   },
                   isRegister: true,
                 )),
@@ -67,7 +67,7 @@ class Add_Religion extends StatelessWidget {
                   label: "Hindu",
                   ontap: () {
                     storageController.box.write(kReligion, "Hindu");
-                    Get.off(() => Complete_Profile1());
+                    Get.back();
                   },
                   isRegister: true,
                 )),

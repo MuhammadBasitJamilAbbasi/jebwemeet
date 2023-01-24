@@ -227,17 +227,24 @@ class _kPlanWidgetState extends State<kPlanWidget> {
 
 List<PlanModel> planslist = [
   PlanModel(
-    name: "Weekly Plan",
-    days: "8",
-    price: "1000",
+    name: "1 Month",
+    days: "30",
+    price: "999 PKR",
     status: "Active",
     id: "1",
   ),
   PlanModel(
-    name: "Monthly Plan",
-    days: "30",
-    price: "3000",
+    name: "2 Months",
+    days: "60",
+    price: "1499",
     status: "Active",
-    id: "1",
+    id: "2",
+  ),
+  PlanModel(
+    name: "3 Months",
+    days: "90",
+    price: "1999",
+    status: "Active",
+    id: "3",
   ),
 ];

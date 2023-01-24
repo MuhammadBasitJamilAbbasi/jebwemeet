@@ -37,6 +37,7 @@ class Add_Industry extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: kCustomTextField(
+                      labeltext: "Industry",
                         hinttext: "Type here",
                         controller: controller.addindustryController,
                         isValidator: false,

@@ -62,7 +62,6 @@ dependencies:
   url_launcher:
   dotted_border:
   avatar_glow:
-  lottie:
   uuid:
   cached_network_image:
   range_slider_flutter: ^0.0.2
@@ -74,6 +73,7 @@ dependencies:
   firebase_messaging: ^14.1.4
   flutter_stripe: ^7.0.0
   contained_tab_bar_view:
+  lottie: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -108,6 +108,8 @@ flutter:
   assets:
     - assets/
     - assets/icons/
+    - assets/json/
+    - assets/fonts/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -128,6 +130,18 @@ flutter:
     - family: Gilroy-Bold
       fonts:
         - asset: Gilroy/Bold.ttf
+    - family: Gotham-Font
+      fonts:
+        - asset: assets/fonts/Gotham-Font/Gotham-Bold.ttf
+    - family: Gotham-Font
+      fonts:
+        - asset: assets/fonts/Gotham-Font/Gotham-Light.ttf
+    - family: Gotham-Font
+      fonts:
+        - asset: assets/fonts/Gotham-Font/GothamBold.ttf
+    - family: Gotham-Font
+      fonts:
+        - asset: assets/fonts/Gotham-Font/GothamLight.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

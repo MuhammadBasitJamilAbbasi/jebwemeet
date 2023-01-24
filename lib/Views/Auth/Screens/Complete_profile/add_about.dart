@@ -37,6 +37,7 @@ class Add_About extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: kCustomTextField(
+                      labeltext: "About",
                         hinttext: "Add about me",
                         controller: controller.aboutController,
                         isValidator: false,

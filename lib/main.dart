@@ -4,7 +4,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jabwemeet/Bindings/Bindings.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Splash_Screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/onboarding2.dart';
 
 import 'Services/notification/firebase_notifications/notification_service.dart';
 import 'Utils/constants.dart';
@@ -25,15 +25,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialBinding: InitialBindings(),
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-        fontFamily: GoogleFonts.montserrat().fontFamily,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: Splash_Screen(),
-      // home: StripePaymentScreen(),
-      /*=============================*/
-    );
+        initialBinding: InitialBindings(),
+        theme: ThemeData(
+          primarySwatch: Colors.red,
+          fontFamily: "Gotham-Font",
+        ),
+        debugShowCheckedModeBanner: false,
+        home: OnboardingScreen()
+        // home: StripePaymentScreen(),
+        /*=============================*/
+        );
   }
 }
