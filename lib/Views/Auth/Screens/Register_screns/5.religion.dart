@@ -9,9 +9,18 @@ import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
 class Register_Religion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final storageController = Get.find<GetSTorageController>();
 
     return GetBuilder<RegisterController>(builder: (controller) {
+      if(Get.find<GetSTorageController>()
+          .box
+          .read(kReligion).toString()==""|| Get.find<GetSTorageController>()
+          .box
+          .read(kReligion).toString()=="null") {
+        Get
+            .find<GetSTorageController>()
+            .box
+            .write(kReligion, "Shia");
+      }
       return SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -21,80 +30,183 @@ class Register_Religion extends StatelessWidget {
               AppComponents().backIcon(() {
                 controller.setRegisterViewPage(RegisterViewEnum.RegisterView3);
               }),
-              AppComponents().sizedBox50,
+              AppComponents().sizedBox30,
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   "My religion is",
                   style: k25styleblack,
                 ),
               ),
               AppComponents().sizedBox50,
-              Center(
-                  child: kCustomButton(
-                label: "Shia",
-                ontap: () {
-                  storageController.box.write(kReligion, "Shia");
-                  controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView5);
-                },
-                isRegister: true,
-              )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Center(
+                    child: kAppButton(
+                      buttonCheck: true,
+                      color: Get.find<GetSTorageController>()
+                          .box
+                          .read(kReligion)
+                          .toString() ==
+                          "Shia"
+                          ? textcolor
+                          : Colors.white,
+                      textColor: Get.find<GetSTorageController>()
+                          .box
+                          .read(kReligion)
+                          .toString() ==
+                          "Shia"
+                          ? Colors.white
+                          : Colors.black,
+                  buttonText: "Shia",
+                  onButtonPressed: () {
+                    Get.find<GetSTorageController>().box.write(kReligion, "Shia");
+                    controller
+                        .setRegisterViewPage(RegisterViewEnum.RegisterView5);
+                  },
+
+                )),
+              ),
               AppComponents().sizedBox15,
-              Center(
-                  child: kCustomButton(
-                label: "Sunni",
-                ontap: () {
-                  storageController.box.write(kReligion, "Sunni");
-                  controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView5);
-                },
-                isRegister: true,
-              )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),                child: Center(
+                    child: kAppButton(
+                      buttonCheck: true,
+                      color: Get.find<GetSTorageController>()
+                          .box
+                          .read(kReligion)
+                          .toString() ==
+                          "Sunni"
+                          ? textcolor
+                          : Colors.white,
+                      textColor: Get.find<GetSTorageController>()
+                          .box
+                          .read(kReligion)
+                          .toString() ==
+                          "Sunni"
+                          ? Colors.white
+                          : Colors.black,
+                  buttonText: "Sunni",
+                  onButtonPressed: () {
+                    Get.find<GetSTorageController>().box.write(kReligion, "Sunni");
+                    controller
+                        .setRegisterViewPage(RegisterViewEnum.RegisterView5);
+                  },
+
+                )),
+              ),
               AppComponents().sizedBox15,
-              Center(
-                  child: kCustomButton(
-                label: "Christian",
-                ontap: () {
-                  storageController.box.write(kReligion, "Christian");
-                  controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView5);
-                },
-                isRegister: true,
-              )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),                child: Center(
+                    child: kAppButton(
+                  buttonText: "Christian",
+                      buttonCheck: true,
+                      color: Get.find<GetSTorageController>()
+                          .box
+                          .read(kReligion)
+                          .toString() ==
+                          "Christian"
+                          ? textcolor
+                          : Colors.white,
+                      textColor: Get.find<GetSTorageController>()
+                          .box
+                          .read(kReligion)
+                          .toString() ==
+                          "Christian"
+                          ? Colors.white
+                          : Colors.black,
+                  onButtonPressed: () {
+                    Get.find<GetSTorageController>().box.write(kReligion, "Christian");
+                    controller
+                        .setRegisterViewPage(RegisterViewEnum.RegisterView5);
+                  },
+
+                )),
+              ),
               AppComponents().sizedBox15,
-              Center(
-                  child: kCustomButton(
-                label: "Hindu",
-                ontap: () {
-                  storageController.box.write(kReligion, "Hindu");
-                  controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView5);
-                },
-                isRegister: true,
-              )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),                child: Center(
+                    child: kAppButton(
+                  buttonText: "Hindu",
+                      buttonCheck: true,
+                      color: Get.find<GetSTorageController>()
+                          .box
+                          .read(kReligion)
+                          .toString() ==
+                          "Hindu"
+                          ? textcolor
+                          : Colors.white,
+                      textColor: Get.find<GetSTorageController>()
+                          .box
+                          .read(kReligion)
+                          .toString() ==
+                          "Hindu"
+                          ? Colors.white
+                          : Colors.black,
+                  onButtonPressed: () {
+                    Get.find<GetSTorageController>().box.write(kReligion, "Hindu");
+                    controller
+                        .setRegisterViewPage(RegisterViewEnum.RegisterView5);
+                  },
+
+                )),
+              ),
               AppComponents().sizedBox15,
-              Center(
-                  child: kCustomButton(
-                label: "Ahmadi",
-                ontap: () {
-                  storageController.box.write(kReligion, "Ahmadi");
-                  controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView5);
-                },
-                isRegister: true,
-              )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),                child: Center(
+                    child: kAppButton(
+                  buttonText: "Ahmadi",
+                      buttonCheck: true,
+                      color: Get.find<GetSTorageController>()
+                          .box
+                          .read(kReligion)
+                          .toString() ==
+                          "Ahmadi"
+                          ? textcolor
+                          : Colors.white,
+                      textColor: Get.find<GetSTorageController>()
+                          .box
+                          .read(kReligion)
+                          .toString() ==
+                          "Ahmadi"
+                          ? Colors.white
+                          : Colors.black,
+                  onButtonPressed: () {
+                    Get.find<GetSTorageController>().box.write(kReligion, "Ahmadi");
+                    controller
+                        .setRegisterViewPage(RegisterViewEnum.RegisterView5);
+                  },
+
+                )),
+              ),
               AppComponents().sizedBox15,
-              Center(
-                  child: kCustomButton(
-                label: "Sikh",
-                ontap: () {
-                  storageController.box.write(kReligion, "Sikh");
-                  controller
-                      .setRegisterViewPage(RegisterViewEnum.RegisterView5);
-                },
-                isRegister: true,
-              ))
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),                child: Center(
+                    child: kAppButton(
+                  buttonText: "Sikh",
+                      buttonCheck: true,
+                      color: Get.find<GetSTorageController>()
+                          .box
+                          .read(kReligion)
+                          .toString() ==
+                          "Sikh"
+                          ? textcolor
+                          : Colors.white,
+                      textColor: Get.find<GetSTorageController>()
+                          .box
+                          .read(kReligion)
+                          .toString() ==
+                          "Sikh"
+                          ? Colors.white
+                          : Colors.black,
+                  onButtonPressed: () {
+                    Get.find<GetSTorageController>().box.write(kReligion, "Sikh");
+                    controller
+                        .setRegisterViewPage(RegisterViewEnum.RegisterView5);
+                  },
+
+                )),
+              )
             ],
           ),
         ),

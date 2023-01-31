@@ -4,7 +4,8 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/Profile_Controller.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
+
 
 class Add_Languages extends StatelessWidget {
   @override
@@ -27,7 +28,7 @@ class Add_Languages extends StatelessWidget {
                   }),
                   AppComponents().sizedBox50,
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    padding: EdgeInsets.symmetric(horizontal: 5),
                     child: Text(
                       "My Languages is",
                       style: k25styleblack,
@@ -55,19 +56,19 @@ class Add_Languages extends StatelessWidget {
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
+                              horizontal: 15, vertical: 10),
                           decoration: BoxDecoration(
                               color: controller.kList!.contains(document)
                                   ? primarycolor
                                   : Colors.transparent,
-                              border: Border.all(color: primarycolor),
-                              borderRadius: BorderRadius.circular(100)),
+                              border: Border.all(color: Colors.grey.shade300),
+                              borderRadius: BorderRadius.circular(10)),
                           child: Text(
                             document.toString(),
                             style: TextStyle(
                                 color: controller.kList!.contains(document)
                                     ? Colors.white
-                                    : primarycolor),
+                                    : textcolor),
                           ),
                         ),
                       );
@@ -76,12 +77,14 @@ class Add_Languages extends StatelessWidget {
                   AppComponents().sizedBox30,
                   controller.kList!.length > 0
                       ? Center(
-                          child: kCustomButton(
-                            label: "Save",
-                            ontap: () {
-                              Get.off(() => Complete_Profile1());
-                            },
-                            isRegister: true,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal:20 ),
+                            child: kAppButton(
+                              buttonText: "Save",
+                              onButtonPressed: () {
+                                Get.off(() => Complete_Profile1());
+                              },
+                            ),
                           ),
                         )
                       : SizedBox.shrink()

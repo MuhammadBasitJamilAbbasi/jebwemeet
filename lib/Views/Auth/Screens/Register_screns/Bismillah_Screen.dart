@@ -68,6 +68,7 @@ class _Bismillah_ScreenState extends State<Bismillah_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: GetBuilder<RegisterController>(
           init: RegisterController(),
           builder: (controller) {
@@ -94,8 +95,7 @@ class _Bismillah_ScreenState extends State<Bismillah_Screen> {
                                 "Be Respectful",
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: "Gilroy-Bold",
+                                    fontWeight: FontWeight.w700,
                                     fontSize: 16),
                               ),
                             ),
@@ -110,8 +110,7 @@ class _Bismillah_ScreenState extends State<Bismillah_Screen> {
                                 "Be Yourself",
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: "Gilroy-Bold",
+                                    fontWeight: FontWeight.w700,
                                     fontSize: 16),
                               ),
                             ),
@@ -120,7 +119,7 @@ class _Bismillah_ScreenState extends State<Bismillah_Screen> {
                               "Make sure your profile information is true to who you are. Inappropriate users are banned and we have a zero tolerance policy for profits that impersonate others. Our community is full of real and authentic prople and we're excired for you to join",
                               style: k14styleblack,
                             ),
-                            AppComponents().sizedBox20,
+                            AppComponents().sizedBox30,
                             InkWell(
                               onTap: () {
                                 Get.to(() => TermsAndConiditons());
@@ -131,7 +130,6 @@ class _Bismillah_ScreenState extends State<Bismillah_Screen> {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12,
-                                    fontFamily: "Gilroy-Regular",
                                     decoration: TextDecoration.underline,
                                   ),
                                   textAlign: TextAlign.center,
@@ -142,36 +140,38 @@ class _Bismillah_ScreenState extends State<Bismillah_Screen> {
                             Center(
                               child: controller.isUpdatePassLoad
                                   ? CircularProgressIndicator()
-                                  : kCustomButton(
-                                      ontap: () async {
-                                        final con =
-                                            Get.find<GetSTorageController>();
-                                        print("isAccept: " +
-                                            controller.isAccept.value
-                                                .toString());
-                                        print("isTerm: " +
-                                            controller.isTerm.value.toString());
-                                        print("isPolicy: " +
-                                            controller.isPolicy.value
-                                                .toString());
-                                        if (con.box.read("isAccept") ==
-                                                "true" &&
-                                            con.box.read("isTerm") == "true" &&
-                                            con.box.read("isPolicy") ==
-                                                "true") {
-                                          await Get.find<RegisterController>()
-                                              .addsignupdetails()
-                                              .then((value) => Get.to(
-                                                  () => Register_screen()));
-                                        } else
-                                          snackBar(
-                                              context,
-                                              "Accept the Terms & Conditions and Privacy Policy",
-                                              Colors.pink);
-                                      },
-                                      label: "I Understand",
-                                      isRegister: true,
-                                    ),
+                                  : Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                                    child: kAppButton(
+                                        onButtonPressed: () async {
+                                          final con =
+                                              Get.find<GetSTorageController>();
+                                          print("isAccept: " +
+                                              controller.isAccept.value
+                                                  .toString());
+                                          print("isTerm: " +
+                                              controller.isTerm.value.toString());
+                                          print("isPolicy: " +
+                                              controller.isPolicy.value
+                                                  .toString());
+                                          if (con.box.read("isAccept") ==
+                                                  "true" &&
+                                              con.box.read("isTerm") == "true" &&
+                                              con.box.read("isPolicy") ==
+                                                  "true") {
+                                            await Get.find<RegisterController>()
+                                                .addsignupdetails()
+                                                .then((value) => Get.to(
+                                                    () => Register_screen()));
+                                          } else
+                                            snackBar(
+                                                context,
+                                                "Accept the Terms & Conditions and Privacy Policy",
+                                                Colors.pink);
+                                        },
+                                        buttonText: "I Understand",
+                                      ),
+                                  ),
                             ),
                             AppComponents().sizedBox10,
                           ],
@@ -195,11 +195,11 @@ class _Bismillah_ScreenState extends State<Bismillah_Screen> {
                               "A verification email has been sent to your email.",
                               style: k25styleblack,
                             ),
+                            AppComponents().sizedBox10,
                             Text(
                               "Please check your inbox & spam folder.",
-                              style: k16styleblack,
+                              style: k20styleblack,
                             ),
-                            AppComponents().sizedBox50,
                             AppComponents().sizedBox50,
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -207,11 +207,14 @@ class _Bismillah_ScreenState extends State<Bismillah_Screen> {
                               children: [
                                 AppComponents().sizedBox30,
                                 Center(
-                                  child: kCustomButton(
-                                      label: "Resend Email",
-                                      ontap: () {
-                                        sendVerificationEmail();
-                                      }),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                                    child: kAppButton(
+                                        buttonText: "Resend Email",
+                                        onButtonPressed: () {
+                                          sendVerificationEmail();
+                                        }),
+                                  ),
                                 ),
                                 Center(
                                   child: TextButton(

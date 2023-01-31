@@ -13,153 +13,114 @@ class SignUpPhoneScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        body: GetBuilder<LoginController>(
-          builder: (controller) {
-            return SingleChildScrollView(
+        body:  SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Container(
                 height: Get.height,
                 width: Get.width,
                 padding: EdgeInsets.fromLTRB(
-                  MediaQuery.of(context).size.height * 0.025,
+                  MediaQuery.of(context).size.height * 0.030,
                   MediaQuery.of(context).size.height * 0.06,
                   MediaQuery.of(context).size.height * 0.025,
                   0,
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    // AppComponents().sizedBox50,
                     AppComponents().backIcon(() {
                       Get.back();
                     }),
-                    AppComponents().sizedBox50,
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.065,
+                    ),
                     Text(
-                      "Sign in with phone number",
+                      "My Mobile",
                       style: TextStyle(
-                        color: Color(0xfFf1565A),
-                        fontWeight: FontWeight.w900,
-                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
                       ),
                     ),
+                    AppComponents().sizedBox10,
+                    Text("Please enter your valid phone number. We will send you a 4-digit code to verify your account. ",style: TextStyle(
+                      fontWeight: FontWeight.w400,fontSize: 14,color: Colors.black
+                    ),),
                     AppComponents().sizedBox50,
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        controller.isSent
-                            ? SizedBox.shrink()
-                            : Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 30),
-                                child: IntlPhoneField(
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    contentPadding: EdgeInsets.only(
-                                        top: 15, bottom: 15, left: 1),
-                                    fillColor: Colors.grey.shade100,
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        borderSide: BorderSide(
-                                            color: Colors.transparent)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        borderSide: BorderSide(
-                                            color: Colors.transparent)),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        borderSide: BorderSide(
-                                            color: Colors.transparent)),
-                                  ),
-                                  initialCountryCode: 'PK',
-                                  onChanged: (phone) {
-                                    print(phone.completeNumber);
-                                    Get.find<GetSTorageController>()
-                                        .box
-                                        .write(kPhone, phone.completeNumber);
-                                  },
-                                )),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.015,
-                        ),
-                        controller.isSent
-                            ? Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 30),
-                                child: textField(
-                                    onChanged: (value) {
-                                      // resetController.verifyPasswordOnChange(value, context);
-                                      controller.codeentered(value);
-                                    },
-                                    counter: Text(''),
-                                    maxlength: 6,
-                                    borderColor: Colors.grey,
-                                    isPassword: false,
-                                    inputType: TextInputType.number,
-                                    validation: (value) {
-                                      return controller.validateOTP(value);
-                                    },
-                                    controller: controller.otpController,
-                                    hintText: '6-digit code from SMS'),
-                              )
-                            : SizedBox.shrink(),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.015,
-                        ),
-                        controller.isSendOtpLoad
-                            ? Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : controller.isSent
-                                ? controller.isVerifyLoad
-                                    ? Center(
-                                        child: CircularProgressIndicator(),
-                                      )
-                                    : Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 30),
-                                        child: kCustomButton(
-                                            label: "Verify OTP",
-                                            ontap: () {
-                                              controller.verifyOtp();
-                                            }),
-                                      )
-                                : Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 30),
-                                    child: kCustomButton(
-                                        label: "Send OTP",
-                                        ontap: () {
-                                          log(Get.find<GetSTorageController>()
-                                              .box
-                                              .read(kPhone));
-                                          controller.sendOTP(
-                                              phoneNumber: Get.find<
-                                                      GetSTorageController>()
-                                                  .box
-                                                  .read(kPhone),
-                                              context: context);
-                                        }),
-                                  ),
-                        AppComponents().sizedBox10,
-                        controller.isSent
-                            ? Center(
-                                child: TextButton(
-                                  onPressed: () async {
-                                    await controller.resendOtp();
-                                  },
-                                  child: Text("Resend code"),
-                                ),
-                              )
-                            : SizedBox.shrink(),
-                      ],
+                    Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20),
+                            child: IntlPhoneField(
+                              showDropdownIcon: false,
+                              autofocus: false,
+                              flagsButtonMargin: EdgeInsets.only(left: 10),
+                              style:
+                              TextStyle(
+                                  color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+                              decoration: InputDecoration(
+                                filled: true,
+                               isCollapsed: true,
+
+                                contentPadding: EdgeInsets.only(
+                                    top: 20, bottom: 20, left: 1),
+                                fillColor: Colors.white,
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(16),
+                                    borderSide: BorderSide(
+                                        color: Colors.grey.shade300,width: 1)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(16),
+                                    borderSide: BorderSide(
+                                        color: textcolor)),
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(16),
+                                    borderSide: BorderSide(
+                                        color: Colors.grey.shade300,width: 1)),
+                              ),
+                              initialCountryCode: 'PK',
+                              onChanged: (phone) {
+                                print(phone.completeNumber);
+                                Get.find<GetSTorageController>()
+                                    .box
+                                    .write(kPhone, phone.completeNumber);
+                              },
+                            )),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.015,
                     ),
+        GetBuilder<LoginController>(
+          builder: (controller) {
+            return
+              controller.isSendOtpLoad
+                  ? Center(
+                child: CircularProgressIndicator(),
+              )
+                  : Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20),
+                child: kAppButton(
+                    buttonText: "Send OTP",
+                    onButtonPressed: () {
+                      log(Get
+                          .find<GetSTorageController>()
+                          .box
+                          .read(kPhone));
+                      controller.sendOTP(
+                          phoneNumber: Get
+                              .find<
+                              GetSTorageController>()
+                              .box
+                              .read(kPhone),
+                          context: context);
+                    }),
+              );
+          })
                   ],
                 ),
               ),
-            );
-          },
         ));
   }
 }

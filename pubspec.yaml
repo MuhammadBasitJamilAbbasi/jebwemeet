@@ -74,7 +74,10 @@ dependencies:
   flutter_stripe: ^7.0.0
   contained_tab_bar_view:
   lottie: ^2.2.0
-
+  otp_pin_field:
+  dotted_decoration:
+  readmore: ^2.2.0
+  modal_bottom_sheet: ^2.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

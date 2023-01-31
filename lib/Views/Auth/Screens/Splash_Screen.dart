@@ -7,10 +7,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
+import 'package:jabwemeet/Views/Auth/Controllers/onboarding_controller.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
+
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/JabWeMetScreen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/onboarding2.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 
@@ -53,12 +58,11 @@ class _Splash_ScreenState extends State<Splash_Screen>
     // TODO: implement initState
     super.initState();
     // getposition();
-    Get.find<Home_page_controller>().getData();
     Timer(Duration(seconds: 5), () async {
       if (getStorageController.box.read("loggedin").toString() == "loggedin") {
         await initFunction();
       } else {
-        Get.offAll(() => JabWeMet_Screen());
+        Get.offAll(() => OnboardingScreen());
       }
     });
   }
@@ -73,18 +77,19 @@ class _Splash_ScreenState extends State<Splash_Screen>
               if (value.exists)
                 {
                   if (value.get("age") == 0)
-                    {Get.offAll(() => Register_screen())}
+                    {Get.offAll(() => OnboardingScreen())}
                   else
                     {
                       if (value.get("imageUrl") == null ||
                           value.get("imageUrl") == "null")
-                        {Get.offAll(() => Complete_Profile1())}
+                        {Get.offAll(() => OnboardingScreen())}
                       else
-                        {Get.offAll(() => Home())}
+                        {
+                          Get.offAll(() => Home())}
                     }
                 }
               else
-                {Get.offAll(() => JabWeMet_Screen())}
+                {Get.offAll(() => OnboardingScreen())}
             });
   }
 
@@ -135,12 +140,18 @@ class _Splash_ScreenState extends State<Splash_Screen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SizedBox(
+        child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: Image.asset(
-            "assets/splash.png",
-            fit: BoxFit.fill,
+          padding: EdgeInsets.symmetric(horizontal: 70),
+          color: textcolor,
+          child: Center(
+            child: Image.asset(
+              "assets/logonew.png",
+              height: 120,
+              color: Colors.white,
+              width: 150,
+            ),
           ),
         ),
       ),

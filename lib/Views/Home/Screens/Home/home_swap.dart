@@ -14,15 +14,36 @@ import 'package:jabwemeet/Views/Home/Screens/Home/Profile_details.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/filterScreen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Tabbar.dart';
 import 'package:lottie/lottie.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+class Home extends StatefulWidget {
+  @override
+  State<Home> createState() => _HomeState();
+}
 
-class Home extends StatelessWidget {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
+  late AnimationController controllerr;
   final controller = Get.find<Home_page_controller>();
+
   PageController pagecontroller = PageController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    controller.userList.clear();
+    controller.getUserDetails();
+    controller.getData();
+    controllerr = BottomSheet.createAnimationController(this);
+    controllerr.duration = Duration(seconds: 1);
+    super.initState();
+
+  }
+  @override
+  void dispose() {
+    controllerr.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    controller.userList.clear();
-    controller.getData();
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: kCustomBottomNavBar(
@@ -120,6 +141,9 @@ class Home extends StatelessWidget {
                                                   child: InkWell(
                                                     onTap: () {
                                                       Get.to(() => ProfileDetails(
+                                                        latitude: userModel.latitude,
+                                                          longitude: userModel.longitude,
+                                                          interests: userModel.hobbies??[],
                                                           name: userModel.name
                                                                   .toString() ??
                                                               "",
@@ -185,14 +209,14 @@ class Home extends StatelessWidget {
                                                             SizedBox(
                                                               width: 10,
                                                             ),
-                                                            userModel.subscribe!
-                                                                ? Image.asset(
-                                                                    "assets/icons/check.png",
-                                                                    height: 20,
-                                                                    width: 20,
-                                                                  )
-                                                                : SizedBox
-                                                                    .shrink()
+                                                            // userModel.subscribe!
+                                                            //     ? Image.asset(
+                                                            //         "assets/icons/check.png",
+                                                            //         height: 20,
+                                                            //         width: 20,
+                                                            //       )
+                                                            //     : SizedBox
+                                                            //         .shrink()
                                                           ],
                                                         ),
                                                         Row(
@@ -381,14 +405,80 @@ class Home extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              Get.to(() => FilterScreen());
+                          GestureDetector(
+                            onTap: (){
+                              showMaterialModalBottomSheet(
+                                context: context,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(50),topRight: Radius.circular(50))
+                                ),
+                                builder: (context) => SingleChildScrollView(
+                                  controller: ModalScrollController.of(context),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        height: MediaQuery.of(context).size.height*0.7,
+                                        width: MediaQuery.of(context).size.width,
+                                        padding: EdgeInsets.only(top: 50),
+                                        decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(50),topRight: Radius.circular(50))
+                                        ),
+                                        child: FilterScreen(),
+                                      ),
+                                      Container(
+                                        height: MediaQuery.of(context).size.height*0.7,
+                                        width: MediaQuery.of(context).size.width,
+                                        padding: EdgeInsets.only(top: 10),
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage("assets/crop.png"),
+                                            fit: BoxFit.fill,
+                                          ),
+                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(50),topRight: Radius.circular(50))
+                                        ),
+                                        child: FilterScreen(),
+                                      ),
+                                      Center(
+                                        child: Image.asset("assets/c.png",width: 47,height: 25,),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                              // showModalBottomSheet(
+                              //     elevation: 0.8,
+                              //     isScrollControlled: true,
+                              //     isDismissible: true,
+                              //     transitionAnimationController: controllerr,
+                              //     shape: RoundedRectangleBorder(
+                              //         borderRadius: BorderRadius.only(
+                              //             topLeft: Radius.circular(50),
+                              //             topRight: Radius.circular(50))),
+                              //     context: context,
+                              //     builder: (context) {
+                              //       return FractionallySizedBox(
+                              //           heightFactor: 0.85,
+                              //           child: FilterScreen());
+                              //     });
                             },
-                            child: Image.asset(
-                              "assets/filter.png",
-                              height: 35,
-                              width: 35,
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.grey.shade300)),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                                child: Center(
+                                  child: Image.asset(
+                                    "assets/filter.png",
+                                    height: 35,
+                                    width: 35,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ],

@@ -37,7 +37,7 @@ const String kMovies = "movies";
 
 Color primarycolor = Color(0xfFE94057);
 Color textcolor = Color(0xfFE94057);
-Color butoncolor = Color(0XFFA2A39);
+Color butoncolor = Color(0xfFE94057);
 Color secoundrycolor = Color(0XFFF36F21);
 Color kinputbgcolor = Color(0XFFD9D9D9);
 Color normaltextcolor = Color(0XFF7A7A7A);
@@ -59,29 +59,26 @@ TextStyle k16styleWhite =
 TextStyle k18styleWhite =
     TextStyle(fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white);
 TextStyle k12styleblack =
-    TextStyle(fontSize: 12, color: Colors.black, fontFamily: "Gilroy-Regular");
+    TextStyle(fontSize: 12, color: Colors.black,);
 TextStyle k14styleblack =
-    TextStyle(fontSize: 14, color: Colors.black, fontFamily: "Gilroy-Regular");
+    TextStyle(fontSize: 14, color: Colors.black,);
 TextStyle k16styleblack =
     TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.black);
 TextStyle k18styleblack =
-    TextStyle(fontSize: 18, color: Colors.black, fontFamily: "Gilroy-Bold");
+    TextStyle(fontSize: 18, color: Colors.black,);
 final body4StyleHeight = TextStyle(
-  fontFamily: "Gilroy-Regular",
   fontWeight: FontWeight.w500,
   height: 1.5,
   fontSize: 14,
   color: Colors.black,
 );
 final secondaryFontStyleWeight = TextStyle(
-  fontFamily: "Gilroy-Regular",
   fontWeight: FontWeight.w400,
   fontSize: 14,
   color: Colors.black,
 );
 final unreadStyle = TextStyle(
   fontWeight: FontWeight.w900,
-  fontFamily: "Gilroy-Regular",
   height: 1.5,
   fontSize: 14,
   color: Colors.black,
@@ -90,26 +87,28 @@ final unreadStyle = TextStyle(
 TextStyle k18stylePrimary = TextStyle(
     fontSize: 18,
     color: butoncolor,
-    fontFamily: "Gilroy-Bold",
     fontWeight: FontWeight.w800);
 TextStyle k14stylePrimary = TextStyle(
     fontSize: 14,
     color: butoncolor,
-    fontFamily: "Gilroy-Bold",
     fontWeight: FontWeight.w500);
 TextStyle k10stylePrimary =
-    TextStyle(fontSize: 10, color: butoncolor, fontFamily: "Gilroy-Bold");
+    TextStyle(fontSize: 10, color: butoncolor, );
 TextStyle k10styleWhite =
-    TextStyle(fontSize: 10, color: Colors.white, fontFamily: "Gilroy-Bold");
+    TextStyle(fontSize: 10, color: Colors.white,);
 TextStyle k25styleblack =
-    TextStyle(fontSize: 23, color: Colors.black, fontFamily: "Gilroy-Bold");
+    TextStyle(fontSize: 30, color: Colors.black,fontWeight: FontWeight.bold);
 TextStyle k20styleblack =
-    TextStyle(fontSize: 18, color: Colors.black, fontFamily: "Gilroy-Bold");
+    TextStyle(fontSize: 18, color: Colors.black,);
 TextStyle k14styleblackBold =
-    TextStyle(fontFamily: "Gilroy-Regular", fontSize: 14, color: Colors.black);
+    TextStyle( fontSize: 14, color: Colors.black);
 TextStyle k12styleblackBold =
     TextStyle(fontWeight: FontWeight.w900, fontSize: 12, color: Colors.black);
-
+TextStyle kboldStyleHeading=TextStyle(
+  color: Colors.black,
+  fontWeight: FontWeight.bold,
+  fontSize: 30,
+);
 List<String>? kIncomeList = [
   "Select income",
   "<10,000",

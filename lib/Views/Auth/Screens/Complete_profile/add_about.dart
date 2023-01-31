@@ -4,7 +4,8 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/Profile_Controller.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
+
 
 class Add_About extends StatelessWidget {
   @override
@@ -27,7 +28,7 @@ class Add_About extends StatelessWidget {
                   AppComponents().sizedBox20,
                   AppComponents().sizedBox10,
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
                       "About me",
                       style: k25styleblack,
@@ -48,19 +49,21 @@ class Add_About extends StatelessWidget {
                   ),
                   AppComponents().sizedBox30,
                   Center(
-                    child: kCustomButton(
-                      label: "Save",
-                      ontap: () {
-                        if (controller.aboutController.value.text.isNotEmpty) {
-                          Get.find<GetSTorageController>().box.write(
-                              kAbout, controller.aboutController.value.text);
-                          Get.off(() => Complete_Profile1());
-                        } else {
-                          snackBar(context, "Please enter about yourself",
-                              Colors.pink);
-                        }
-                      },
-                      isRegister: true,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: kAppButton(
+                        buttonText: "Save",
+                        onButtonPressed: () {
+                          if (controller.aboutController.value.text.isNotEmpty) {
+                            Get.find<GetSTorageController>().box.write(
+                                kAbout, controller.aboutController.value.text);
+                            Get.off(() => Complete_Profile1());
+                          } else {
+                            snackBar(context, "Please enter about yourself",
+                                Colors.pink);
+                          }
+                        },
+                      ),
                     ),
                   )
                 ],

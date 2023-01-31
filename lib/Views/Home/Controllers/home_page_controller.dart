@@ -57,30 +57,42 @@ class Home_page_controller extends GetxController {
         .get()
         .then((snapshot) {
       snapshot.docs.forEach((element) {
-        if (visitedList!.contains(element.id) == false) {
-          if (element.get('age') >= filterlowerValue.round() &&
-                  element.get('gender') == gender &&
-                  element.get('age') < filterupperValue.round() ||
-              element.get('martial_status') == filterMartialStatus ||
-              element.get('address') == filterCity ||
-              element.get('religion') == filterReligion) {
-            double datainMeter = GetLocation.DistanceInMeters(
-                double.parse(element.get('latitude')),
-                double.parse(element.get('longitude')),
-                double.parse(userModel.latitude.toString()),
-                double.parse(userModel.longitude.toString()));
-            print("datainMeter: " + datainMeter.toString());
-            print("selectedMilesRangeDefault: " +
-                selectedMilesRangeDefault.toString());
-            if (datainMeter < selectedMilesRangeDefault) {
-              if (userList.contains(element.id) == true) {
-                userList.remove(element);
-                update();
-                print("remove element");
-              } else {
-                userList.add(element);
-                update();
-                print("Add element");
+        if(element.get('age')!=null || element.get('gender')!=null) {
+          if (visitedList!.contains(element.id) == false) {
+            log(element.get('age').toString() + " == " +
+                filterlowerValue.round().toString());
+            log(element.get('gender').toString() + " == " + gender.toString());
+            log(element.get('age').toString() + " == " +
+                filterupperValue.round().toString());
+            log(element.get('martial_status').toString() + " == " +
+                filterMartialStatus.toString());
+            log(element.get('religion').toString() + " == " +
+                filterReligion.toString());
+            if (element.get('age') >= filterlowerValue.round() &&
+                element.get('gender') == gender &&
+                element.get('age') < filterupperValue.round() ||
+                element.get('martial_status') == filterMartialStatus ||
+                element.get('religion') == filterReligion) {
+              double datainMeter = GetLocation.DistanceInMeters(
+                  double.parse(element.get('latitude')),
+                  double.parse(element.get('longitude')),
+                  double.parse(userModel.latitude.toString()),
+                  double.parse(userModel.longitude.toString()));
+              double kilomter = datainMeter / 1000;
+              print("datainMeter: " + datainMeter.toString());
+              print("datainKiloMeter: " + kilomter.toString());
+              print("selectedMilesRangeDefault: " +
+                  selectedMilesRangeDefault.toString());
+              if (kilomter < selectedMilesRangeDefault) {
+                if (userList.contains(element.id) == true) {
+                  userList.remove(element);
+                  update();
+                  print("remove element");
+                } else {
+                  userList.add(element);
+                  update();
+                  print("Add element");
+                }
               }
             }
           }
@@ -114,11 +126,11 @@ class Home_page_controller extends GetxController {
       log(userModel.gender.toString());
       log("Init Call Start");
       log(gender.toString());
-      queryValue = FirebaseFirestore.instance
-          .collection("users")
-          .where("age", isGreaterThanOrEqualTo: 18)
-          .where("gender", isEqualTo: gender)
-          .snapshots();
+      // queryValue = FirebaseFirestore.instance
+      //     .collection("users")
+      //     .where("age", isGreaterThanOrEqualTo: 18)
+      //     .where("gender", isEqualTo: gender)
+      //     .snapshots();
       log("Init Call End");
     });
   }

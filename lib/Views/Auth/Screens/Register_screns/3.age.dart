@@ -23,34 +23,40 @@ class Register_Age extends StatelessWidget {
               }),
               AppComponents().sizedBox50,
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   "My Birthday is",
-                  style: k25styleblack,
+                  style: kboldStyleHeading,
                 ),
               ),
               AppComponents().sizedBox50,
-              Center(
-                child: kCustomButton(
-                    ontap: () {
-                      controller.datePicker(context);
-                    },
-                    label: controller.birthdayDate.value),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Center(
+                  child: kAppButton(
+                      onButtonPressed: () {
+                        controller.datePicker(context);
+                      },
+                      buttonText: controller.birthdayDate.value),
+                ),
               ),
-              AppComponents().sizedBox15,
+              AppComponents().sizedBox20,
               controller.birthdayDate.value != "Select date"
-                  ? Center(
-                      child: kCustomButton(
-                        label: "Continue",
-                        ontap: () {
-                          Get.find<GetSTorageController>().box.write(
-                              kAge, controller.birthdayDate.value.toString());
-                          controller.setRegisterViewPage(
-                              RegisterViewEnum.RegisterView3);
-                        },
-                        isRegister: true,
+                  ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Center(
+                        child: kAppButton(
+                          buttonstyleSmall: true,
+                          buttonText: "Continue",
+                          onButtonPressed: () {
+                            Get.find<GetSTorageController>().box.write(
+                                kAge, controller.birthdayDate.value.toString());
+                            controller.setRegisterViewPage(
+                                RegisterViewEnum.RegisterView3);
+                          },
+                        ),
                       ),
-                    )
+                  )
                   : SizedBox.shrink()
             ],
           ),

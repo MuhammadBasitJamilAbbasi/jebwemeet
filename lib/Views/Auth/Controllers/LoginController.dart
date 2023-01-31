@@ -13,15 +13,18 @@ import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/Password_encyption.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
+
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/Bismillah_Screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/otp_screen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 
 class LoginController extends GetxController {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController otpController = TextEditingController();
+  var otp;
   RxBool hidePassword = true.obs;
 
   // SignInService service = new SignInService();
@@ -154,7 +157,7 @@ class LoginController extends GetxController {
                 blur: false,
                 imagesList: [],
                 address: storage.box.read(kAddress),
-                age: null,
+                age: 0,
                 caste: "",
                 childerns: "",
                 education: "",
@@ -302,7 +305,7 @@ class LoginController extends GetxController {
         subscribe: false,
         blur: false,
         address: storage.box.read(kAddress),
-        age: null,
+        age: 0,
         caste: "",
         childerns: "",
         education: "",
@@ -346,23 +349,25 @@ class LoginController extends GetxController {
       log("Inside try Otp statement. ");
       await FirebaseAuth.instance.verifyPhoneNumber(
           phoneNumber: phoneNumber,
-          verificationCompleted: (credentials) {},
+          verificationCompleted: (credentials) {
+
+          },
           verificationFailed: (ex) {
-            snackBar(context, ex.code.toString(), Colors.deepOrange);
+            snackBar(context, ex.message.toString(), textcolor);
             log(ex.code.toString());
+            isSendOtpLoad = false;
+            update();
           },
           codeSent: (verificationId, resendToken) {
             log("Resend Token is $resendToken");
             log("VerificationId is $verificationId");
-            snackBar(context, "OTP Sending...", Colors.pink);
             resend_Token = resendToken;
             update();
             verification_Id = verificationId;
             update();
             isSendOtpLoad = false;
             update();
-            isSent = true;
-            update();
+            Get.to(()=> OtpScreen());
             /*  Get.to(() => ForgetPassword_OTP_view(
                 phoneNumber: number.toString(),
                 verificationId: verification_Id.toString()));*/
@@ -377,53 +382,47 @@ class LoginController extends GetxController {
       snackBar(context, e.code.toString(), Colors.deepOrange);
     }
   }
+  getotp(value,BuildContext context){
+    otp=value;
+    update();
+   verifyOtp(context);
+  }
 
   bool isVerifyLoad = false;
 
-  Future<bool> verifyOtp() async {
+  Future<bool> verifyOtp(BuildContext context) async {
     log("<=============================================>");
     log("Inside Phone Authentication verifyOtp Service");
-    log("VerificationId is $verification_Id");
-    log("<=============================================>");
     bool verificationStatus = false;
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verification_Id, smsCode: otpController.value.text);
-    isSent = false;
-    update();
-    isVerifyLoad = true;
-    update();
+    PhoneAuthCredential credential = await PhoneAuthProvider.credential(
+        verificationId: verification_Id, smsCode: otp);
+    log(credential.smsCode.toString());
     try {
       log("Inside try statement.");
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      if (userCredential.user != null) {
-        log("Firebase Verification Successful");
-        verificationStatus = true;
-        log("Verification Status inside if statement is: $verificationStatus");
-        // isVerifyLoad = false;
-        // update();
-        /* await FirebaseAuth.instance.signOut();*/
-      } else {
-        // isVerifyLoad = false;
-        // update();
-        verificationStatus = false;
-        log("Verification Status inside else statement is: $verificationStatus");
-      }
+          await FirebaseAuth.instance.signInWithCredential(credential).then((userCredential) async {
+            log("Agaya agaya ");
+            if (userCredential.user != null) {
+              log("Firebase Verification Successful");
+              verificationStatus = true;
+              log("Verification Status inside if statement is: $verificationStatus");
+                await addUserdetailsPhone();
+            } else {
+              verificationStatus = false;
+              snackBar(context, "Enter OTP is inavlid", textcolor);
+            }
+          });
       log("Verification Status outside if else statement: $verificationStatus");
-      if (verificationStatus == true) {
-        await addUserdetailsPhone();
-      }
       return verificationStatus;
     } on FirebaseAuthException catch (e) {
       isVerifyLoad = false;
       update();
-      log("Inside Catch statement ${e.code}");
+      snackBar(context, e.message.toString(), textcolor);
+      log("Inside Catch statement ${e.message}");
       verificationStatus = false;
       return verificationStatus;
     }
   }
 
-  bool isResendLoad = false;
 
   resendOtp() async {
     log("<=============================================>");
@@ -431,8 +430,6 @@ class LoginController extends GetxController {
     log("Phone Number is $Get.find<GetSTorageController>().box.read(kPhone)");
     log("Resend Token is $resend_Token");
     log("<=============================================>");
-    isResendLoad = true;
-    update();
     try {
       log("Inside try statement. ");
       await FirebaseAuth.instance.verifyPhoneNumber(
@@ -448,11 +445,8 @@ class LoginController extends GetxController {
           forceResendingToken: resend_Token,
           codeAutoRetrievalTimeout: (verificationId) {},
           timeout: Duration(seconds: 60));
-      isResendLoad = false;
-      update();
+
     } on FirebaseException catch (e) {
-      isResendLoad = false;
-      update();
       log("Inside Catch statement ${e.code}");
       // Get.snackbar("Otp Re-Send Error", e.code);
     }

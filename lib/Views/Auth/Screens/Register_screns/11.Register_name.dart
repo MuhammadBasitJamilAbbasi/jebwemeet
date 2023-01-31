@@ -21,7 +21,7 @@ class Register_Name extends StatelessWidget {
               }),
               AppComponents().sizedBox50,
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   "My username is",
                   style: k25styleblack,
@@ -30,7 +30,7 @@ class Register_Name extends StatelessWidget {
               AppComponents().sizedBox50,
               Center(
                   child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25),
+                padding: EdgeInsets.symmetric(horizontal: 15),
                 child: kCustomTextField(
                     hinttext: "johndoe",
                     labeltext: "username",
@@ -41,34 +41,36 @@ class Register_Name extends StatelessWidget {
               )),
               AppComponents().sizedBox30,
               Center(
-                child: kCustomButton(
-                  label: "Continue",
-                  ontap: () async {
-                    if (controller.nameController.value.text.isNotEmpty &&
-                        controller.nameController.value.text.contains(" ") ==
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: kAppButton(
+                    buttonText: "Continue",
+                    onButtonPressed: () async {
+                      if (controller.nameController.value.text.isNotEmpty &&
+                          controller.nameController.value.text.contains(" ") ==
+                              false) {
+                        if (controller.userNamesList.contains(
+                                controller.nameController.value.text.trim()) ==
                             false) {
-                      if (controller.userNamesList.contains(
-                              controller.nameController.value.text.trim()) ==
-                          false) {
-                        Get.find<GetSTorageController>().box.write(kFull_name,
-                            controller.nameController.value.text.trim());
-                        if (Get.find<GetSTorageController>()
-                                .box
-                                .read("isPhone") ==
-                            "isPhone") {
-                          await controller.addUserdetails();
-                        } else
-                          await controller.addUserdetails();
+                          Get.find<GetSTorageController>().box.write(kFull_name,
+                              controller.nameController.value.text.trim());
+                          if (Get.find<GetSTorageController>()
+                                  .box
+                                  .read("isPhone") ==
+                              "isPhone") {
+                            await controller.addUserdetails();
+                          } else
+                            await controller.addUserdetails();
+                        } else {
+                          snackBar(context, "Please Enter another username",
+                              Colors.pink);
+                        }
                       } else {
-                        snackBar(context, "Please Enter another username",
+                        snackBar(context, "Please Enter username without space",
                             Colors.pink);
                       }
-                    } else {
-                      snackBar(context, "Please Enter username without space",
-                          Colors.pink);
-                    }
-                  },
-                  isRegister: true,
+                    },
+                  ),
                 ),
               )
             ],

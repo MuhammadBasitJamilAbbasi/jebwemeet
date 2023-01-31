@@ -11,12 +11,11 @@ import 'package:jabwemeet/Views/Auth/Screens/sign_up_screen.dart';
 class LoginScreen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final controller=Get.find<LoginController>();
     return Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
-          child: GetBuilder<LoginController>(
-            builder: (controller) {
-              return SingleChildScrollView(
+          child:  SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
                     MediaQuery.of(context).size.height * 0.030,
@@ -103,6 +102,9 @@ class LoginScreen2 extends StatelessWidget {
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.045,
                         ),
+    GetBuilder<LoginController>(
+    builder: (controller) {
+    return
                         controller.isLoading
                             ? Center(
                                 child: CircularProgressIndicator(),
@@ -115,7 +117,7 @@ class LoginScreen2 extends StatelessWidget {
                                     onButtonPressed: () {
                                       controller.loginbutton(context);
                                     }),
-                              ),
+                              );}),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.028,
                         ),
@@ -164,7 +166,9 @@ class LoginScreen2 extends StatelessWidget {
                             SizedBox(
                               width: 20,
                             ),
-                            controller.isLoaderGoogle? Center(child: CircularProgressIndicator(),) : Container(
+                            GetBuilder<LoginController>(
+                            builder: (controller) {
+    return controller.isLoaderGoogle? Center(child: CircularProgressIndicator(),) : Container(
                               width: 64,
                               height: 64,
                               padding: EdgeInsets.all(18),
@@ -176,7 +180,7 @@ class LoginScreen2 extends StatelessWidget {
                               child: Image.asset(
                                 "assets/google.png",
                               ),
-                            ),
+                            );}),
                             SizedBox(
                               width: 20,
                             ),
@@ -199,8 +203,6 @@ class LoginScreen2 extends StatelessWidget {
                     ),
                   ),
                 ),
-              );
-            },
           ),
         ));
   }

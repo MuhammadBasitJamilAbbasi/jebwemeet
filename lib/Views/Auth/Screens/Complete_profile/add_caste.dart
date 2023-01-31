@@ -4,7 +4,8 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
+
 
 class Add_Caste extends StatefulWidget {
   @override
@@ -31,7 +32,7 @@ class _Add_CasteState extends State<Add_Caste> {
                   }),
                   AppComponents().sizedBox50,
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    padding: EdgeInsets.symmetric(horizontal: 5),
                     child: Text(
                       "My Caste is",
                       style: k25styleblack,
@@ -51,24 +52,27 @@ class _Add_CasteState extends State<Add_Caste> {
                   AppComponents().sizedBox30,
                   controller.selectedValue != "Select Caste"
                       ? Center(
-                          child: kCustomButton(
-                            label: "Save",
-                            ontap: () {
-                              if (controller.selectedValue
-                                      .toString()
-                                      .isNotEmpty &&
-                                  controller.selectedValue.toString() !=
-                                      "Select Caste") {
-                                Get.find<GetSTorageController>().box.write(
-                                    kCaste,
-                                    controller.selectedValue.toString());
-                                Get.off(() => Complete_Profile1());
-                              } else {
-                                snackBar(context, "Please Select your Caste",
-                                    Colors.pink);
-                              }
-                            },
-                            isRegister: true,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: kAppButton(
+                              buttonText: "Save",
+                                buttonstyleSmall: true,
+                              onButtonPressed: () {
+                                if (controller.selectedValue
+                                        .toString()
+                                        .isNotEmpty &&
+                                    controller.selectedValue.toString() !=
+                                        "Select Caste") {
+                                  Get.find<GetSTorageController>().box.write(
+                                      kCaste,
+                                      controller.selectedValue.toString());
+                                  Get.off(() => Complete_Profile1());
+                                } else {
+                                  snackBar(context, "Please Select your Caste",
+                                      Colors.pink);
+                                }
+                              },
+                            ),
                           ),
                         )
                       : SizedBox.shrink()

@@ -21,7 +21,7 @@ class Register_caste extends StatelessWidget {
               }),
               AppComponents().sizedBox50,
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   "My Caste is",
                   style: k25styleblack,
@@ -40,26 +40,29 @@ class Register_caste extends StatelessWidget {
               ),
               AppComponents().sizedBox30,
               controller.selectedValue != "Select Caste"
-                  ? Center(
-                      child: kCustomButton(
-                        label: "Continue",
-                        ontap: () {
-                          if (controller.selectedValue.toString().isNotEmpty &&
-                              controller.selectedValue.toString() !=
-                                  "Select Caste") {
-                            Get.find<GetSTorageController>().box.write(
-                                kCaste, controller.selectedValue.toString());
-                            controller.getAllEmails(context);
-                            controller.setRegisterViewPage(
-                                RegisterViewEnum.RegisterView6);
-                          } else {
-                            snackBar(context, "Please Select your Caste",
-                                Colors.pink);
-                          }
-                        },
-                        isRegister: true,
+                  ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Center(
+                        child: kAppButton(
+                          buttonText: "Continue",
+                          buttonstyleSmall: true,
+                          onButtonPressed: () {
+                            if (controller.selectedValue.toString().isNotEmpty &&
+                                controller.selectedValue.toString() !=
+                                    "Select Caste") {
+                              Get.find<GetSTorageController>().box.write(
+                                  kCaste, controller.selectedValue.toString());
+                              controller.getAllEmails(context);
+                              controller.setRegisterViewPage(
+                                  RegisterViewEnum.RegisterView6);
+                            } else {
+                              snackBar(context, "Please Select your Caste",
+                                  Colors.pink);
+                            }
+                          },
+                        ),
                       ),
-                    )
+                  )
                   : SizedBox.shrink()
             ],
           ),

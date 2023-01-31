@@ -22,10 +22,10 @@ class Register_address extends StatelessWidget {
               }),
               AppComponents().sizedBox50,
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   "I live in",
-                  style: k25styleblack,
+                  style: kboldStyleHeading,
                 ),
               ),
               AppComponents().sizedBox50,
@@ -41,25 +41,28 @@ class Register_address extends StatelessWidget {
               ),
               AppComponents().sizedBox30,
               controller.selectedCity != "Select City"
-                  ? Center(
-                      child: kCustomButton(
-                        label: "Continue",
-                        ontap: () {
-                          if (controller.selectedCity.toString().isNotEmpty &&
-                              controller.selectedCity.toString() !=
-                                  "Select City") {
-                            Get.find<GetSTorageController>().box.write(
-                                kAddress, controller.selectedCity.toString());
-                            controller.setRegisterViewPage(
-                                RegisterViewEnum.RegisterView4);
-                          } else {
-                            snackBar(context, "Please Select your City",
-                                Colors.pink);
-                          }
-                        },
-                        isRegister: true,
+                  ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Center(
+                        child: kAppButton(
+                          buttonText: "Continue",
+                         buttonstyleSmall: true,
+                          onButtonPressed: () {
+                            if (controller.selectedCity.toString().isNotEmpty &&
+                                controller.selectedCity.toString() !=
+                                    "Select City") {
+                              Get.find<GetSTorageController>().box.write(
+                                  kAddress, controller.selectedCity.toString());
+                              controller.setRegisterViewPage(
+                                  RegisterViewEnum.RegisterView4);
+                            } else {
+                              snackBar(context, "Please Select your City",
+                                  Colors.pink);
+                            }
+                          },
+                        ),
                       ),
-                    )
+                  )
                   : SizedBox.shrink()
             ],
           ),

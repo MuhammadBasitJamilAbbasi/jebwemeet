@@ -131,73 +131,75 @@ class OnBoardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AppComponents().sizedBox50,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Image.asset(
-              leftimage,
-              height: 260,
-            ),
-            Expanded(
-              child: Image.asset(
-                centerimage,
-                height: 320,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 30),
-              child: Image.asset(
-                rightimage,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppComponents().sizedBox50,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image.asset(
+                leftimage,
                 height: 260,
               ),
-            ),
-          ],
-        ),
-        AppComponents().sizedBox30,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Center(
-                child: Text(
-                  text,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 24,
-                      color: textcolor),
+              Expanded(
+                child: Image.asset(
+                  centerimage,
+                  height: 320,
                 ),
               ),
-            ),
-          ],
-        ),
-        AppComponents().sizedBox30,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 30),
+                child: Image.asset(
+                  rightimage,
+                  height: 260,
+                ),
+              ),
+            ],
+          ),
+          AppComponents().sizedBox30,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
                 child: Center(
                   child: Text(
-                    content,
-                    textAlign: TextAlign.center,
+                    text,
                     style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-
-                        color: Colors.black),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 24,
+                        color: textcolor),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+          AppComponents().sizedBox30,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Center(
+                    child: Text(
+                      content,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+
+                          color: Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

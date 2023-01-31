@@ -17,6 +17,31 @@ import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 
 class ProfileController extends GetxController {
   ScrollController scrollController = ScrollController();
+  int currentStep = 1;
+
+  int stepLength = 4;
+
+  late bool complete;
+
+  next() {
+    if (currentStep <= stepLength) {
+      goTo(currentStep + 1);
+    }
+  }
+
+  back() {
+    if (currentStep > 1) {
+      goTo(currentStep - 1);
+    }
+  }
+
+  goTo(int step) {
+     currentStep = step;
+     update();
+    if (currentStep > stepLength) {
+      complete = true;
+      update();
+  }}
   scrollAnimate() {
     scrollController.animateTo(
       scrollController.position.maxScrollExtent,
@@ -25,7 +50,35 @@ class ProfileController extends GetxController {
     );
     update();
   }
+  final List<File> tourImagesList = [];
 
+
+  String tourImagesUrl = '';
+
+
+  // Stream<List<UserData>> get allUsers => dataBaseService.getAllUserData();
+
+  changeTourImages(var image) {
+    tourImagesList.add(image);
+    update();
+  }
+  removeTourImages(var image) {
+    tourImagesList.remove(image);
+    update();
+  }
+  changeTourImageUrl(String url) {
+    tourImagesUrl = url;
+    update();
+  }
+
+  void pickTourImages(BuildContext context) async {
+    final pickedImages = await imagePicker.pickMultiImage();
+    if (pickedImages != null) {
+      for (int i = 0; i < pickedImages.length; i++) {
+        changeTourImages( File(pickedImages[i].path));
+      }
+    }
+  }
   bool isBlured = false;
   blurFunction(bool value) {
     isBlured = value;
@@ -181,11 +234,11 @@ class ProfileController extends GetxController {
 
   //------------->//
   //topic view controller
-  List<TopicModel> allTopics = topicsList;
-  List<TopicModel> get topics => allTopics;
+  // List<TopicsModel> allTopics = topicList;
+  // List<TopicsModel> get topics => allTopics;
 
-  List<TopicModel> selectedList = [];
-  List<TopicModel> get selectedItems => selectedList;
+  List<TopicsModel> selectedList = [];
+  List<TopicsModel> get selectedItems => selectedList;
 
   List<String> selectTitles = [];
   List<String> get getSelectedTitles => selectTitles;
@@ -197,7 +250,7 @@ class ProfileController extends GetxController {
   List<String> get getRandomTitles => randomTitles;
   List<String> getList = [];
   //add topics to the list
-  void addTopics(TopicModel topics) {
+  void addTopics(TopicsModel topics) {
     selectedList.add(topics);
     update();
     selectedList.forEach((element) {
@@ -208,19 +261,19 @@ class ProfileController extends GetxController {
   }
 
   //remove topics from the list
-  void removeTopics(TopicModel topics) {
+  void removeTopics(TopicsModel topics) {
     selectedList.remove(topics);
     update();
   }
 
   //add topics to the list
-  void addTitles(TopicModel topics) {
+  void addTitles(TopicsModel topics) {
     getTitlesSelected.add(topics.title);
     update();
   }
 
   //add topics to the list
-  void removeTitles(TopicModel topics) {
+  void removeTitles(TopicsModel topics) {
     getTitlesSelected.remove(topics.title);
     update();
   }

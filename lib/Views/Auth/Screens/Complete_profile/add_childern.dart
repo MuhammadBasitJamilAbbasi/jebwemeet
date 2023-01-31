@@ -4,7 +4,8 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
+
 
 class Add_Childern extends StatelessWidget {
   @override
@@ -47,20 +48,23 @@ class Add_Childern extends StatelessWidget {
                   AppComponents().sizedBox30,
                   controller.selectedChild != "0"
                       ? Center(
-                          child: kCustomButton(
-                            label: "Save",
-                            ontap: () {
-                              if (controller.selectedChild.toString() != "0") {
-                                Get.find<GetSTorageController>().box.write(
-                                    kchildern,
-                                    controller.selectedChild.toString());
-                                Get.off(() => Complete_Profile1());
-                              } else {
-                                snackBar(context, "Please Select your Child",
-                                    Colors.pink);
-                              }
-                            },
-                            isRegister: true,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: kAppButton(
+                              buttonText: "Save",
+                              buttonstyleSmall: true,
+                              onButtonPressed: () {
+                                if (controller.selectedChild.toString() != "0") {
+                                  Get.find<GetSTorageController>().box.write(
+                                      kchildern,
+                                      controller.selectedChild.toString());
+                                  Get.off(() => Complete_Profile1());
+                                } else {
+                                  snackBar(context, "Please Select your Child",
+                                      Colors.pink);
+                                }
+                              },
+                            ),
                           ),
                         )
                       : SizedBox.shrink()

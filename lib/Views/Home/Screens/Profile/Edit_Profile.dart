@@ -29,37 +29,7 @@ class Edit_Profile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppComponents().sizedBox50,
-                  Row(
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xfFf1565A),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(5, 5, 5, 3),
-                          child: GestureDetector(
-                            child: const Center(
-                              child: Icon(
-                                Icons.arrow_back_ios_rounded,
-                                color: Colors.white,
-                              ),
-                            ),
-                            onTap: () {
-                              Get.back();
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      Text(
-                        "Edit Profile",
-                        style: k25styleblack,
-                      ),
-                    ],
-                  ),
+                  AppComponents().backIcon(() {Get.back();}),
                   AppComponents().sizedBox20,
                   Center(
                     child: Stack(

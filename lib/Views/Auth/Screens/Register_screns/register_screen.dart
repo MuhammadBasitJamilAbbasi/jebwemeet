@@ -75,7 +75,7 @@ class _Register_screenState extends State<Register_screen> {
                                           RegisterViewEnum.RegisterView6 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView7
-                                  ? butoncolor
+                                  ? textcolor
                                   : Colors.grey.shade200),
                           progressIndicator(
                               context: context,
@@ -94,7 +94,7 @@ class _Register_screenState extends State<Register_screen> {
                                           RegisterViewEnum.RegisterView6 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView7
-                                  ? butoncolor
+                                  ? textcolor
                                   : Colors.grey.shade200),
                           progressIndicator(
                               context: context,
@@ -111,7 +111,7 @@ class _Register_screenState extends State<Register_screen> {
                                           RegisterViewEnum.RegisterView6 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView7
-                                  ? butoncolor
+                                  ? textcolor
                                   : Colors.grey.shade200),
                           progressIndicator(
                               context: context,
@@ -126,7 +126,7 @@ class _Register_screenState extends State<Register_screen> {
                                           RegisterViewEnum.RegisterView6 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView7
-                                  ? butoncolor
+                                  ? textcolor
                                   : Colors.grey.shade200),
                           progressIndicator(
                               context: context,
@@ -139,7 +139,7 @@ class _Register_screenState extends State<Register_screen> {
                                           RegisterViewEnum.RegisterView6 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView7
-                                  ? butoncolor
+                                  ? textcolor
                                   : Colors.grey.shade200),
                           progressIndicator(
                               context: context,
@@ -150,7 +150,7 @@ class _Register_screenState extends State<Register_screen> {
                                           RegisterViewEnum.RegisterView6 ||
                                       registerController.getRegisterViewPage ==
                                           RegisterViewEnum.RegisterView7
-                                  ? butoncolor
+                                  ? textcolor
                                   : Colors.grey.shade200),
                           progressIndicator(
                               context: context,
@@ -159,7 +159,7 @@ class _Register_screenState extends State<Register_screen> {
                                       RegisterViewEnum.RegisterView7),
                               color: registerController.getRegisterViewPage ==
                                       RegisterViewEnum.RegisterView7
-                                  ? butoncolor
+                                  ? textcolor
                                   : Colors.grey.shade200),
                         ],
                       ),

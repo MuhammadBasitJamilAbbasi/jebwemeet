@@ -4,7 +4,8 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
+
 
 class Add_Income extends StatelessWidget {
   @override
@@ -27,10 +28,18 @@ class Add_Income extends StatelessWidget {
                   AppComponents().sizedBox20,
                   AppComponents().sizedBox10,
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      "My Income (per month)",
-                      style: k25styleblack,
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      children: [
+                        Text(
+                          "My Income",
+                          style: k25styleblack,
+                        ),
+                        Text(
+                          "(per month)",
+                          style: k14styleblack,
+                        ),
+                      ],
                     ),
                   ),
                   AppComponents().sizedBox50,
@@ -47,21 +56,24 @@ class Add_Income extends StatelessWidget {
                   AppComponents().sizedBox30,
                   controller.selectedIncome != "Select income"
                       ? Center(
-                          child: kCustomButton(
-                            label: "Save",
-                            ontap: () {
-                              if (controller.selectedIncome.toString() !=
-                                  "Select income") {
-                                Get.find<GetSTorageController>().box.write(
-                                    kIncome,
-                                    controller.selectedIncome.toString());
-                                Get.off(() => Complete_Profile1());
-                              } else {
-                                snackBar(context, "Please Select your income",
-                                    Colors.pink);
-                              }
-                            },
-                            isRegister: true,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: kAppButton(
+                              buttonText: "Save",
+                              buttonstyleSmall: true,
+                              onButtonPressed: () {
+                                if (controller.selectedIncome.toString() !=
+                                    "Select income") {
+                                  Get.find<GetSTorageController>().box.write(
+                                      kIncome,
+                                      controller.selectedIncome.toString());
+                                  Get.off(() => Complete_Profile1());
+                                } else {
+                                  snackBar(context, "Please Select your income",
+                                      Colors.pink);
+                                }
+                              },
+                            ),
                           ),
                         )
                       : SizedBox.shrink()

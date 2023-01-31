@@ -30,17 +30,12 @@ List<TopicsModel> topicContents = [
   ),
   TopicsModel(
     image: '🏎',
-    title: 'Cars & motor vehicles',
+    title: 'Cars',
     isSeleted: false,
   ),
   TopicsModel(
     image: '🍳',
     title: 'Cooking',
-    isSeleted: false,
-  ),
-  TopicsModel(
-    image: '🍔',
-    title: 'Climbing',
     isSeleted: false,
   ),
   TopicsModel(
@@ -89,11 +84,6 @@ List<TopicsModel> topicContents = [
     isSeleted: false,
   ),
   TopicsModel(
-    image: '📖',
-    title: 'Learn something',
-    isSeleted: false,
-  ),
-  TopicsModel(
     image: '💄',
     title: 'Makeup',
     isSeleted: false,
@@ -109,28 +99,8 @@ List<TopicsModel> topicContents = [
     isSeleted: false,
   ),
   TopicsModel(
-    image: '📰',
-    title: 'News',
-    isSeleted: false,
-  ),
-  TopicsModel(
-    image: '👽',
-    title: 'Space',
-    isSeleted: false,
-  ),
-  TopicsModel(
-    image: '🔬',
-    title: 'Science',
-    isSeleted: false,
-  ),
-  TopicsModel(
     image: '⚽',
-    title: 'Soccer',
-    isSeleted: false,
-  ),
-  TopicsModel(
-    image: '🥑',
-    title: 'Vegaterian food',
+    title: 'Football',
     isSeleted: false,
   ),
   TopicsModel(
@@ -139,116 +109,92 @@ List<TopicsModel> topicContents = [
     isSeleted: false,
   ),
 ];
-
-class TopicModel {
-  String image;
-  String title;
-
-  TopicModel({
-    required this.title,
-    required this.image,
-  });
-}
-
-List<TopicModel> topicsList = [
-  TopicModel(
-    image: '🎨',
-    title: 'Art',
-  ),
-  TopicModel(
-    image: '🏀',
-    title: 'Basketball',
-  ),
-  TopicModel(
-    image: '🥔',
-    title: 'Baking',
-  ),
-  TopicModel(
-    image: '🏎',
-    title: 'Cars & motor vehicles',
-  ),
-  TopicModel(
-    image: '🍳',
-    title: 'Cooking',
-  ),
-  TopicModel(
-    image: '🍔',
-    title: 'Climbing',
-  ),
-  TopicModel(
-    image: '💰',
-    title: 'Crypto',
-  ),
-  TopicModel(
-    image: '🏕️',
-    title: 'Camping & Hiking',
-  ),
-  TopicModel(
-    image: '👪',
-    title: 'Family',
-  ),
-  TopicModel(
-    image: '🍔',
-    title: 'Food',
-  ),
-  TopicModel(
-    image: '💪',
-    title: 'Fitness',
-  ),
-  TopicModel(
-    image: '🕹',
-    title: 'Gaming',
-  ),
-  TopicModel(
-    image: '🧑‍🌾',
-    title: 'Gradening',
-  ),
-  TopicModel(
-    image: '🥒',
-    title: 'Healthy',
-  ),
-  TopicModel(
-    image: '🏺',
-    title: 'History',
-  ),
-  TopicModel(
-    image: '📖',
-    title: 'Learn something',
-  ),
-  TopicModel(
-    image: '💄',
-    title: 'Makeup',
-  ),
-  TopicModel(
-    image: '😂',
-    title: 'Memes',
-  ),
-  TopicModel(
-    image: '🌱',
-    title: 'Nature',
-  ),
-  TopicModel(
-    image: '📰',
-    title: 'News',
-  ),
-  TopicModel(
-    image: '👽',
-    title: 'Space',
-  ),
-  TopicModel(
-    image: '🔬',
-    title: 'Science',
-  ),
-  TopicModel(
-    image: '⚽',
-    title: 'Soccer',
-  ),
-  TopicModel(
-    image: '🥑',
-    title: 'Vegaterian food',
-  ),
-  TopicModel(
-    image: '🎾',
-    title: 'Tennis',
-  ),
-];
+//
+// class TopicModel {
+//   String image;
+//   String title;
+//
+//   TopicModel({
+//     required this.title,
+//     required this.image,
+//   });
+// }
+//
+// List<TopicModel> topicsList = [
+//   TopicModel(
+//     image: '🎨',
+//     title: 'Art',
+//   ),
+//   TopicModel(
+//     image: '🏀',
+//     title: 'Basketball',
+//   ),
+//   TopicModel(
+//     image: '🥔',
+//     title: 'Baking',
+//   ),
+//   TopicModel(
+//     image: '🏎',
+//     title: 'Cars',
+//   ),
+//   TopicModel(
+//     image: '🍳',
+//     title: 'Cooking',
+//   ),
+//   TopicModel(
+//     image: '🏕️',
+//     title: 'Climbing',
+//   ),
+//   TopicModel(
+//     image: '💰',
+//     title: 'Crypto',
+//   ),
+//   TopicModel(
+//     image: '🏕️',
+//     title: 'Camping & Hiking',
+//   ),
+//   TopicModel(
+//     image: '👪',
+//     title: 'Family',
+//   ),
+//   TopicModel(
+//     image: '🍔',
+//     title: 'Food',
+//   ),
+//   TopicModel(
+//     image: '💪',
+//     title: 'Fitness',
+//   ),
+//   TopicModel(
+//     image: '🕹',
+//     title: 'Gaming',
+//   ),
+//   TopicModel(
+//     image: '🧑‍🌾',
+//     title: 'Gradening',
+//   ),
+//   TopicModel(
+//     image: '🥒',
+//     title: 'Healthy',
+//   ),
+//   TopicModel(
+//     image: '🏺',
+//     title: 'History',
+//   ),
+//   TopicModel(
+//     image: '💄',
+//     title: 'Makeup',
+//   ),
+//   TopicModel(
+//     image: '😂',
+//     title: 'Memes',
+//   ),
+//   TopicModel(
+//     image: '🌱',
+//     title: 'Nature',
+//   ),
+//   TopicModel(
+//     image: '🎾',
+//     title: 'Tennis',
+//   ),
+// ];

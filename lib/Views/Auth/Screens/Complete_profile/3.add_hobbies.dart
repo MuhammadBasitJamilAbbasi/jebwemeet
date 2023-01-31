@@ -6,7 +6,8 @@ import 'package:jabwemeet/Models/Hobbies_Model.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/Profile_Controller.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
+
 
 class Add_Hoobies extends StatefulWidget {
   const Add_Hoobies({Key? key}) : super(key: key);
@@ -35,37 +36,36 @@ class _Add_HoobiesState extends State<Add_Hoobies> {
                       Get.back();
                     }),
                     AppComponents().sizedBox20,
-                    Center(
-                        child: Image.asset(
-                      "assets/hobby.png",
-                      height: 41,
-                      width: 48,
-                    )),
-                    AppComponents().sizedBox10,
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 30),
-                      child: Center(
-                        child: Text(
-                          "Interests",
-                          style: k25styleblack,
-                        ),
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Text(
+                        "Your Interests",
+                        style: k25styleblack,
                       ),
                     ),
-                    AppComponents().sizedBox20,
+                    AppComponents().sizedBox10,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Text("Select a few of your interests and let everyone know what you’re passionate about."),
+                    )
+                    ,AppComponents().sizedBox20,
                     Wrap(
                       direction: Axis.horizontal,
                       runAlignment: WrapAlignment.start,
                       runSpacing: 10,
                       spacing: 10,
                       children:
-                          List.generate(controller.allTopics.length, (index) {
-                        final topic = controller.allTopics[index];
+                          List.generate(topicContents.length, (index) {
+                        final topic = topicContents[index];
                         return IntrinsicWidth(
                           child: InterestWidget(
                             textstyle: controller.selectedList.contains(topic)
                                 ? k14styleWhite
                                 : k14styleblack,
                             horizontalDistance: 15,
+                            borderColor: controller.selectedList.contains(topic)
+                                ? primarycolor
+                                : Colors.grey.shade300,
                             image: topicContents[index].image,
                             title: topicContents[index].title,
                             onTap: () {
@@ -79,22 +79,25 @@ class _Add_HoobiesState extends State<Add_Hoobies> {
                             },
                             color: controller.selectedList.contains(topic)
                                 ? primarycolor
-                                : Colors.grey.shade300,
+                                : Colors.white,
                           ),
                         );
                       }),
                     ),
                     AppComponents().sizedBox20,
                     Center(
-                      child: kCustomButton(
-                          label: "Continue",
-                          ontap: () {
-                            if (controller.selectedList.length == 0) {
-                              snackBar(
-                                  context, "Select Interests", Colors.pink);
-                            } else
-                              Get.off(() => Complete_Profile1());
-                          }),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: kAppButton(
+                            buttonText: "Continue",
+                            onButtonPressed: () {
+                              if (controller.selectedList.length == 0) {
+                                snackBar(
+                                    context, "Select Interests", Colors.pink);
+                              } else
+                                Get.off(() => Complete_Profile1());
+                            }),
+                      ),
                     )
                   ],
                 ),

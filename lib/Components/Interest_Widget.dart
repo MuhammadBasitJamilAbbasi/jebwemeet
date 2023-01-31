@@ -7,6 +7,7 @@ class InterestWidget extends StatelessWidget {
   final VoidCallback? onTap;
   final double horizontalDistance;
   final TextStyle? textstyle;
+  final Color borderColor;
   const InterestWidget({
     Key? key,
     this.textstyle,
@@ -15,6 +16,7 @@ class InterestWidget extends StatelessWidget {
     this.onTap,
     required this.horizontalDistance,
     required this.color,
+    required this.borderColor,
   }) : super(key: key);
 
   @override
@@ -26,7 +28,8 @@ class InterestWidget extends StatelessWidget {
         padding:
             EdgeInsets.symmetric(horizontal: horizontalDistance, vertical: 10),
         decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(40)),
+          border: Border.all(color: borderColor),
+            color: color, borderRadius: BorderRadius.circular(10)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

@@ -51,7 +51,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                         height: 20,
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
                         child: textField(
                             maxlines: 1,
                             borderColor: Colors.grey,
@@ -87,7 +87,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                         height: 20,
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
                         child: textField(
                             maxlines: 1,
                             borderColor: Colors.grey,
@@ -120,19 +120,15 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                                   )),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 30,
                       ),
                       controller.isUpdatePassLoad
                           ? Center(child: CircularProgressIndicator.adaptive())
                           : Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: kCustomButton2(
-                                height: 50,
-                                borderColor: Colors.transparent,
-                                textStyle: k14styleWhite,
-                                title: 'Create New Password',
-                                primaryColor: butoncolor,
-                                onPressed: () async {
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: kAppButton(
+                                buttonText: 'Create New Password',
+                                onButtonPressed: () async {
                                   if (controller.createPasswordKey.currentState!
                                       .validate()) {
                                     await controller.updatePassword(context);

@@ -4,7 +4,8 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/Profile_Controller.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
+
 
 class Add_JobTitle extends StatelessWidget {
   @override
@@ -27,7 +28,7 @@ class Add_JobTitle extends StatelessWidget {
                   AppComponents().sizedBox20,
                   AppComponents().sizedBox10,
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
                       "Add Job Title",
                       style: k25styleblack,
@@ -41,27 +42,29 @@ class Add_JobTitle extends StatelessWidget {
                         hinttext: "Type here",
                         controller: controller.jobtitleController,
                         isValidator: false,
-                        maxlines: 3,
+                        maxlines: 2,
                         validator: (val) {
                           return "";
                         }),
                   ),
                   AppComponents().sizedBox30,
                   Center(
-                    child: kCustomButton(
-                      label: "Save",
-                      ontap: () {
-                        if (controller
-                            .jobtitleController.value.text.isNotEmpty) {
-                          Get.find<GetSTorageController>().box.write(kJobTitle,
-                              controller.jobtitleController.value.text);
-                          Get.off(() => Complete_Profile1());
-                        } else {
-                          snackBar(context, "Please enter about job title",
-                              Colors.pink);
-                        }
-                      },
-                      isRegister: true,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: kAppButton(
+                        buttonText: "Save",
+                        onButtonPressed: () {
+                          if (controller
+                              .jobtitleController.value.text.isNotEmpty) {
+                            Get.find<GetSTorageController>().box.write(kJobTitle,
+                                controller.jobtitleController.value.text);
+                            Get.off(() => Complete_Profile1());
+                          } else {
+                            snackBar(context, "Please enter about job title",
+                                Colors.pink);
+                          }
+                        },
+                      ),
                     ),
                   )
                 ],

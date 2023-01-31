@@ -17,28 +17,65 @@ import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppComponents {
-  Row backIcon(void Function()? ontap) {
+  Row backIcon(
+    void Function()? ontap,
+  ) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: primarycolor,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(5, 5, 5, 3),
-            child: GestureDetector(
-              child: const Center(
+        GestureDetector(
+          onTap: ontap,
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+                border: Border.all(color: Colors.grey.shade300)),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+              child: Center(
                 child: Icon(
                   Icons.arrow_back_ios_rounded,
-                  color: Colors.white,
+                  color: textcolor,
+                  size: 15,
                 ),
               ),
-              onTap: ontap,
             ),
           ),
         ),
         Expanded(child: Container())
+      ],
+    );
+  }
+
+  Row backIconWithSkip(void Function()? ontap, void Function()? ontapSkip) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        GestureDetector(
+          onTap: ontap,
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+                border: Border.all(color: Colors.grey.shade300)),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+              child: Center(
+                child: Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: textcolor,
+                  size: 15,
+                ),
+              ),
+            ),
+          ),
+        ),
+        TextButton(
+            onPressed: ontapSkip,
+            child: Text(
+              "Skip",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ))
       ],
     );
   }
@@ -127,24 +164,24 @@ class kCustomTextField extends StatelessWidget {
           color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
       keyboardType: isLength ? TextInputType.number : TextInputType.text,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+        contentPadding: EdgeInsets.only(left: 20, top: 20, bottom: 20),
         hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
         filled: true,
         fillColor: Colors.white,
         hintText: hinttext,
         labelText: labeltext,
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: textcolor, width: 1.5),
-          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: textcolor, width: 1),
+          borderRadius: BorderRadius.circular(16.0),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
-          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
+          borderRadius: BorderRadius.circular(16.0),
         ),
         border: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.transparent),
           borderRadius: BorderRadius.all(Radius.circular(
-            25,
+            16,
           )),
         ),
         errorBorder: OutlineInputBorder(
@@ -201,28 +238,28 @@ class kPasswordTextField extends StatelessWidget {
                     semanticLabel: 'Show password',
                   ),
             onPressed: onpress),
-        contentPadding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+        contentPadding: EdgeInsets.only(left: 20, top: 20, bottom: 20),
         filled: true,
         fillColor: Colors.white,
         hintText: hintText,
         labelText: labeltext,
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: textcolor, width: 1.5),
-          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: textcolor, width: 1),
+          borderRadius: BorderRadius.circular(16.0),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
-          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
+          borderRadius: BorderRadius.circular(16.0),
         ),
         border: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.transparent),
           borderRadius: BorderRadius.all(Radius.circular(
-            25,
+            16,
           )),
         ),
         errorBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.red, width: 1.0),
-          borderRadius: BorderRadius.circular(25.0),
+          borderRadius: BorderRadius.circular(16.0),
         ),
       ),
     );
@@ -311,39 +348,45 @@ class Essential_Widget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-        top: 12,
-        bottom: 12,
-      ),
+      padding: EdgeInsets.only(right: 10),
       child: InkWell(
         onTap: onTap,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+        child: Column(
           children: [
-            Expanded(
-                flex: 2,
-                child: Image.asset(
-                  leadingImage,
-                  height: 20,
-                  width: 20,
-                  color: butoncolor,
-                )),
-            Expanded(
-                flex: 16,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12),
-                  child: Text(
-                    title,
-                    style: k12styleblack,
-                  ),
-                )),
-            Expanded(
-                flex: 1,
-                child: Icon(
-                  iconfil,
-                  color: butoncolor,
-                  size: 18,
-                )),
+            AppComponents().sizedBox15,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                    flex: 2,
+                    child: Image.asset(
+                      leadingImage,
+                      height: 25,
+                      width: 25,
+                      color: textcolor,
+                    )),
+                Expanded(
+                    flex: 16,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    )),
+                Expanded(
+                    flex: 1,
+                    child: Icon(
+                      iconfil,
+                      color: textcolor,
+                      size: 18,
+                    )),
+              ],
+            ),
+            AppComponents().sizedBox15,
           ],
         ),
       ),
@@ -416,7 +459,7 @@ textField({
       decoration: InputDecoration(
           counter: counter,
           filled: isFilled,
-          contentPadding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+          contentPadding: EdgeInsets.only(left: 20, top: 16, bottom: 16),
           hintText: hintText,
           hintStyle: TextStyle(color: borderColor, fontSize: 13),
           suffixIcon: suffixIcon,
@@ -424,17 +467,17 @@ textField({
           fillColor: fillColor,
           suffix: suffixWidget,
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide(
                 color: Colors.grey.shade300,
               )),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide(
-                color: Colors.grey.shade300,
+                color: textcolor,
               )),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(color: Colors.grey.shade300),
           )),
     );
@@ -757,7 +800,6 @@ class Detail_Profile_Tile extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(bottom: 10),
         height: 40,
-        padding: EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -842,8 +884,8 @@ class buildFilterDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 47,
-        margin: EdgeInsets.symmetric(horizontal: 30),
+        height: 55,
+        margin: EdgeInsets.symmetric(horizontal: 20),
         child: DropdownButtonHideUnderline(
           child: DropdownButton2(
             isDense: true,
@@ -856,7 +898,7 @@ class buildFilterDropDown extends StatelessWidget {
                 Expanded(
                   child: Text(
                     text,
-                    style: k14styleWhite,
+                    style: k14styleblack,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -867,7 +909,7 @@ class buildFilterDropDown extends StatelessWidget {
                       value: item,
                       child: Text(
                         item,
-                        style: k14styleWhite,
+                        style: k14styleblack,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ))
@@ -880,37 +922,39 @@ class buildFilterDropDown extends StatelessWidget {
             dropdownMaxHeight: dropDownHeight,
 // dropdownWidth: 247,
             iconSize: 24,
-            iconEnabledColor: Colors.white,
-            iconDisabledColor: Colors.grey,
-            buttonHeight: 47,
+            iconEnabledColor: textcolor,
+            iconDisabledColor: Colors.black,
+            buttonHeight: 55,
             buttonPadding: const EdgeInsets.only(
               left: 20,
               right: 20,
             ),
             offset: Offset(0, -20),
             buttonDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40),
+            border: Border.all(color: Colors.grey.shade300,width: 0.8),
+              borderRadius: BorderRadius.circular(16),
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xFFEA7C4A),
-                    Color(0xFFF1565A),
+                    Colors.white,
+                    Colors.white,
                   ]),
             ),
-            itemHeight: 47,
+            itemHeight: 55,
             itemPadding: const EdgeInsets.only(left: 14, right: 14),
             dropdownDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
+border: Border.all(color: Colors.grey.shade300,width: 0.8),
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xFFEA7C4A),
-                    Color(0xFFF1565A),
+                   Colors.white,
+                   Colors.white,
                   ]),
             ),
-            scrollbarRadius: const Radius.circular(40),
+            scrollbarRadius: const Radius.circular(16),
             scrollbarThickness: 6,
             scrollbarAlwaysShow: true,
           ),
@@ -1035,8 +1079,8 @@ class buildRegisterDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 47,
-        margin: EdgeInsets.symmetric(horizontal: 30),
+        height: 55,
+        margin: EdgeInsets.symmetric(horizontal: 20),
         child: DropdownButtonHideUnderline(
           child: DropdownButton2(
             isDense: true,
@@ -1082,13 +1126,13 @@ class buildRegisterDropDown extends StatelessWidget {
             ),
             offset: Offset(0, -20),
             buttonDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40),
+              borderRadius: BorderRadius.circular(16),
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xFFEA7C4A),
-                    Color(0xFFF1565A),
+                    Colors.pink,
+                    textcolor,
                   ]),
             ),
             itemHeight: 47,
@@ -1099,11 +1143,11 @@ class buildRegisterDropDown extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xFFEA7C4A),
-                    Color(0xFFF1565A),
+                    Colors.pink,
+                    textcolor,
                   ]),
             ),
-            scrollbarRadius: const Radius.circular(40),
+            scrollbarRadius: const Radius.circular(16),
             scrollbarThickness: 6,
             scrollbarAlwaysShow: true,
           ),
@@ -1306,29 +1350,48 @@ class kAppButton extends StatelessWidget {
   final onButtonPressed;
   bool buttonstyleSmall;
   bool roundedRight;
-
+  bool buttonCheck;
+  Color color;
+  Color textColor;
   kAppButton(
       {Key? key,
       required this.buttonText,
       this.buttonstyleSmall = false,
+      this.buttonCheck = false,
+      this.color = Colors.deepOrange,
+      this.textColor = Colors.deepOrange,
       required this.onButtonPressed,
       this.roundedRight = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+// color = Color(0xfFE94057);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: buttonstyleSmall ? Colors.white : textcolor,
+        primary: buttonCheck
+            ? color
+            : buttonstyleSmall
+                ? Colors.white
+                : textcolor,
         elevation: 0,
-        textStyle: buttonstyleSmall
+        textStyle: buttonCheck
             ? TextStyle(
-                color: textcolor, fontWeight: FontWeight.w600, fontSize: 16)
-            : TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
+                color: textColor, fontWeight: FontWeight.w600, fontSize: 16)
+            : buttonstyleSmall
+                ? TextStyle(
+                    color: textColor, fontWeight: FontWeight.w600, fontSize: 16)
+                : TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16),
         shape: RoundedRectangleBorder(
           side: BorderSide(
-              color: buttonstyleSmall ? Colors.grey.shade200 : textcolor),
+              color: buttonCheck
+                  ? Colors.grey.shade300
+                  : buttonstyleSmall
+                      ? Colors.grey.shade300
+                      : textcolor),
           borderRadius: roundedRight
               ? BorderRadius.only(
                   topRight: Radius.circular(16),
@@ -1342,16 +1405,33 @@ class kAppButton extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.all(10.0),
         alignment: Alignment.center,
-        child: Text(
-          buttonText,
-          style: buttonstyleSmall
-              ? TextStyle(
-                  color: textcolor, fontWeight: FontWeight.w600, fontSize: 16)
-              : TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16),
-        ),
+        child: buttonCheck
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(buttonText,
+                      style: TextStyle(
+                          color: textColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16)),
+                  Icon(
+                    Icons.check,
+                    color: Colors.white,
+                  )
+                ],
+              )
+            : Text(
+                buttonText,
+                style: buttonstyleSmall
+                    ? TextStyle(
+                        color: textcolor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16)
+                    : TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16),
+              ),
       ),
     );
   }
@@ -1403,4 +1483,88 @@ Align kdontHaveAnAccount(BuildContext context) {
       ],
     ),
   );
+}
+
+class kFullScreenImageViewer extends StatelessWidget {
+  const kFullScreenImageViewer(this.url, {Key? key}) : super(key: key);
+  final url;
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: AppComponents().backIcon(() {
+                Get.back();
+              }),
+            ),
+            preferredSize: Size(MediaQuery.of(context).size.width, 70)),
+        body: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Hero(
+            tag: 'image',
+            child: Image.network(url.toString(),width: MediaQuery.of(context).size.width,),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class kFullScreenImageViewerList extends StatelessWidget {
+  const kFullScreenImageViewerList(this.url, {Key? key}) : super(key: key);
+  final List<dynamic> url;
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: AppComponents().backIcon(() {
+                Get.back();
+              }),
+            ),
+            preferredSize: Size(MediaQuery.of(context).size.width, 70)),
+        body: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: PageView.builder(
+            itemCount: url.length,
+            itemBuilder: (BuildContext context, index) {
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          (index + 1).toString() + "/" + url.length.toString(),
+                          style: k14styleblack,
+                        )
+                      ],
+                    ),
+                  ),
+                  AppComponents().sizedBox10,
+                  Expanded(
+                    child: Center(
+                      child: Hero(
+                        tag: 'image',
+                        child: Image.network(url[index].toString()),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
 }

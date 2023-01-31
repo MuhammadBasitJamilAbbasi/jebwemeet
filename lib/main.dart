@@ -1,9 +1,15 @@
+import 'dart:collection';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jabwemeet/Bindings/Bindings.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
+
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Splash_Screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/onboarding2.dart';
 
 import 'Services/notification/firebase_notifications/notification_service.dart';
@@ -28,10 +34,12 @@ class MyApp extends StatelessWidget {
         initialBinding: InitialBindings(),
         theme: ThemeData(
           primarySwatch: Colors.red,
+          scaffoldBackgroundColor: Colors.white,
+          backgroundColor: Colors.white,
           fontFamily: "Gotham-Font",
         ),
         debugShowCheckedModeBanner: false,
-        home: OnboardingScreen()
+        home: Splash_Screen(),
         // home: StripePaymentScreen(),
         /*=============================*/
         );

@@ -17,8 +17,10 @@ import 'package:jabwemeet/Utils/enums.dart';
 import 'package:jabwemeet/Utils/locations.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/Password_encyption.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/1.Complete_profile_screen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
+
 import 'package:jabwemeet/Views/Auth/Screens/Forgot_password_screen/Forgot_pass_Otp.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Forgot_password_screen/create_new_pass.dart';
 import 'package:jabwemeet/Views/Auth/Screens/LoginScreen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/Bismillah_Screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
@@ -210,21 +212,25 @@ class RegisterController extends GetxController {
       update();
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.value.text.trim(),
-          password: passwordController.value.text.trim());
+          password: passController.value.text.trim());
       try {
         Get.find<GetSTorageController>()
             .box
-            .write(kPassword, passwordController.text);
+            .write(kPassword, passController.text);
         final user = FirebaseAuth.instance.currentUser!;
         await user.sendEmailVerification();
         Get.off(() => Bismillah_Screen());
         await Future.delayed(Duration(seconds: 5));
       } catch (e) {
+        loading=false;
+        update();
         print(e);
         // snackBar(context, e.toString(), Colors.pink);
       }
       // await helpers.getName();
     } on FirebaseAuthException catch (e) {
+      loading=false;
+      update();
       // ignore: avoid_print
       print(e);
       String? errorMessage;
@@ -361,7 +367,51 @@ class RegisterController extends GetxController {
 
   int age = 0;
   RxString birthdayDate = 'Select date'.obs;
-  datePicker(BuildContext context) {
+  datePicker(BuildContext context) async{
+
+    final DateTime? date = await showDatePicker(
+        context: context,
+        initialDate: DateTime(2000),
+        firstDate: DateTime(1970),
+        initialDatePickerMode:DatePickerMode.year ,
+        lastDate: DateTime.now(),
+        builder: (context, child) {
+          return Theme(
+              data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              shadow: textcolor,
+              primary: textcolor, // <-- SEE HERE
+              onPrimary: Colors.white, // <-- SEE HERE
+              onSurface: textcolor, // <-- SEE HERE
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                primary: textcolor, // button text color
+              ),
+            ),
+          ),
+    child: child!,);});
+    DateTime currentDate = DateTime.now();
+    age = currentDate.year - date!.year;
+    update();
+    int month1 = currentDate.month;
+    int month2 = date.month;
+    if (month2 > month1) {
+      age--;
+      update();
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = date.day;
+      if (day2 > day1) {
+        age--;
+        update();
+      }
+    }
+    update();
+    print("age" + age.toString());
+  birthdayDate.value = DateFormat.yMMMd().format(date);
+  update();
+/*
     DatePicker.showDatePicker(context,
         showTitleActions: true, maxTime: DateTime.now(), onChanged: (date) {
       DateTime currentDate = DateTime.now();
@@ -385,11 +435,14 @@ class RegisterController extends GetxController {
     }, onConfirm: (date) {
       birthdayDate.value = DateFormat.yMMMd().format(date);
       update();
-    }, currentTime: DateTime.now(), locale: LocaleType.en);
+    }, currentTime: DateTime.now(), locale: LocaleType.en);*/
   }
 
 //add the user details while signup
+  bool loader=false;
   Future addUserdetails() async {
+    loader = true;
+    update();
     FirebaseAuth _fireAuth = FirebaseAuth.instance;
     User? user = _fireAuth.currentUser;
     UserModel userModel = UserModel(
@@ -429,7 +482,11 @@ class RegisterController extends GetxController {
         .collection('users')
         .doc(user.uid)
         .update(userModel.toMap())
-        .then((value) => Get.offAll(() => Complete_Profile1()));
+        .then((value) {
+      loader = false;
+      update();
+      Get.offAll(() => Complete_Profile1());
+    });
   }
 
   Future addUserdetailsSend() async {
@@ -497,7 +554,8 @@ class RegisterController extends GetxController {
           oldPassword = element.get("password");
           update();
         }
-      } else {
+      }
+      else {
         isResetLoad = false;
         update();
         snackBar(context, "Your Profile not found", Colors.deepOrange);
@@ -514,7 +572,6 @@ class RegisterController extends GetxController {
     log("Inside Phone Authentication sendOTP Service");
     log("Phone no is $phoneNumber");
     log("<=============================================>");
-    isResetLoad = true;
     update();
     try {
       log("Inside try Otp statement. ");
@@ -522,22 +579,21 @@ class RegisterController extends GetxController {
           phoneNumber: phoneNumber,
           verificationCompleted: (credentials) {},
           verificationFailed: (ex) {
-            snackBar(context, ex.code.toString(), Colors.deepOrange);
+            snackBar(context, ex.message.toString(), textcolor);
+            isResetLoad = false;
+            update();
             log(ex.code.toString());
           },
           codeSent: (verificationId, resendToken) {
             log("Resend Token is $resendToken");
             log("VerificationId is $verificationId");
-            snackBar(context, "OTP Sending...", Colors.pink);
             resend_Token = resendToken;
             update();
             verification_Id = verificationId;
             update();
             isResetLoad = false;
             update();
-            Get.to(() => ForgetPassword_OTP_view(
-                phoneNumber: number.toString(),
-                verificationId: verification_Id.toString()));
+            Get.to(() => ForgetPassword_OTP_view());
           },
           codeAutoRetrievalTimeout: (verificationId) {},
           timeout: Duration(seconds: 60));
@@ -550,7 +606,12 @@ class RegisterController extends GetxController {
       snackBar(context, e.code.toString(), Colors.deepOrange);
     }
   }
-
+  var otp;
+  getotpPassword(value){
+    otp=value;
+    update();
+    verifyOtp();
+  }
   bool isVerifyLoad = false;
   Future<bool> verifyOtp() async {
     log("<=============================================>");
@@ -560,26 +621,27 @@ class RegisterController extends GetxController {
     log("<=============================================>");
     bool verificationStatus = false;
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verification_Id, smsCode: otpController.value.text);
-
+        verificationId: verification_Id, smsCode: otp);
     isVerifyLoad = true;
     update();
     try {
       log("Inside try statement.");
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      if (userCredential.user != null) {
-        log("Firebase Verification Successful");
-        verificationStatus = true;
-        log("Verification Status inside if statement is: $verificationStatus");
-        await FirebaseAuth.instance.signOut();
-      } else {
-        isVerifyLoad = false;
-        update();
-        verificationStatus = false;
-        log("Verification Status inside else statement is: $verificationStatus");
-      }
-      log("Verification Status outside if else statement: $verificationStatus");
+          await FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
+            if (value.user != null) {
+              log("Firebase Verification Successful");
+              verificationStatus = true;
+              log("Verification Status inside if statement is: $verificationStatus");
+              await FirebaseAuth.instance.signOut();
+              Get.off(()=> CreateNewPasswordView());
+            } else {
+              isVerifyLoad = false;
+              update();
+              verificationStatus = false;
+              log("Verification Status inside else statement is: $verificationStatus");
+            }
+            log("Verification Status outside if else statement: $verificationStatus");
+            return verificationStatus;
+          });
       return verificationStatus;
     } on FirebaseAuthException catch (e) {
       isVerifyLoad = false;

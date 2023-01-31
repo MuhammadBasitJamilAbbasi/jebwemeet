@@ -54,7 +54,7 @@ class _TermsAndConiditonsState extends State<TermsAndConiditons> {
               ),
               Text(
                 "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
-                style: TextStyle(fontSize: 14, fontFamily: "Gilroy-Regular"),
+                style: TextStyle(fontSize: 14, ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(
@@ -87,7 +87,7 @@ class _TermsAndConiditonsState extends State<TermsAndConiditons> {
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderRadius: BorderRadius.circular(10.0),
                                     side: const BorderSide(
                                         color: Color(0xfFf1565A)),
                                   ),
@@ -97,7 +97,6 @@ class _TermsAndConiditonsState extends State<TermsAndConiditons> {
                               ),
                               child: const Text("Accept",
                                   style: TextStyle(
-                                      fontFamily: "Gilroy-Regular",
                                       fontSize: 16)),
                             ),
                           ),
@@ -112,7 +111,7 @@ class _TermsAndConiditonsState extends State<TermsAndConiditons> {
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderRadius: BorderRadius.circular(16.0),
                                     side:
                                         BorderSide(color: Colors.grey.shade400),
                                   ),
@@ -122,7 +121,7 @@ class _TermsAndConiditonsState extends State<TermsAndConiditons> {
                               ),
                               child: const Text("Decline",
                                   style: TextStyle(
-                                      fontFamily: "Gilroy-Regular",
+
                                       fontSize: 16)),
                             ),
                           ),
@@ -155,7 +154,7 @@ class _TermsAndConiditonsState extends State<TermsAndConiditons> {
                               Text(
                                 "I agree with Terms and Conditions",
                                 style: TextStyle(
-                                    fontFamily: "Gilroy-Regular", fontSize: 12),
+                                     fontSize: 12),
                               )
                             ],
                           ),
@@ -177,7 +176,7 @@ class _TermsAndConiditonsState extends State<TermsAndConiditons> {
                               Text(
                                 "I agree with Privacy Policy",
                                 style: TextStyle(
-                                    fontFamily: "Gilroy-Regular", fontSize: 12),
+                                     fontSize: 12),
                               )
                             ],
                           )
