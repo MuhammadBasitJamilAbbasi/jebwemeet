@@ -20,7 +20,7 @@ class Edit_Profile extends StatelessWidget {
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: GetBuilder<EditProfileController>(
             init: EditProfileController(userModel: userModel),
             builder: (controller) {
@@ -97,7 +97,7 @@ class Edit_Profile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "My Profile Blur",
+                          "Blur my profile",
                           style: k20styleblack,
                         ),
                         Switch(
@@ -207,11 +207,14 @@ class Edit_Profile extends StatelessWidget {
                   Center(
                     child: controller.isLoader
                         ? CircularProgressIndicator()
-                        : kCustomButton(
-                            label: "Save",
-                            ontap: () {
-                              controller.submitProfile(context);
-                            }),
+                        : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: kAppButton(
+                              buttonText: "Save",
+                              onButtonPressed: () {
+                                controller.submitProfile(context);
+                              }),
+                        ),
                   )
                 ],
               );

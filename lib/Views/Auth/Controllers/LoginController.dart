@@ -19,6 +19,7 @@ import 'package:jabwemeet/Views/Auth/Screens/Register_screns/Bismillah_Screen.da
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/otp_screen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
 
 class LoginController extends GetxController {
   TextEditingController email = TextEditingController();
@@ -145,7 +146,7 @@ class LoginController extends GetxController {
               if (value.get("imageUrl") == null) {
                 Get.offAll(() => Complete_Profile1());
               } else {
-                Get.offAll(() => Home());
+                Get.offAll(() => HomeSwapNew());
               }
             }
           } else {
@@ -266,12 +267,12 @@ class LoginController extends GetxController {
                   .box
                   .write(kPhone, user.phoneNumber.toString());
               if (value.get("age") == null) {
-                Get.off(() => Register_screen());
+                await addUserdetails().then((value) =>    Get.to(() => Register_screen()));
               } else {
                 if (value.get("imageUrl") == null) {
-                  Get.off(() => Complete_Profile1());
+                  Get.to(() => Complete_Profile1());
                 } else {
-                  Get.offAll(() => Home());
+                  Get.offAll(() => HomeSwapNew());
                 }
               }
             } else {
@@ -499,14 +500,14 @@ class LoginController extends GetxController {
               .collection('users')
               .doc(user.uid)
               .set(userModel.toMap())
-              .then((value) => Get.off(() => Register_screen()));
+              .then((value) => Get.to(() => Register_screen()));
         } else {
           if (value.get("age") == null) {
-            Get.off(() => Register_screen());
+            Get.to(() => Register_screen());
           } else if (value.get("imageUrl") == null) {
-            Get.off(() => Complete_Profile1());
+            Get.to(() => Complete_Profile1());
           } else {
-            Get.offAll(() => Home());
+            Get.offAll(() => HomeSwapNew());
           }
         }
       });

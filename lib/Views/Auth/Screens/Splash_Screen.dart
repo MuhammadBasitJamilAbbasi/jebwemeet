@@ -6,8 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Utils/constants.dart';
+import 'package:jabwemeet/Utils/locations.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/onboarding_controller.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
@@ -18,6 +20,8 @@ import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dar
 import 'package:jabwemeet/Views/Auth/Screens/onboarding2.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
+import 'package:profanity_filter/profanity_filter.dart';
 
 import '../../../Services/notification/local_notifications/local_notification_service.dart';
 import '../../Home/Screens/Likes/LIke.dart';
@@ -30,9 +34,24 @@ class Splash_Screen extends StatefulWidget {
 class _Splash_ScreenState extends State<Splash_Screen>
     with TickerProviderStateMixin {
   final getStorageController = Get.find<GetSTorageController>();
-
+  getlocation() async {
+    Position position = await GetLocation.getPermission().whenComplete(() {});
+    Get.find<GetSTorageController>()
+        .box
+        .write(P_LATITUDE, position.latitude.toString());
+    Get.find<GetSTorageController>()
+        .box
+        .write(P_LONGITUDE, position.longitude.toString());
+  }
+  final filter = ProfanityFilter();
+  final string="ass";
+  String badString = 'you are an dog';
   @override
   void initState() {
+    print("<===== Bad string========>");
+    print(filter.hasProfanity(string).toString());
+    String cleanString = filter.censor('you are an ass');
+    print(cleanString.toString());
     //Method called.
     getInitialMessage(context);
     /* If the app is open then the the notification occurs.
@@ -85,7 +104,7 @@ class _Splash_ScreenState extends State<Splash_Screen>
                         {Get.offAll(() => OnboardingScreen())}
                       else
                         {
-                          Get.offAll(() => Home())}
+                          Get.offAll(() => HomeSwapNew())}
                     }
                 }
               else
@@ -139,19 +158,17 @@ class _Splash_ScreenState extends State<Splash_Screen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(horizontal: 70),
-          color: textcolor,
-          child: Center(
-            child: Image.asset(
-              "assets/logonew.png",
-              height: 120,
-              color: Colors.white,
-              width: 150,
-            ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(horizontal: 70),
+        color: textcolor,
+        child: Center(
+          child: Image.asset(
+            "assets/logonew.png",
+            height: 120,
+            color: Colors.white,
+            width: 150,
           ),
         ),
       ),

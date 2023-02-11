@@ -186,7 +186,7 @@ class _Form_2State extends State<Form_2> {
                   onTap: () {
                     Get.to(() => Add_Hoobies());
                   },
-                  iconfil: controller.selectedList.length == 0
+                  iconfil: controller.getList.length == 0
                       ? Icons.arrow_forward_ios_outlined
                       : Icons.check,
                 ),
@@ -197,29 +197,27 @@ class _Form_2State extends State<Form_2> {
                   runSpacing: 10,
                   spacing: 10,
                   children:
-                  List.generate(controller.selectedList.length, (index) {
-                    final topic = controller.selectedList[index];
+                  List.generate(controller.getList.length, (index) {
+                    final topic = controller.getList[index];
                     return IntrinsicWidth(
                       child: InterestWidget(
-                        textstyle: controller.selectedList.contains(topic)
+                        textstyle: controller.getList.contains(topic)
                             ? k14styleWhite
                             : k14styleblack,
                         horizontalDistance: 15,
-                        borderColor: controller.selectedList.contains(topic)
+                        borderColor: controller.getList.contains(topic)
                             ? primarycolor
                             : Colors.grey.shade300,
-                        image: controller.selectedList[index].image,
-                        title: controller.selectedList[index].title,
+                       onlyTilte: true,
+                        title: controller.getList[index],
                         onTap: () {
-                          setState(() {
-                            if (!controller.selectedItems.contains(topic)) {
-                              controller.addTopics(topic);
-                            } else {
-                              controller.removeTopics(topic);
-                            }
-                          });
+                            // if (!controller.getList.contains(topic)) {
+                            //   controller.addTopics(topic);
+                            // } else {
+                            //   controller.removeTopics(topic);
+                            // }
                         },
-                        color: controller.selectedList.contains(topic)
+                        color: controller.getList.contains(topic)
                             ? primarycolor
                             : Colors.white,
                       ),

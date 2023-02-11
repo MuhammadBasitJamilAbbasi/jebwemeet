@@ -14,6 +14,7 @@ import 'package:jabwemeet/Models/Hobbies_Model.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
 
 class ProfileController extends GetxController {
   ScrollController scrollController = ScrollController();
@@ -251,18 +252,34 @@ class ProfileController extends GetxController {
   List<String> getList = [];
   //add topics to the list
   void addTopics(TopicsModel topics) {
-    selectedList.add(topics);
-    update();
-    selectedList.forEach((element) {
-      getList.add(element.title);
+    print("okay");
+    if(getList.isEmpty){
+      getList.add(topics.title);
       update();
-    });
+    }
+    else {
+      getList.forEach((element) {
+        if (element == topics.title) {
+          print("okay hai");
+        }
+        else {
+          getList.add(topics.title);
+          update();
+          print("okay 2");
+        }
+      });
+    }
+    update();
+    // selectedList.forEach((element) {
+    //   getList.add(element.title);
+    //   update();
+    // });
     print(getList);
   }
 
   //remove topics from the list
   void removeTopics(TopicsModel topics) {
-    selectedList.remove(topics);
+    getList.remove(topics.title);
     update();
   }
 
@@ -278,7 +295,7 @@ class ProfileController extends GetxController {
     update();
   }
 
-  List<XFile> filesImage = [];
+  List<XFile> filesImages = [];
   List<String>? multipleImagesDownloadLinks = [];
   Future<List<XFile>> pickImage(
       {ImageSource imageSource = ImageSource.gallery,
@@ -301,37 +318,38 @@ class ProfileController extends GetxController {
   Future<List<String>?> uploadImages(BuildContext context) async {
     multipleImagesDownloadLinks = [];
     try {
-      Reference ref;
-      for (var filesImage in filesImage) {
-        ref = FirebaseStorage.instance
-            .ref()
-            .child('profilePics')
-            .child(FirebaseAuth.instance.currentUser!.uid);
 
-        await ref.putFile(File(filesImage.path)).whenComplete(() async {
-          await ref.getDownloadURL().then((value) {
-            multipleImagesDownloadLinks!.add(value);
-            update();
-          });
-        });
+       for(var img in filesImages){
+         print(img);
+         print(img.path);
+         Reference ref;
+         ref = FirebaseStorage.instance
+             .ref()
+             .child('profilePics')
+             .child(img.path);
+         await ref.putFile(File(img.path)).whenComplete(() async {
+           await ref.getDownloadURL().then((value) {
+             multipleImagesDownloadLinks!.add(value);
+             debugPrint("multiple images are ${multipleImagesDownloadLinks.toString()}");
+
+           });
+         });
+       }
         log(" uploading images succesffully");
-
-        // snackBar(context, "Images uploaded Successfully", Colors.pink);
-      }
     } catch (e) {
       log(e.toString());
       log("Error in uploading images");
     }
     update();
-    debugPrint("multiple images are ${multipleImagesDownloadLinks}");
+    debugPrint("multiple images are ${multipleImagesDownloadLinks.toString()}");
     return multipleImagesDownloadLinks;
   }
 
   submitProfile(BuildContext context) async {
     if (selectedImagePath.toString() == "") {
       snackBar(context, "Please Select your image", Colors.pink);
-    } else if (multipleImagesDownloadLinks!.isEmpty) {
-      snackBar(context, "Please Add your images", Colors.pink);
+    } else if (multipleImagesDownloadLinks!.length<5) {
+      snackBar(context, "Please Add your 5 images in step 1", Colors.pink);
     } else if (Get.find<GetSTorageController>().box.read(kAbout).toString() ==
             "" ||
         Get.find<GetSTorageController>().box.read(kAbout).toString() ==
@@ -429,7 +447,7 @@ class ProfileController extends GetxController {
             "work": Get.find<GetSTorageController>().box.read(kWork).toString(),
             "childerns":
                 Get.find<GetSTorageController>().box.read(kchildern).toString()
-          }).then((value) => Get.offAll(() => Home()));
+          }).then((value) => Get.offAll(() => HomeSwapNew()));
         });
 
         isLoader = false;

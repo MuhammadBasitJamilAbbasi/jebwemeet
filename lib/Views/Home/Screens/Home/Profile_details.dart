@@ -1,4 +1,5 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +8,16 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Utils/locations.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
+import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Profile/Edit_Profile.dart';
 import 'package:readmore/readmore.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfileDetails extends StatelessWidget {
   final image;
+  final model;
+  final propertiesindex;
   final name;
   final age;
   final work;
@@ -26,6 +31,7 @@ class ProfileDetails extends StatelessWidget {
   final latitude;
   final longitude;
   final education;
+  final blur;
   final jobtitle;
   final industry;
   final about;
@@ -35,9 +41,12 @@ class ProfileDetails extends StatelessWidget {
     required this.name,
     required this.martial_status,
     required this.work,
+    required this.blur,
     required this.email,
     required this.address,
     required this.age,
+    required this.propertiesindex,
+    required this.model,
     required this.height,
     required this.interests,
     required this.latitude,
@@ -64,8 +73,8 @@ class ProfileDetails extends StatelessWidget {
     double datainMeter = GetLocation.DistanceInMeters(
         double.parse(latitude.toString()),
         double.parse(longitude.toString()),
-        double.parse(Get.find<GetSTorageController>().box.read(P_LATITUDE)),
-        double.parse(Get.find<GetSTorageController>().box.read(P_LONGITUDE)),
+        double.parse(Get.find<Home_page_controller>().userModel.latitude.toString()),
+        double.parse(Get.find<Home_page_controller>().userModel.longitude.toString()),
         );
     double kilomter=datainMeter/1000;
     print("datainMeter: " + datainMeter.toString());
@@ -78,15 +87,38 @@ class ProfileDetails extends StatelessWidget {
               onTap: (){
                 Get.to(()=> kFullScreenImageViewer(image));
               },
-              child: CachedNetworkImage(
+              child: 
+              CachedNetworkImage(
                 imageUrl: image,
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 fit: BoxFit.cover,
                 errorWidget: (context, url, error) => Icon(Icons.error),
-                placeholder: (context, url) => CircularProgressIndicator(),
-
+                placeholder: (context, url) => Skeleton(isLoading: true, skeleton: SkeletonAvatar(style: SkeletonAvatarStyle(shape: BoxShape.rectangle,)), child: Text("")),
               ),
+            ),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: blur==true? BlurryContainer(
+                blur: 20,
+                height: MediaQuery.of(context).size.height,
+                elevation: 0,
+                borderRadius:
+                BorderRadius
+                    .circular(
+                    0),
+                color: Colors
+                    .black
+                    .withOpacity(
+                    0.5),
+                child: Text(""),
+            ) : Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Text("")),
             ),
             Positioned(
               top: MediaQuery.of(context).size.height/2,
@@ -315,8 +347,9 @@ class ProfileDetails extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
+                      GestureDetector(
                         onTap: (){
+                          Get.find<Home_page_controller>().ignorswap(opponent_user: model).then((value) => Get.back());
                         },
                         child: Container(
                             height: 50,
@@ -341,51 +374,61 @@ class ProfileDetails extends StatelessWidget {
                               width: 15,
                             )),
                       ),
-                      Container(
-                          height: 70,
-                          width: 70,
-                          margin: EdgeInsets.only(bottom: 20),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xFFE94057),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.red.shade200.withOpacity(0.5),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset:
-                                      Offset(0, 4), // changes position of shadow
-                                ),
-                              ]),
-                          child: Image.asset(
-                            "assets/heartnew.png",
-                            height: 25,
-                            width: 30,
-                            fit: BoxFit.fill,
-                          )),
-                      Container(
-                          height: 50,
-                          width: 50,
-                          margin: EdgeInsets.only(bottom: 20),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade300.withOpacity(0.5),
-                                  spreadRadius: 3,
-                                  blurRadius: 12,
-                                  offset:
-                                      Offset(0, 10), // changes position of shadow
-                                ),
-                              ]),
-                          child: Image.asset(
-                            "assets/starnew.png",
-                            height: 20,
-                            width: 20,
-                          )),
+                      GestureDetector(
+                        onTap: (){
+                          Get.find<Home_page_controller>().likeswap(context,opponent_user: model).then((value) => Get.back());
+                        },
+                        child: Container(
+                            height: 70,
+                            width: 70,
+                            margin: EdgeInsets.only(bottom: 20),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xFFE94057),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.red.shade200.withOpacity(0.5),
+                                    spreadRadius: 5,
+                                    blurRadius: 10,
+                                    offset:
+                                        Offset(0, 4), // changes position of shadow
+                                  ),
+                                ]),
+                            child: Image.asset(
+                              "assets/heartnew.png",
+                              height: 25,
+                              width: 30,
+                              fit: BoxFit.fill,
+                            )),
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          Get.find<Home_page_controller>().addtofavourite(opponent_user: model).then((value) => Get.back());
+                        },
+                        child: Container(
+                            height: 50,
+                            width: 50,
+                            margin: EdgeInsets.only(bottom: 20),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade300.withOpacity(0.5),
+                                    spreadRadius: 3,
+                                    blurRadius: 12,
+                                    offset:
+                                        Offset(0, 10), // changes position of shadow
+                                  ),
+                                ]),
+                            child: Image.asset(
+                              "assets/starnew.png",
+                              height: 20,
+                              width: 20,
+                            )),
+                      ),
                     ],
                   ),
                 ],

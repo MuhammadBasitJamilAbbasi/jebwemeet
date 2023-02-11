@@ -7,12 +7,14 @@ class InterestWidget extends StatelessWidget {
   final VoidCallback? onTap;
   final double horizontalDistance;
   final TextStyle? textstyle;
+  bool onlyTilte;
   final Color borderColor;
-  const InterestWidget({
+   InterestWidget({
     Key? key,
     this.textstyle,
-    required this.image,
+     this.image="",
     this.title,
+    this.onlyTilte=false,
     this.onTap,
     required this.horizontalDistance,
     required this.color,
@@ -33,7 +35,7 @@ class InterestWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(image),
+           onlyTilte? Text(""): Text(image) ,
             SizedBox(width: 5),
             Text(
               title!,

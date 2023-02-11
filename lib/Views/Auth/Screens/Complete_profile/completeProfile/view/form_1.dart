@@ -268,7 +268,7 @@ class Form1 extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "My Profile Blur",
+                      "Blur my profile",
                       style: k16styleblack,
                     ),
                     Switch(
@@ -291,10 +291,17 @@ class Form1 extends StatelessWidget {
               ),
               InkWell(
                 onTap: () async {
-                  controller.filesImage =
+                  controller.filesImages.clear();
+                  controller.multipleImagesDownloadLinks!.clear();
+                  controller.filesImages =
                   await controller.pickImage(multiple: true);
                   controller.update();
-                  await controller.uploadImages(context);
+                  if(controller.filesImages.length<5){
+                    snackBar(context, "Please Select more than 5 images", Colors.pink);
+                  }
+                  else {
+                    await controller.uploadImages(context);
+                  }
                 },
                 child: Container(
                   height: 210,
@@ -311,7 +318,7 @@ class Form1 extends StatelessWidget {
                           color: textcolor,
                           shape: Shape.box,
                         ),
-                        child: controller.filesImage.length == 0
+                        child: controller.filesImages.length == 0
                             ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment:
@@ -325,7 +332,7 @@ class Form1 extends StatelessWidget {
                             ),
                             AppComponents().sizedBox10,
                             Text(
-                              "Tap to add more photos",
+                              "Tap to add more 5 photos",
                               style: k14styleblack,
                             )
                           ],
@@ -338,7 +345,7 @@ class Form1 extends StatelessWidget {
                           crossAxisSpacing: 10,
                           padding:
                           EdgeInsets.symmetric(horizontal: 30),
-                          children: controller.filesImage
+                          children: controller.filesImages
                               .map(
                                 (e) => SizedBox(
                               width: double.infinity,

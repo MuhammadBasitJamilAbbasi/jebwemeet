@@ -982,7 +982,7 @@ class buildProfileDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 47,
+        height: 56,
         margin: EdgeInsets.symmetric(horizontal: 30),
         child: DropdownButtonHideUnderline(
           child: DropdownButton2(
@@ -1029,8 +1029,9 @@ class buildProfileDropDown extends StatelessWidget {
             ),
             offset: Offset(0, -20),
             buttonDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40),
-              color: Color(0xFFF4F0EE),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.grey.shade300),
+              color: Colors.white,
 // gradient: LinearGradient(
 //     begin: Alignment.topLeft,
 //     end: Alignment.bottomRight,
@@ -1042,7 +1043,8 @@ class buildProfileDropDown extends StatelessWidget {
             itemHeight: 47,
             itemPadding: const EdgeInsets.only(left: 14, right: 14),
             dropdownDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4), color: Color(0xFFF4F0EE)
+border: Border.all(color: Colors.grey.shade200,width: 0.3),
+color: Colors.white,
 // gradient: LinearGradient(
 //     begin: Alignment.topLeft,
 //     end: Alignment.bottomRight,

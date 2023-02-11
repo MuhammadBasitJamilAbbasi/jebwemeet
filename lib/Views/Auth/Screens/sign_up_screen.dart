@@ -147,20 +147,25 @@ class SignUpScreen extends StatelessWidget {
                               ? Center(
                                   child: CircularProgressIndicator(),
                                 )
-                              : Container(
-                                  width: 64,
-                                  height: 64,
-                                  padding: EdgeInsets.all(18),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border:
-                                        Border.all(color: Colors.grey.shade200),
-                                    borderRadius: BorderRadius.circular(15),
+                              : InkWell(
+                            onTap: (){
+                              controller.signInwithGoogle();
+                            },
+                                child: Container(
+                                    width: 64,
+                                    height: 64,
+                                    padding: EdgeInsets.all(18),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border:
+                                          Border.all(color: Colors.grey.shade200),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Image.asset(
+                                      "assets/google.png",
+                                    ),
                                   ),
-                                  child: Image.asset(
-                                    "assets/google.png",
-                                  ),
-                                );
+                              );
                         }),
                         SizedBox(
                           width: 20,

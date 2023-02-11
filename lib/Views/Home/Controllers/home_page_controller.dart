@@ -10,6 +10,7 @@ import 'package:jabwemeet/Models/chatroom.model.dart';
 import 'package:jabwemeet/Models/likes_model.dart';
 import 'package:jabwemeet/Utils/locations.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/match_screen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Likes/LIke.dart';
 import 'package:uuid/uuid.dart';
 
@@ -21,7 +22,7 @@ class Home_page_controller extends GetxController {
     // TODO: implement onInit
     super.onInit();
     await getUserDetails();
-    await getData();
+    // await getData();
   }
 
   int selectedIndex = 0;
@@ -278,11 +279,15 @@ class Home_page_controller extends GetxController {
   }) async {
     LikesModel likesModel = LikesModel();
     User? user = FirebaseAuth.instance.currentUser;
+    QuerySnapshot likelist = await FirebaseFirestore.instance
+        .collection('likes')
+        .get();
     QuerySnapshot snapshotData = await FirebaseFirestore.instance
         .collection('likes')
         .where("isSender", isEqualTo: opponent_id)
         .where("isReceiver", isEqualTo: user!.uid)
         .get();
+
     if (snapshotData.docs.length > 0) {
       QuerySnapshot like = await FirebaseFirestore.instance
           .collection('likes')
@@ -299,7 +304,7 @@ class Home_page_controller extends GetxController {
               .update({
             'participants.${user.uid}': false,
           });
-          snackBar(context, "You unlike the profile", Colors.pink);
+          // snackBar(context, "You unlike the profile", Colors.pink);
         });
       } else {
         QuerySnapshot like = await FirebaseFirestore.instance
@@ -309,7 +314,6 @@ class Home_page_controller extends GetxController {
             .where('participants.${user.uid}', isEqualTo: false)
             .get();
         if (like.docs.length > 0) {
-          log("unlike");
           like.docs.forEach((element) async {
             await FirebaseFirestore.instance
                 .collection('likes')
@@ -317,12 +321,19 @@ class Home_page_controller extends GetxController {
                 .update({
               'participants.${user.uid}': true,
             });
-            Get.to(() => LikesView());
+            Get.to(() => MatchScreen(
+              opponent_image: isRecImage ,
+              opponent_id: opponent_id,
+              opponent_name: isRecName,
+              userid:user.uid ,
+              user_image: isSenderImage,
+              username: isSenderName,));
             /*Code Added By Kamran*/
+            print("First");
             bool isNotificationSet = await NotificationApiHitting()
                 .callOnFcmApiSendPushNotifications(
               fcmToken: fcm_token,
-              jwm_message: "Your Profile was Liked.",
+              jwm_message: "$isSenderName like your profile.",
             );
             if (isNotificationSet) {
               log("Notification Sent:");
@@ -330,7 +341,7 @@ class Home_page_controller extends GetxController {
               log("Notification Not Sent:");
             }
             /*=========================*/
-            snackBar(context, "You like the profile", Colors.pink);
+            // snackBar(context, "You like the profile", Colors.pink);
           });
         } else {
           QuerySnapshot likeda = await FirebaseFirestore.instance
@@ -348,7 +359,7 @@ class Home_page_controller extends GetxController {
                   .update({
                 'participants.${user.uid}': false,
               });
-              snackBar(context, "You unlike the profile", Colors.pink);
+              // snackBar(context, "You unlike the profile", Colors.pink);
             });
           } else {
             QuerySnapshot likeda = await FirebaseFirestore.instance
@@ -365,8 +376,24 @@ class Home_page_controller extends GetxController {
                   .update({
                 'participants.${user.uid}': true,
               });
-              Get.to(() => LikesView());
-              snackBar(context, "You like the profile", Colors.pink);
+              Get.to(() => MatchScreen(
+                opponent_image: isRecImage ,
+                opponent_id: opponent_id,
+                opponent_name: isRecName,
+                userid:user.uid ,
+                user_image: isSenderImage,
+                username: isSenderName,));
+              print("second");// snackBar(context, "You like the profile", Colors.pink);
+              bool isNotificationSet = await NotificationApiHitting()
+                  .callOnFcmApiSendPushNotifications(
+                fcmToken: fcm_token,
+                jwm_message: "$isSenderName like your profile.",
+              );
+              if (isNotificationSet) {
+                log("Notification Sent:");
+              } else {
+                log("Notification Not Sent:");
+              }
             });
           }
         }
@@ -378,7 +405,8 @@ class Home_page_controller extends GetxController {
       likesModel = exisitingLikesdata;
 
       log('you have already a likes data');
-    } else {
+    }
+    else {
       QuerySnapshot snapshotData = await FirebaseFirestore.instance
           .collection('likes')
           .where("isSender", isEqualTo: user.uid)
@@ -400,7 +428,7 @@ class Home_page_controller extends GetxController {
                 .update({
               'participants.${user.uid}': false,
             });
-            snackBar(context, "You unlike the profile", Colors.pink);
+            // snackBar(context, "You unlike the profile", Colors.pink);
           });
         } else {
           QuerySnapshot like = await FirebaseFirestore.instance
@@ -410,7 +438,7 @@ class Home_page_controller extends GetxController {
               .where('participants.${user.uid}', isEqualTo: false)
               .get();
           if (like.docs.length > 0) {
-            log("unlike");
+            log("true");
             like.docs.forEach((element) async {
               await FirebaseFirestore.instance
                   .collection('likes')
@@ -418,8 +446,26 @@ class Home_page_controller extends GetxController {
                   .update({
                 'participants.${user.uid}': true,
               });
-              Get.to(() => LikesView());
-              snackBar(context, "You like the profile", Colors.pink);
+              Get.to(() =>
+                  MatchScreen(
+                    opponent_image: isRecImage,
+                    opponent_id: opponent_id,
+                    opponent_name: isRecName,
+                    userid: user.uid,
+                    user_image: isSenderImage,
+                    username: isSenderName,));
+              // snackBar(context, "You like the profile", Colors.pink);
+              print("Third");
+              bool isNotificationSet = await NotificationApiHitting()
+                  .callOnFcmApiSendPushNotifications(
+                fcmToken: fcm_token,
+                jwm_message: "$isSenderName like your profile.",
+              );
+              if (isNotificationSet) {
+                log("Notification Sent:");
+              } else {
+                log("Notification Not Sent:");
+              }
             });
           } else {
             QuerySnapshot likeda = await FirebaseFirestore.instance
@@ -437,7 +483,7 @@ class Home_page_controller extends GetxController {
                     .update({
                   'participants.${user.uid}': false,
                 });
-                snackBar(context, "You unlike the profile", Colors.pink);
+                // snackBar(context, "You unlike the profile", Colors.pink);
               });
             } else {
               QuerySnapshot likeda = await FirebaseFirestore.instance
@@ -454,21 +500,20 @@ class Home_page_controller extends GetxController {
                     .update({
                   'participants.${user.uid}': true,
                 });
-                snackBar(context, "You like the profile", Colors.pink);
+                // snackBar(context, "You like the profile", Colors.pink);
               });
             }
           }
         }
         var likesData = snapshotData.docs[0].data();
         LikesModel exisitingLikesdata =
-            LikesModel.fromMap(likesData as Map<String, dynamic>);
-
+        LikesModel.fromMap(likesData as Map<String, dynamic>);
         likesModel = exisitingLikesdata;
-
         log('you have already a likes data');
-      } else {
+      }
+      else {
         LikesModel newLikeCollection = LikesModel(
-            likeId: Uuid().v1(),
+            likeId: (likelist.size+1).toString(),
             participants: {
               user.uid: true,
               opponent_id: false,
@@ -485,10 +530,109 @@ class Home_page_controller extends GetxController {
             .set(newLikeCollection.toMap());
         likesModel = newLikeCollection;
         log('likes created');
-        Get.to(() => LikesView());
+        // Get.to(() => LikesView());
+        print("Fourth");
+        bool isNotificationSet = await NotificationApiHitting()
+            .callOnFcmApiSendPushNotifications(
+          fcmToken: fcm_token,
+          jwm_message: "$isSenderName like your profile.",
+        );
+        if (isNotificationSet) {
+          log("Notification Sent:");
+        } else {
+          log("Notification Not Sent:");
+        }
       }
-
       return likesModel;
     }
   }
+
+  Future ignorswap({opponent_user,})async{
+    print(userList
+        .length
+        .toString());
+    print(
+        "Remove tap");
+    await FirebaseFirestore
+        .instance
+        .collection(
+        "users")
+        .doc(userModel
+        .uid)
+        .collection(
+        "visits")
+        .doc(opponent_user
+        .uid
+        .toString())
+        .set({
+      "uid": opponent_user
+          .uid
+          .toString()
+    });
+  }
+  Future addtofavourite({required UserModel opponent_user}) async{
+    await FirebaseFirestore
+        .instance
+        .collection(
+        "users")
+        .doc(userModel
+        .uid)
+        .collection(
+        "favourites")
+        .doc(opponent_user
+        .uid
+        .toString())
+        .set({
+      "uid": opponent_user
+          .uid
+          .toString(),
+      "image": opponent_user.imageUrl,
+      "name":opponent_user.name
+
+    }).then((value) => print("Add to favourite"));
+  }
+  Future removefavourite({ opponent_user}) async{
+    await FirebaseFirestore
+        .instance
+        .collection(
+        "users")
+        .doc(userModel
+        .uid)
+        .collection(
+        "favourites")
+        .doc(opponent_user)
+        .delete();
+  }
+  Future likeswap(BuildContext context,{opponent_user}) async{
+    log("Like TAp");
+     await
+        getLikes(
+        opponent_id: opponent_user
+            .uid
+            .toString(),
+        fcm_token: opponent_user
+            .fcm_token
+            .toString(),
+        context:
+        context,
+        isSenderImage: userModel
+            .imageUrl
+            .toString(),
+        isSenderName: userModel
+            .name
+            .toString(),
+        isRecImage: opponent_user
+            .imageUrl
+            .toString(),
+        isRecName: opponent_user
+            .name
+            .toString())
+        .then(
+            (value) async {
+          print("Remove tap");
+         ignorswap(opponent_user:opponent_user );
+         // getData();
+        });
+  }
+
 }

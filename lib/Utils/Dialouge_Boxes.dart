@@ -61,11 +61,18 @@ class Dialouge_Box {
         builder: (BuildContext context) {
           return AlertDialog(
             content: Container(
-              height: 140,
+              height: 180,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Do you want to Exit the App?"),
+                  Image.asset(
+                    "assets/appicon.png",
+                    height: 45,
+                    width: 45,
+                  ),
+                  SizedBox(height: 20),
+                  Center(child: Text("Do you want to Exit the App?")),
                   SizedBox(height: 20),
                   Row(
                     children: [
@@ -77,8 +84,10 @@ class Dialouge_Box {
                             // Get.off(() => HomePage());
                             // Get.offUntil( GetPageRoute(page: () => HomePage()) , (route) => route.settings.name =="/homeScreen" );
                           },
-                          child: Text("Yes"),
-                          style: ElevatedButton.styleFrom(primary: Colors.red),
+                          child: Container(
+                              height: 45,
+                              child: Center(child: Text("Yes"))),
+                          style: ElevatedButton.styleFrom(primary: textcolor),
                         ),
                       ),
                       SizedBox(width: 15),
@@ -89,9 +98,11 @@ class Dialouge_Box {
                           Navigator.of(context).pop();
                         },
                         child:
-                            Text("No", style: TextStyle(color: Colors.white)),
+                            Container(
+                                height:45,
+                                child: Center(child: Text("No", style: TextStyle(color: Colors.white)))),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
+                          primary: textcolor,
                         ),
                       ))
                     ],

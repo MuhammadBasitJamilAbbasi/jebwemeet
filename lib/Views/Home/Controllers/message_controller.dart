@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Models/chatroom.model.dart';
 import 'package:jabwemeet/Models/messaging.model/messages.model.dart';
 import 'package:jabwemeet/Models/messaging.model/personmessage.model.dart';
@@ -156,8 +157,6 @@ class MessageController extends GetxController {
       log('This is our uploading image task : ${percentage.toString()}');
     });
 
-    ;
-
     TaskSnapshot taskSnapshot = await uploadTask;
     downloadUrl = await taskSnapshot.ref.getDownloadURL();
     listenEvent.cancel();
@@ -165,7 +164,28 @@ class MessageController extends GetxController {
     log(downloadUrl!);
 
     //upload the data
+    Future addtoblock({required UserModel opponent_user}) async{
+      await FirebaseFirestore
+          .instance
+          .collection(
+          "users")
+          .doc(user
+          .uid)
+          .collection(
+          "block")
+          .doc(opponent_user
+          .uid
+          .toString())
+          .set({
+        "uid": opponent_user
+            .uid
+            .toString(),
+        "image": opponent_user.imageUrl,
+        "name":opponent_user.name
+      }).then((value) =>
+          print("Add to Block"));
 
+    }
     MessageModel messagesModel = MessageModel(
       sender: user.uid,
       message: downloadUrl,

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 
 class GetMessageList extends StatelessWidget {
@@ -20,7 +21,7 @@ class GetMessageList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: InkWell(
         onTap: ontap,
         child: SizedBox(
@@ -48,9 +49,8 @@ class GetMessageList extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          name,
-                          style: body4StyleHeight,
-                          overflow: TextOverflow.ellipsis,
+                          name.capitalizeFirst.toString(),
+                          style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 14),
                         ),
                         Spacer(),
                         Text(

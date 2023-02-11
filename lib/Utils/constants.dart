@@ -57,7 +57,7 @@ TextStyle k12styleWhite =
 TextStyle k16styleWhite =
     TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white);
 TextStyle k18styleWhite =
-    TextStyle(fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white);
+    TextStyle(fontWeight: FontWeight.w800, fontSize: 18, color: Colors.white);
 TextStyle k12styleblack =
     TextStyle(fontSize: 12, color: Colors.black,);
 TextStyle k14styleblack =
@@ -78,7 +78,7 @@ final secondaryFontStyleWeight = TextStyle(
   color: Colors.black,
 );
 final unreadStyle = TextStyle(
-  fontWeight: FontWeight.w900,
+  fontWeight: FontWeight.w600,
   height: 1.5,
   fontSize: 14,
   color: Colors.black,
@@ -429,6 +429,7 @@ List<String>? kAgeList = [
 ];
 List<String>? kLanguageList = [
   "Urdu",
+  "English",
   "Punjabi",
   "Saraiki",
   "Pashto",

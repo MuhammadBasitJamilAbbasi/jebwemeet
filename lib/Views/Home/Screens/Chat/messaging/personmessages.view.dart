@@ -11,6 +11,7 @@ import 'package:jabwemeet/Models/messaging.model/messages.model.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Home/Controllers/message_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Chat/messaging.widgets/load.image.dart';
+import 'package:profanity_filter/profanity_filter.dart';
 import 'package:uuid/uuid.dart';
 
 final bucket = PageStorageBucket();
@@ -50,51 +51,20 @@ class _PersonMessageViewState extends State<PersonMessageView> {
   void dispose() {
     super.dispose();
   }
-
+  final GlobalKey _menuKey = GlobalKey();
+  final filter = ProfanityFilter();
   @override
   Widget build(BuildContext context) {
     final messageController = Get.find<MessageController>();
-    return Scaffold(
-        // bottomNavigationBar: kCustomBottomNavBar(index: 2,),
-        appBar: getAppbar(),
-        body: PageStorage(
+    return
+        PageStorage(
           bucket: bucket,
           child: getBody(
             messageController,
             context,
-          ),
         ));
   }
 
-//Appbar
-  PreferredSizeWidget getAppbar() {
-    return AppBar(
-      automaticallyImplyLeading: true,
-      iconTheme: IconThemeData(color: Colors.black),
-      title: Row(
-        children: [
-          widget.profilePicture == ''
-              ? CircleAvatar(
-                  backgroundColor: kBaseGrey,
-                  backgroundImage: AssetImage('Assets/images/user.png'))
-              : CircleAvatar(
-                  radius: 20,
-                  backgroundImage:
-                      CachedNetworkImageProvider(widget.profilePicture),
-                ),
-          SizedBox(
-            width: 10,
-          ),
-          Text(
-            widget.name,
-            style: k14styleblack,
-          ),
-        ],
-      ),
-      backgroundColor: Colors.white,
-      elevation: 0,
-    );
-  }
 
 //body
   Widget getBody(
@@ -102,7 +72,16 @@ class _PersonMessageViewState extends State<PersonMessageView> {
     BuildContext context,
   ) {
     UserModel? userModel;
-
+    final button = PopupMenuButton(
+        key: _menuKey,
+        itemBuilder: (_) => const<PopupMenuItem<String>>[
+          // PopupMenuItem<String>(
+          //     child: Text('Block'), value: 'Block'),
+          // PopupMenuItem<String>(
+          //     child: Text('Lion'), value: 'Lion'),
+        ],
+        onSelected: (_) {
+        });
     return StreamBuilder<DocumentSnapshot>(
         stream: messageController.getMesssages,
         builder: (context, typingSnap) {
@@ -120,571 +99,380 @@ class _PersonMessageViewState extends State<PersonMessageView> {
 
               messageController.postsIds.clear();
               messageController.communityIds.clear();
-              return Container(
-                  color: Colors.white,
-                  height: MediaQuery.of(context).size.height,
-                  child: ContainedTabBarView(
-                    tabBarProperties: TabBarProperties(
-                      unselectedLabelColor: Colors.grey,
-                      labelColor: Colors.black,
-                      indicatorColor: Colors.black,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      indicatorWeight: 2,
-                      labelStyle: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500),
-                      unselectedLabelStyle: TextStyle(
-                          fontSize: 15,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500),
-                      height: 50,
+              return  Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AppComponents().sizedBox20,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Row(
+                      children: [
+                        widget.profilePicture == ''
+                            ? CircleAvatar(
+                            backgroundColor: kBaseGrey,
+                            backgroundImage: AssetImage('Assets/images/user.png'))
+                            : CircleAvatar(
+                          radius: 20,
+                          backgroundImage:
+                          CachedNetworkImageProvider(widget.profilePicture),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          widget.name.capitalizeFirst.toString(),
+                          style: TextStyle(
+                            color: Colors.black,fontWeight: FontWeight.w600,fontSize: 23,
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: (){
+                              dynamic state = _menuKey.currentState;
+                              state.showButtonMenu();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  height: 45,
+                                  width: 45,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Colors.white,
+                                      border: Border.all(color: Colors.grey.shade300)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(1),
+                                    child: button,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    tabs: [
-                      Text('Chat'),
-                      Text('Profile'),
-                    ],
-                    views: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                              child: StreamBuilder<QuerySnapshot?>(
-                                  stream: Get.find<MessageController>()
-                                      .listeningForMessages(
-                                          widget.chatRoomModel),
-                                  builder: (
-                                    context,
-                                    listenForChat,
-                                  ) {
-                                    if (!listenForChat.hasData) {
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    } else if (!listenForChat.hasData ||
-                                        listenForChat.hasError ||
-                                        listenForChat.data == null) {
-                                      return Center(
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 68.0),
-                                          child: Text(
-                                            "No Messages Yet...",
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.black),
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0, horizontal: 20),
-                                      child: SingleChildScrollView(
-                                        key: PageStorageKey<String>(
-                                            'messagesScrollKey'),
-                                        controller:
-                                            messageController.newMessageScroll,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            listenForChat == null
-                                                ? SizedBox()
-                                                : ListView.builder(
-                                                    shrinkWrap: true,
-                                                    physics:
-                                                        BouncingScrollPhysics(),
-                                                    padding: EdgeInsets.zero,
-                                                    itemCount: listenForChat
-                                                        .data!.docs.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      MessageModel
-                                                          currentMessage =
-                                                          MessageModel.fromMap(
-                                                              listenForChat
-                                                                      .data!
-                                                                      .docs[index]
-                                                                      .data()
-                                                                  as Map<String,
-                                                                      dynamic>);
-                                                      return currentMessage
-                                                                  .sender !=
-                                                              widget.uid
-                                                          ? Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                vertical: 10,
-                                                              ),
-                                                              child: Align(
-                                                                alignment: Alignment
-                                                                    .bottomRight,
-                                                                child: IntrinsicWidth(
-                                                                    child: Container(
-                                                                        alignment: Alignment.center,
-                                                                        padding: Uri.parse(currentMessage.message.toString()).isAbsolute ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                                                        decoration: BoxDecoration(color: Uri.parse(currentMessage.message.toString()).isAbsolute ? Colors.transparent : butoncolor, borderRadius: Uri.parse(currentMessage.message.toString()).isAbsolute ? BorderRadius.circular(10) : BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomLeft: Radius.circular(15), bottomRight: Radius.circular(0))),
-                                                                        child: Text(
-                                                                          currentMessage
-                                                                              .message
-                                                                              .toString(),
-                                                                          style: TextStyle(
-                                                                              fontWeight: FontWeight.w400,
-                                                                              fontSize: 12,
-                                                                              color: Colors.white),
-                                                                        )
-                                                                        //bodyStyle4KPrimary,
-                                                                        )),
-                                                              ),
-                                                            )
-                                                          : Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                vertical: 5,
-                                                              ),
-                                                              child: Align(
-                                                                alignment: Alignment
-                                                                    .bottomLeft,
-                                                                child:
-                                                                    IntrinsicWidth(
-                                                                  child:
-                                                                      Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    padding: EdgeInsets.symmetric(
-                                                                        horizontal:
-                                                                            20,
-                                                                        vertical:
-                                                                            10),
-                                                                    decoration: BoxDecoration(
-                                                                        color: Uri.parse(currentMessage.message.toString()).isAbsolute
-                                                                            ? Colors
-                                                                                .transparent
-                                                                            : Colors
-                                                                                .grey.shade200,
-                                                                        borderRadius: Uri.parse(currentMessage.message.toString()).isAbsolute
-                                                                            ? BorderRadius.circular(
-                                                                                4)
-                                                                            : BorderRadius.only(
-                                                                                topLeft: Radius.circular(15),
-                                                                                topRight: Radius.circular(15),
-                                                                                bottomLeft: Radius.circular(0),
-                                                                                bottomRight: Radius.circular(15))),
-                                                                    child: Text(currentMessage
-                                                                        .message
-                                                                        .toString()),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
-                                                    }),
-                                            LoadImage(),
-                                            typingList!.length == 2
-                                                ? Align(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 5,
-                                                              top: 15,
-                                                              bottom: 15),
-                                                      child: Text("Typing..."),
-                                                    ),
-                                                  )
-                                                : typingList.length == 1 &&
-                                                        typingList.contains(
-                                                                FirebaseAuth
-                                                                    .instance
-                                                                    .currentUser!
-                                                                    .uid) ==
-                                                            false
-                                                    ? Align(
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 5,
-                                                                  top: 15,
-                                                                  bottom: 15),
-                                                          child:
-                                                              Text("Typing..."),
-                                                        ),
+                  ),
+                  AppComponents().sizedBox10,
+                  Divider(),
+                  AppComponents().sizedBox10,
+                  Expanded(
+                      child: StreamBuilder<QuerySnapshot?>(
+                          stream: Get.find<MessageController>()
+                              .listeningForMessages(
+                              widget.chatRoomModel),
+                          builder: (
+                              context,
+                              listenForChat,
+                              ) {
+                            if (!listenForChat.hasData) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (!listenForChat.hasData ||
+                                listenForChat.hasError ||
+                                listenForChat.data == null) {
+                              return Center(
+                                child: Padding(
+                                  padding:
+                                  const EdgeInsets.only(top: 68.0),
+                                  child: Text(
+                                    "No Messages Yet...",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black),
+                                  ),
+                                ),
+                              );
+                            }
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 20),
+                              child: SingleChildScrollView(
+                                key: PageStorageKey<String>(
+                                    'messagesScrollKey'),
+                                controller:
+                                messageController.newMessageScroll,
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.end,
+                                  children: [
+                                    listenForChat == null
+                                        ? SizedBox()
+                                        : ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                        BouncingScrollPhysics(),
+                                        padding: EdgeInsets.zero,
+                                        itemCount: listenForChat
+                                            .data!.docs.length,
+                                        itemBuilder:
+                                            (context, index) {
+                                          MessageModel
+                                          currentMessage =
+                                          MessageModel.fromMap(
+                                              listenForChat
+                                                  .data!
+                                                  .docs[index]
+                                                  .data()
+                                              as Map<String,
+                                                  dynamic>);
+                                          return currentMessage
+                                              .sender !=
+                                              widget.uid
+                                              ? Padding(
+                                            padding: EdgeInsets
+                                                .symmetric(
+                                              vertical: 10,
+                                            ),
+                                            child: Align(
+                                              alignment: Alignment
+                                                  .bottomRight,
+                                              child: IntrinsicWidth(
+                                                  child: Container(
+                                                      alignment: Alignment.center,
+                                                      padding: Uri.parse(currentMessage.message.toString()).isAbsolute ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                                      decoration: BoxDecoration(color: Uri.parse(currentMessage.message.toString()).isAbsolute ? Colors.transparent : Color(0xFFF3F3F3), borderRadius: Uri.parse(currentMessage.message.toString()).isAbsolute ? BorderRadius.circular(10) : BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomLeft: Radius.circular(15), bottomRight: Radius.circular(0))),
+                                                      child: Text(
+                                                        currentMessage
+                                                            .message
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            fontWeight: FontWeight.w400,
+                                                            fontSize: 14,
+                                                            color: Colors.black),
                                                       )
-                                                    : SizedBox.shrink(),
-                                          ],
-                                        ),
+                                                    //bodyStyle4KPrimary,
+                                                  )),
+                                            ),
+                                          )
+                                              : Padding(
+                                            padding: EdgeInsets
+                                                .symmetric(
+                                              vertical: 5,
+                                            ),
+                                            child: Align(
+                                              alignment: Alignment
+                                                  .bottomLeft,
+                                              child:
+                                              IntrinsicWidth(
+                                                child:
+                                                Container(
+                                                  alignment:
+                                                  Alignment
+                                                      .centerLeft,
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal:
+                                                      20,
+                                                      vertical:
+                                                      10),
+                                                  decoration: BoxDecoration(
+                                                      color: Uri.parse(currentMessage.message.toString()).isAbsolute
+                                                          ? Colors
+                                                          .transparent
+                                                          : Color(0xFFE94057).withOpacity(0.07),
+                                                      borderRadius: Uri.parse(currentMessage.message.toString()).isAbsolute
+                                                          ? BorderRadius.circular(
+                                                          4)
+                                                          : BorderRadius.only(
+                                                          topLeft: Radius.circular(15),
+                                                          topRight: Radius.circular(15),
+                                                          bottomLeft: Radius.circular(0),
+                                                          bottomRight: Radius.circular(15))),
+                                                  child: Text(currentMessage
+                                                      .message
+                                                      .toString()),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                    LoadImage(),
+                                    typingList!.length == 2
+                                        ? Align(
+                                      alignment:
+                                      Alignment.centerLeft,
+                                      child: Padding(
+                                        padding:
+                                        const EdgeInsets.only(
+                                            left: 5,
+                                            top: 15,
+                                            bottom: 15),
+                                        child: Text("Typing..."),
                                       ),
-                                    );
-                                  })),
-                          Container(
-                            height: 77,
-                            decoration: BoxDecoration(color: Colors.white),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 20),
+                                    )
+                                        : typingList.length == 1 &&
+                                        typingList.contains(
+                                            FirebaseAuth
+                                                .instance
+                                                .currentUser!
+                                                .uid) ==
+                                            false
+                                        ? Align(
+                                      alignment: Alignment
+                                          .centerLeft,
+                                      child: Padding(
+                                        padding:
+                                        const EdgeInsets
+                                            .only(
+                                            left: 5,
+                                            top: 15,
+                                            bottom: 15),
+                                        child:
+                                        Text("Typing..."),
+                                      ),
+                                    )
+                                        : SizedBox.shrink(),
+                                  ],
+                                ),
+                              ),
+                            );
+                          })),
+                  Container(
+                    height: 77,
+                    decoration: BoxDecoration(color: Colors.white),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Row(
+                        children: [
+                          // GestureDetector(
+                          //   onTap: () async {
+                          //     await Get.find<MessageController>()
+                          //         .messagingImage(widget.chatRoomModel);
+                          //   },
+                          //   child: Container(
+                          //     height: 45,
+                          //       width: 45,
+                          //       decoration: BoxDecoration(
+                          //         border:Border.all(color: Colors.grey.shade200),
+                          //         borderRadius: BorderRadius.circular(10)
+                          //       ),
+                          //       child: Icon(Icons.photo,color: textcolor,)),
+                          // ),
+                          // SizedBox(
+                          //   width: 10,
+                          // ),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(right: 20),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.grey.shade200),
+                                  borderRadius:
+                                  BorderRadius.circular(10)),
                               child: Row(
                                 children: [
-                                  GestureDetector(
-                                    onTap: () async {
-                                      await Get.find<MessageController>()
-                                          .messagingImage(widget.chatRoomModel);
-                                    },
-                                    child: Icon(Icons.photo),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      margin: EdgeInsets.only(right: 20),
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey.shade100,
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      child: Row(
-                                        children: [
-                                          GetBuilder<MessageController>(
-                                              init: MessageController(),
-                                              builder: (controller) => Expanded(
-                                                  child: kChatTextField(
-                                                      onChanged: (value) async {
-                                                        if (value.isNotEmpty) {
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  "chatrooms")
-                                                              .doc(widget
-                                                                  .chatRoomModel
-                                                                  .chatRoomId)
-                                                              .update({
-                                                            "typing": FieldValue
-                                                                .arrayUnion([
-                                                              FirebaseAuth
-                                                                  .instance
-                                                                  .currentUser!
-                                                                  .uid
-                                                            ]),
-                                                          });
-                                                        } else {
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  "chatrooms")
-                                                              .doc(widget
-                                                                  .chatRoomModel
-                                                                  .chatRoomId)
-                                                              .update({
-                                                            "typing": FieldValue
-                                                                .arrayRemove([
-                                                              FirebaseAuth
-                                                                  .instance
-                                                                  .currentUser!
-                                                                  .uid
-                                                            ]),
-                                                          });
-                                                        }
-                                                      },
-                                                      maxlines: null,
-                                                      fillColor:
-                                                          Colors.grey.shade100,
-                                                      isFilled: true,
-                                                      isPassword: false,
-                                                      inputType:
-                                                          TextInputType.text,
-                                                      hintText:
-                                                          'Type your message',
-                                                      controller: messageController
-                                                          .messagetextfieldController,
-                                                      borderColor: Colors
-                                                          .grey.shade100))),
-                                          TextButton(
-                                              onPressed: () async {
-                                                // context.read<MessageController>().sendMessage(
-                                                //     context, widget.chatRoomModel.chatRoomId);
-                                                await sendMessage(context);
-                                                messageController
-                                                    .newMessageScroll
-                                                    .animateTo(
-                                                        messageController
-                                                            .newMessageScroll
-                                                            .position
-                                                            .maxScrollExtent,
-                                                        duration: Duration(
-                                                            milliseconds: 500),
-                                                        curve: Curves.linear);
-                                                // messageController.writtenMessage.trim().isEmpty
-                                                //     ? null
-                                                //     : messageController.uploadMessage(
-                                                //         messageController.writtenMessage, true);
+                                  GetBuilder<MessageController>(
+                                      init: MessageController(),
+                                      builder: (controller) => Expanded(
+                                          child: kChatTextField(
+                                              onChanged: (value) async {
+                                                if (value.isNotEmpty) {
+                                                  FirebaseFirestore
+                                                      .instance
+                                                      .collection(
+                                                      "chatrooms")
+                                                      .doc(widget
+                                                      .chatRoomModel
+                                                      .chatRoomId)
+                                                      .update({
+                                                    "typing": FieldValue
+                                                        .arrayUnion([
+                                                      FirebaseAuth
+                                                          .instance
+                                                          .currentUser!
+                                                          .uid
+                                                    ]),
+                                                  });
+                                                } else {
+                                                  FirebaseFirestore
+                                                      .instance
+                                                      .collection(
+                                                      "chatrooms")
+                                                      .doc(widget
+                                                      .chatRoomModel
+                                                      .chatRoomId)
+                                                      .update({
+                                                    "typing": FieldValue
+                                                        .arrayRemove([
+                                                      FirebaseAuth
+                                                          .instance
+                                                          .currentUser!
+                                                          .uid
+                                                    ]),
+                                                  });
+                                                }
                                               },
-                                              child: Text(
-                                                'Send',
-                                                style: TextStyle(
-                                                    color: butoncolor,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              )),
-                                        ],
-                                      ),
-                                    ),
-                                  )
+                                              maxlines: null,
+                                              fillColor:
+                                              Colors.white,
+                                              isFilled: true,
+                                              isPassword: false,
+                                              inputType:
+                                              TextInputType.text,
+                                              hintText:
+                                              'Your message',
+                                              controller: messageController
+                                                  .messagetextfieldController,
+                                              borderColor: Colors
+                                                  .grey.shade100))),
+                                  TextButton(
+                                      onPressed: () async {
+                                        // context.read<MessageController>().sendMessage(
+                                        //     context, widget.chatRoomModel.chatRoomId);
+                                        // if(filter.hasProfanity( messageController
+                                        //     .messagetextfieldController.text)==false) {
+                                        await sendMessage(context);
+                                        messageController
+                                            .newMessageScroll
+                                            .animateTo(
+                                            messageController
+                                                .newMessageScroll
+                                                .position
+                                                .maxScrollExtent,
+                                            duration: Duration(
+                                                milliseconds: 500),
+                                            curve: Curves.linear);
+                                        // }
+                                        // else{
+                                        //   showDialog(
+                                        //       context: context,
+                                        //       builder: (builder) {
+                                        //         return AlertDialog(
+                                        //           shape: Border.all(
+                                        //             color: Colors.red,
+                                        //           ),
+                                        //           title: const Text('Alert'),
+                                        //           content: Text("Don't use abusive langauge"),
+                                        //           icon: Image.asset(
+                                        //             "assets/appicon.png",
+                                        //             height: 40,
+                                        //             width: 40,
+                                        //           ),
+                                        //         );
+                                        //       });
+                                        //   messageController
+                                        //       .messagetextfieldController.clear();
+                                        // }
+
+                                      },
+                                      child: Text(
+                                        'Send',
+                                        style: TextStyle(
+                                            color: butoncolor,
+                                            fontWeight:
+                                            FontWeight.w600),
+                                      )),
                                 ],
                               ),
                             ),
                           )
                         ],
                       ),
-                      StreamBuilder<DocumentSnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection("users")
-                            .doc(widget.uid)
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          } else if (!snapshot.hasData ||
-                              snapshot.hasError ||
-                              snapshot.data == null) {
-                            return Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 68.0),
-                                child: Text(
-                                  "No data Yet...",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.black),
-                                ),
-                              ),
-                            );
-                          }
-                          userModel = UserModel.fromMap(
-                              snapshot.data!.data() as Map<String, dynamic>);
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: SingleChildScrollView(
-                              physics: BouncingScrollPhysics(),
-                              child: Column(
-                                children: [
-                                  AppComponents().sizedBox30,
-                                  Center(
-                                    child: SizedBox(
-                                      width: 130,
-                                      height: 130,
-                                      child: CircleAvatar(
-                                        foregroundImage: NetworkImage(
-                                            userModel!.imageUrl.toString()),
-                                        radius: 10,
-                                      ),
-                                    ),
-                                  )
-                                  // Container(
-                                  //   height: 300,
-                                  //   child: Stack(children: [
-                                  //     CarouselSlider(
-                                  //       options: CarouselOptions(
-                                  //         autoPlay: true,
-                                  //         viewportFraction: 1,
-                                  //         aspectRatio: 1.5,
-                                  //         enlargeCenterPage: true,
-                                  //         onPageChanged: (index, reason) {},
-                                  //       ),
-                                  //       items: userModel!.imagesList!
-                                  //           .map(
-                                  //             (item) => Padding(
-                                  //               padding:
-                                  //                   const EdgeInsets.only(top: 8),
-                                  //               child: ClipRRect(
-                                  //                 borderRadius: BorderRadius.all(
-                                  //                   Radius.circular(10.0),
-                                  //                 ),
-                                  //                 child: GestureDetector(
-                                  //                   onTap: () {},
-                                  //                   child: Container(
-                                  //                     height: 300,
-                                  //                     width:
-                                  //                         MediaQuery.of(context)
-                                  //                             .size
-                                  //                             .width,
-                                  //                     decoration: BoxDecoration(
-                                  //                         borderRadius:
-                                  //                             BorderRadius
-                                  //                                 .circular(15.0),
-                                  //                         gradient:
-                                  //                             LinearGradient(
-                                  //                           begin:
-                                  //                               Alignment.topLeft,
-                                  //                           end: Alignment
-                                  //                               .bottomRight,
-                                  //                           colors: [
-                                  //                             butoncolor
-                                  //                                 .withOpacity(
-                                  //                                     0.3),
-                                  //                             butoncolor
-                                  //                                 .withOpacity(
-                                  //                                     0.1),
-                                  //                           ],
-                                  //                         )),
-                                  //                     child: Image.network(
-                                  //                       item,
-                                  //                       fit: BoxFit.fill,
-                                  //                     ),
-                                  //                   ),
-                                  //                 ),
-                                  //               ),
-                                  //             ),
-                                  //           )
-                                  //           .toList(),
-                                  //     ),
-                                  //     Positioned(
-                                  //       top: 120,
-                                  //       left: 20,
-                                  //       right: 20,
-                                  //       child: Center(
-                                  //         child: AvatarGlow(
-                                  //           glowColor:
-                                  //               Color.fromARGB(255, 15, 233, 106),
-                                  //           endRadius: 90.0,
-                                  //           duration:
-                                  //               Duration(milliseconds: 2000),
-                                  //           repeat: true,
-                                  //           showTwoGlows: true,
-                                  //           repeatPauseDuration:
-                                  //               Duration(milliseconds: 100),
-                                  //           child: Center(
-                                  //             child: SizedBox(
-                                  //               width: 130,
-                                  //               height: 130,
-                                  //               child: CircleAvatar(
-                                  //                 foregroundImage: NetworkImage(
-                                  //                     userModel!.imageUrl
-                                  //                         .toString()),
-                                  //                 radius: 10,
-                                  //               ),
-                                  //             ),
-                                  //           ),
-                                  //         ),
-                                  //       ),
-                                  //     )
-                                  //   ]),
-                                  // ),
-                                  ,
-                                  userModel!.about.toString() == "null"
-                                      ? SizedBox.shrink()
-                                      : Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Text(
-                                            "About",
-                                            style: k18styleblack,
-                                          ),
-                                        ),
-                                  userModel!.about.toString() != "null"
-                                      ? Detail_Profile_Tile(
-                                          value: userModel!.about.toString(),
-                                          ontap: () {},
-                                        )
-                                      : SizedBox.shrink(),
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      "Name",
-                                      style: k18styleblack,
-                                    ),
-                                  ),
-                                  Detail_Profile_Tile(
-                                    value: userModel!.name.toString(),
-                                    ontap: () {},
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      "Occupation",
-                                      style: k18styleblack,
-                                    ),
-                                  ),
-                                  Detail_Profile_Tile(
-                                    value: userModel!.work.toString(),
-                                    ontap: () {},
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      "Job Title",
-                                      style: k18styleblack,
-                                    ),
-                                  ),
-                                  Detail_Profile_Tile(
-                                    value: userModel!.job_title.toString(),
-                                    ontap: () {},
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      "Age",
-                                      style: k18styleblack,
-                                    ),
-                                  ),
-                                  Detail_Profile_Tile(
-                                    value: userModel!.age.toString(),
-                                    ontap: () {},
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      "Martial Status",
-                                      style: k18styleblack,
-                                    ),
-                                  ),
-                                  Detail_Profile_Tile(
-                                    value: userModel!.martial_status.toString(),
-                                    ontap: () {},
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      "Address",
-                                      style: k18styleblack,
-                                    ),
-                                  ),
-                                  Detail_Profile_Tile(
-                                    value: userModel!.address.toString(),
-                                    ontap: () {},
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      "Height",
-                                      style: k18styleblack,
-                                    ),
-                                  ),
-                                  Detail_Profile_Tile(
-                                    value: userModel!.height.toString(),
-                                    ontap: () {},
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      "Education",
-                                      style: k18styleblack,
-                                    ),
-                                  ),
-                                  Detail_Profile_Tile(
-                                    value: userModel!.education.toString(),
-                                    ontap: () {},
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                    onChange: (index) {},
-                  ));
+                    ),
+                  )
+                ],
+              );
             } else if (typingSnap.hasError) {
             } else {}
           }
@@ -696,7 +484,7 @@ class _PersonMessageViewState extends State<PersonMessageView> {
     String message =
         Get.find<MessageController>().messagetextfieldController.text.trim();
     Get.find<MessageController>().messagetextfieldController.clear();
-
+   final filter=ProfanityFilter();
     if (message == '') {
     } else {
       FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -704,7 +492,7 @@ class _PersonMessageViewState extends State<PersonMessageView> {
 
       MessageModel messagesModel = MessageModel(
         sender: user!.uid,
-        message: message,
+        message: filter.censor(message).toString(),
         createTime: DateTime.now(),
         messageId: Uuid().v1(),
       );
@@ -716,7 +504,7 @@ class _PersonMessageViewState extends State<PersonMessageView> {
           .doc(messagesModel.messageId)
           .set(messagesModel.toMap());
 
-      widget.chatRoomModel.lastMessage = message;
+      widget.chatRoomModel.lastMessage = filter.censor(message).toString();
       widget.chatRoomModel.lastMessageTime = DateTime.now();
       widget.chatRoomModel.isReadSender = true;
       widget.chatRoomModel.isReadReceiver = false;

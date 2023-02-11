@@ -25,6 +25,7 @@ import 'package:jabwemeet/Views/Auth/Screens/LoginScreen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/Bismillah_Screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
 
 class RegisterController extends GetxController {
   final resetFormKey = GlobalKey<FormState>();
@@ -219,7 +220,7 @@ class RegisterController extends GetxController {
             .write(kPassword, passController.text);
         final user = FirebaseAuth.instance.currentUser!;
         await user.sendEmailVerification();
-        Get.off(() => Bismillah_Screen());
+        Get.to(() => Bismillah_Screen());
         await Future.delayed(Duration(seconds: 5));
       } catch (e) {
         loading=false;
@@ -529,7 +530,7 @@ class RegisterController extends GetxController {
         .collection('users')
         .doc(user.uid)
         .set(userModel.toMap())
-        .then((value) => Get.offAll(() => Register_screen()));
+        .then((value) => Get.to(() => Register_screen()));
   }
 
   //sajawal
@@ -760,12 +761,12 @@ class RegisterController extends GetxController {
                   .box
                   .write(kPhone, user.phoneNumber.toString());
               if (value.get("age") == 0 || value.get("age") == null) {
-                Get.offAll(() => Register_screen());
+                 Get.to(() => Register_screen());
               } else {
                 if (value.get("imageUrl") == null) {
-                  Get.offAll(() => Complete_Profile1());
+                  Get.to(() => Complete_Profile1());
                 } else {
-                  Get.offAll(() => Home());
+                  Get.offAll(() => HomeSwapNew());
                 }
               }
             } else {

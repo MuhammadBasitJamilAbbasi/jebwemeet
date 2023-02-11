@@ -43,7 +43,7 @@ class SignUpPhoneScreen extends StatelessWidget {
                       ),
                     ),
                     AppComponents().sizedBox10,
-                    Text("Please enter your valid phone number. We will send you a 4-digit code to verify your account. ",style: TextStyle(
+                    Text("Please enter your valid phone number. We will send you a 6-digit code to verify your account. ",style: TextStyle(
                       fontWeight: FontWeight.w400,fontSize: 14,color: Colors.black
                     ),),
                     AppComponents().sizedBox50,

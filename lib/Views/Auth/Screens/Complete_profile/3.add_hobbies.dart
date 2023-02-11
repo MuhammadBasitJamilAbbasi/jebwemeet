@@ -59,25 +59,23 @@ class _Add_HoobiesState extends State<Add_Hoobies> {
                         final topic = topicContents[index];
                         return IntrinsicWidth(
                           child: InterestWidget(
-                            textstyle: controller.selectedList.contains(topic)
+                            textstyle: controller.getList.contains(topic.title)
                                 ? k14styleWhite
                                 : k14styleblack,
                             horizontalDistance: 15,
-                            borderColor: controller.selectedList.contains(topic)
+                            borderColor: controller.getList.contains(topic.title)
                                 ? primarycolor
                                 : Colors.grey.shade300,
                             image: topicContents[index].image,
                             title: topicContents[index].title,
                             onTap: () {
-                              setState(() {
-                                if (!controller.selectedItems.contains(topic)) {
+                                if (!controller.getList.contains(topic.title)) {
                                   controller.addTopics(topic);
                                 } else {
                                   controller.removeTopics(topic);
                                 }
-                              });
                             },
-                            color: controller.selectedList.contains(topic)
+                            color: controller.getList.contains(topic.title)
                                 ? primarycolor
                                 : Colors.white,
                           ),
@@ -91,7 +89,7 @@ class _Add_HoobiesState extends State<Add_Hoobies> {
                         child: kAppButton(
                             buttonText: "Continue",
                             onButtonPressed: () {
-                              if (controller.selectedList.length == 0) {
+                              if (controller.getList.length == 0) {
                                 snackBar(
                                     context, "Select Interests", Colors.pink);
                               } else

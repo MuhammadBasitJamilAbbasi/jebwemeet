@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jabwemeet/Views/Auth/Screens/JabWeMetScreen.dart';
+import 'package:jabwemeet/Views/Auth/Screens/onboarding2.dart';
 
 class GetSTorageController extends GetxController implements GetxService {
   final box = GetStorage();
@@ -42,7 +43,7 @@ class GetSTorageController extends GetxController implements GetxService {
       ToggleIsHavingData(false);
       print("removeee storage");
       update();
-      Get.offAll(() => JabWeMet_Screen());
+      Get.offAll(() => OnboardingScreen());
     });
     log("<--------------Get Storage Remove After-------------->");
     log(box.getKeys().toString());

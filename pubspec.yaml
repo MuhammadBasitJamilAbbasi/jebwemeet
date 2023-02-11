@@ -78,6 +78,10 @@ dependencies:
   dotted_decoration:
   readmore: ^2.2.0
   modal_bottom_sheet: ^2.1.2
+  screen_protector: ^1.2.0
+  profanity_filter: ^2.0.0
+  blurrycontainer: ^1.0.2
+  skeletons: ^0.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

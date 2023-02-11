@@ -11,6 +11,7 @@ import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/vi
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Splash_Screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/onboarding2.dart';
+import 'package:screen_protector/screen_protector.dart';
 
 import 'Services/notification/firebase_notifications/notification_service.dart';
 import 'Utils/constants.dart';
@@ -18,6 +19,8 @@ import 'Utils/constants.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // await ScreenProtector.protectDataLeakageOn();
+
   /* Code Added By Kamran*/
   await NotificationService.initialize();
   Stripe.publishableKey = stripePublishableKey;

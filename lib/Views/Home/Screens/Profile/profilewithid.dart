@@ -6,25 +6,25 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
+import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Profile/Edit_Profile.dart';
 import 'package:jabwemeet/Views/Home/Screens/Tabbar.dart';
 import 'package:readmore/readmore.dart';
 
-class Profile extends StatelessWidget {
+class ProfileWithID extends StatelessWidget {
+  final id;
+  bool fromNotifiPage;
+  ProfileWithID({required this.id,this.fromNotifiPage=false});
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
     UserModel? userModel;
     return Scaffold(
-      bottomNavigationBar: kCustomBottomNavBar(
-        index: 3,
-      ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance
               .collection("users")
-              .doc(user!.uid)
+              .doc(id)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -176,18 +176,18 @@ class Profile extends StatelessWidget {
                             userModel!.about.toString() != "null"
                                 ? Align(
                               alignment: Alignment.centerLeft,
-                                  child: ReadMoreText(
-                              userModel!.about.toString(),
-                              trimLines: 3,
-                              colorClickableText: textcolor,
-                              trimMode: TrimMode.Line,
-                              textAlign: TextAlign.start,
-                              style: k14styleblack,
-                              trimCollapsedText: ' Read more',
-                              trimExpandedText: ' Show less',
-                              moreStyle: TextStyle(color: textcolor,fontWeight: FontWeight.w600),
-                            ),
-                                )
+                              child: ReadMoreText(
+                                userModel!.about.toString(),
+                                trimLines: 3,
+                                colorClickableText: textcolor,
+                                trimMode: TrimMode.Line,
+                                textAlign: TextAlign.start,
+                                style: k14styleblack,
+                                trimCollapsedText: ' Read more',
+                                trimExpandedText: ' Show less',
+                                moreStyle: TextStyle(color: textcolor,fontWeight: FontWeight.w600),
+                              ),
+                            )
                                 : SizedBox.shrink(),
                             AppComponents().sizedBox20,
                             Align(
@@ -280,49 +280,11 @@ class Profile extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top:  MediaQuery.of(context).size.height/2 - 40,
-                  right: 30,
-                  child: Column(
-                    children: [
-                    Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InkWell(
-                        onTap: (){
-                          Get.to(()=> Edit_Profile(userModel: userModel!));
-                        },
-                        child: Container(
-                            height: 50,
-                            width: 50,
-                            margin: EdgeInsets.only(bottom: 20),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xFFE94057),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.red.shade200.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 10,
-                                    offset:
-                                    Offset(0, 4), // changes position of shadow
-                                  ),
-                                ]),
-                            child: Icon(
-                              Icons.edit,
-                              size: 30,
-                              color: Colors.white,
-                            )),
-                      ),
-                    ],
-                  ),
-                    ]),),
-                Positioned(
                   top: 40,
-                  right: 20,
+                  left: 20,
                   child: GestureDetector(
                     onTap: (){
-                      Get.find<GetSTorageController>().removeStorage();
+                      Get.back();
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -333,7 +295,7 @@ class Profile extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
                         child: Center(
                           child: Icon(
-                            Icons.logout_rounded,
+                            Icons.arrow_back_ios_new_rounded,
                             color: textcolor,
                             size: 15,
                           ),
@@ -341,7 +303,111 @@ class Profile extends StatelessWidget {
                       ),
                     ),
                   ),
+                ),
+                fromNotifiPage==true?
+                Positioned(
+                  top:  MediaQuery.of(context).size.height/2 - 40,
+                  left: 50,
+                  right: 50,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: (){
+                              Get.find<Home_page_controller>().ignorswap(opponent_user: userModel).then((value) => Get.back());
+                            },
+                            child: Container(
+                                height: 50,
+                                width: 50,
+                                margin: EdgeInsets.only(bottom: 20),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.shade300.withOpacity(0.5),
+                                        spreadRadius: 3,
+                                        blurRadius: 12,
+                                        offset:
+                                        Offset(0, 10), // changes position of shadow
+                                      ),
+                                    ]),
+                                child: Image.asset(
+                                  "assets/dislikenew.png",
+                                  height: 15,
+                                  width: 15,
+                                )),
+                          ),
+                          GestureDetector(
+                            onTap: (){
+                              Get.find<Home_page_controller>().likeswap(context,opponent_user: userModel).then((value) => Get.back());
+                            },
+                            child: Container(
+                                height: 70,
+                                width: 70,
+                                margin: EdgeInsets.only(bottom: 20),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xFFE94057),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.red.shade200.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 10,
+                                        offset:
+                                        Offset(0, 4), // changes position of shadow
+                                      ),
+                                    ]),
+                                child: Image.asset(
+                                  "assets/heartnew.png",
+                                  height: 25,
+                                  width: 30,
+                                  fit: BoxFit.fill,
+                                )),
+                          ),
+                          GestureDetector(
+                            onTap: (){
+                              Get.find<Home_page_controller>().addtofavourite(opponent_user: userModel!).then((value) => Get.back());
+                            },
+                            child: Container(
+                                height: 50,
+                                width: 50,
+                                margin: EdgeInsets.only(bottom: 20),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.shade300.withOpacity(0.5),
+                                        spreadRadius: 3,
+                                        blurRadius: 12,
+                                        offset:
+                                        Offset(0, 10), // changes position of shadow
+                                      ),
+                                    ]),
+                                child: Image.asset(
+                                  "assets/starnew.png",
+                                  height: 20,
+                                  width: 20,
+                                )),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 )
+                    : Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Text(""),
+                )
+
               ],
             );
           },
