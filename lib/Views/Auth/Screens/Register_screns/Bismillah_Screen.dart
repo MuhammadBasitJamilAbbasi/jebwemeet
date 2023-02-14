@@ -52,7 +52,7 @@ class _Bismillah_ScreenState extends State<Bismillah_Screen> {
         canResendEmail = true;
       });
     } catch (e) {
-      snackBar(context, e.toString(), Colors.pink);
+      // snackBar(context, e.toString(), Colors.pink);
       print(e.toString());
     }
   }

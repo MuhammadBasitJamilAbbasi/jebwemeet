@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 /*
 * Stripe Keys
 */
-const String stripePublishableKey =
-    "pk_test_51MGihjD3Scdf0T5Z5IcwzY5iDcctn9PLPpbFmaVILWbEuwCO9abpsquVT4wWx30jlukayLPoFvJXgLc4ALqyG5Nx00i6peP7xI";
-const String stripeSecretKey =
-    "sk_test_51MGihjD3Scdf0T5ZEyCyXNxl4NChF32t4zVhwjBESX5iZqVHA9BIZ2Y9JX9yuEjOFxxZKNZhoqmjmfr6Yex9Erpq00WIpfEtnZ";
+// const String stripePublishableKey =
+//     "pk_test_51MGihjD3Scdf0T5Z5IcwzY5iDcctn9PLPpbFmaVILWbEuwCO9abpsquVT4wWx30jlukayLPoFvJXgLc4ALqyG5Nx00i6peP7xI";
+// const String stripeSecretKey =
+//     "sk_test_51MGihjD3Scdf0T5ZEyCyXNxl4NChF32t4zVhwjBESX5iZqVHA9BIZ2Y9JX9yuEjOFxxZKNZhoqmjmfr6Yex9Erpq00WIpfEtnZ";
 const String kGender = "Gender";
 const String kMartial_Statius = "Martial";
 const String kchildern = "childern";

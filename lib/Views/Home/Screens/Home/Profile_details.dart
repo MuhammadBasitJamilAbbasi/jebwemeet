@@ -314,19 +314,43 @@ class ProfileDetails extends StatelessWidget {
                         Wrap(
                           children: List.generate(imgeList!.length, (index) =>  GestureDetector(
                             onTap: (){
-                              Get.to(()=> kFullScreenImageViewer(imgeList![index]));
+                              if(blur==false) {
+                                Get.to(() =>
+                                    kFullScreenImageViewer(imgeList![index]));
+                              }
                             },
-                            child: Container(
-                              height: index==0 || index==1 ? 190 : 122,
-                              width: index==0 || index==1 ? 142 : 92,
-                              margin: EdgeInsets.only(right: 5,bottom: 5),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  image: DecorationImage(
-                                      image: NetworkImage(imgeList![index]),
-                                      fit: BoxFit.cover
-                                  )
-                              ),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  height: index==0 || index==1 ? 190 : 122,
+                                  width: index==0 || index==1 ? 142 : 92,
+                                  margin: EdgeInsets.only(right: 5,bottom: 5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      image: DecorationImage(
+                                          image: NetworkImage(imgeList![index]),
+                                          fit: BoxFit.cover
+                                      )
+                                  ),
+                                ),
+                                blur==true?
+                                    BlurryContainer(
+                                        height: index==0 || index==1 ? 190 : 122,
+                                        width: index==0 || index==1 ? 142 : 92,
+                                      blur: 20,
+                                      elevation: 0,
+                                      borderRadius:
+                                      BorderRadius
+                                          .circular(
+                                          0),
+                                      color: Colors
+                                          .black
+                                          .withOpacity(
+                                          0.5),
+                                      child: Text(""),
+
+                                    ) : Text("")
+                              ],
                             ),),)
                         ),
                         AppComponents().sizedBox30,

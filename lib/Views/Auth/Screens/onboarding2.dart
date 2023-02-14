@@ -17,17 +17,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   List<Widget> pages = [
     const OnBoardingPage(
-      centerimage: "assets/girl1.png",
-      leftimage: "assets/girl1_left.png",
-      rightimage: "assets/girl1_right.png",
+      centerimage: "assets/girl2.png",
+      leftimage: "assets/girl2_left.png",
+      rightimage: "assets/girl2_right.png",
       content:
           "Users going through a vetting process to ensure you never match with bots.",
       text: "Algorithm",
     ),
     const OnBoardingPage(
-      centerimage: "assets/girl2.png",
-      leftimage: "assets/girl2_left.png",
-      rightimage: "assets/girl2_right.png",
+      centerimage: "assets/girl1.png",
+      leftimage: "assets/girl1_left.png",
+      rightimage: "assets/girl1_right.png",
       content:
           "We match you with people that have a large array of similar interests.",
       text: "Matches",

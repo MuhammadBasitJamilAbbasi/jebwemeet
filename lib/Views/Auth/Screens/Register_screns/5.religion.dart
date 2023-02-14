@@ -19,7 +19,7 @@ class Register_Religion extends StatelessWidget {
         Get
             .find<GetSTorageController>()
             .box
-            .write(kReligion, "Shia");
+            .write(kReligion, "Sunni");
       }
       return SingleChildScrollView(
         child: Padding(
@@ -40,6 +40,34 @@ class Register_Religion extends StatelessWidget {
               ),
               AppComponents().sizedBox50,
               Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),                child: Center(
+                  child: kAppButton(
+                    buttonCheck: true,
+                    color: Get.find<GetSTorageController>()
+                        .box
+                        .read(kReligion)
+                        .toString() ==
+                        "Sunni"
+                        ? textcolor
+                        : Colors.white,
+                    textColor: Get.find<GetSTorageController>()
+                        .box
+                        .read(kReligion)
+                        .toString() ==
+                        "Sunni"
+                        ? Colors.white
+                        : Colors.black,
+                    buttonText: "Sunni",
+                    onButtonPressed: () {
+                      Get.find<GetSTorageController>().box.write(kReligion, "Sunni");
+                      controller
+                          .setRegisterViewPage(RegisterViewEnum.RegisterView5);
+                    },
+
+                  )),
+              ),
+              AppComponents().sizedBox15,
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Center(
                     child: kAppButton(
@@ -58,42 +86,14 @@ class Register_Religion extends StatelessWidget {
                           "Shia"
                           ? Colors.white
                           : Colors.black,
-                  buttonText: "Shia",
-                  onButtonPressed: () {
-                    Get.find<GetSTorageController>().box.write(kReligion, "Shia");
-                    controller
-                        .setRegisterViewPage(RegisterViewEnum.RegisterView5);
-                  },
+                      buttonText: "Shia",
+                      onButtonPressed: () {
+                        Get.find<GetSTorageController>().box.write(kReligion, "Shia");
+                        controller
+                            .setRegisterViewPage(RegisterViewEnum.RegisterView5);
+                      },
 
-                )),
-              ),
-              AppComponents().sizedBox15,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),                child: Center(
-                    child: kAppButton(
-                      buttonCheck: true,
-                      color: Get.find<GetSTorageController>()
-                          .box
-                          .read(kReligion)
-                          .toString() ==
-                          "Sunni"
-                          ? textcolor
-                          : Colors.white,
-                      textColor: Get.find<GetSTorageController>()
-                          .box
-                          .read(kReligion)
-                          .toString() ==
-                          "Sunni"
-                          ? Colors.white
-                          : Colors.black,
-                  buttonText: "Sunni",
-                  onButtonPressed: () {
-                    Get.find<GetSTorageController>().box.write(kReligion, "Sunni");
-                    controller
-                        .setRegisterViewPage(RegisterViewEnum.RegisterView5);
-                  },
-
-                )),
+                    )),
               ),
               AppComponents().sizedBox15,
               Padding(

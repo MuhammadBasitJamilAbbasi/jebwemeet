@@ -2,28 +2,20 @@ import 'dart:collection';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:jabwemeet/Bindings/Bindings.dart';
-import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
 
-import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Splash_Screen.dart';
-import 'package:jabwemeet/Views/Auth/Screens/onboarding2.dart';
-import 'package:screen_protector/screen_protector.dart';
 
 import 'Services/notification/firebase_notifications/notification_service.dart';
-import 'Utils/constants.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   // await ScreenProtector.protectDataLeakageOn();
 
-  /* Code Added By Kamran*/
   await NotificationService.initialize();
-  Stripe.publishableKey = stripePublishableKey;
+  // Stripe.publishableKey = stripePublishableKey;
   /*============================================*/
   runApp(const MyApp());
 }

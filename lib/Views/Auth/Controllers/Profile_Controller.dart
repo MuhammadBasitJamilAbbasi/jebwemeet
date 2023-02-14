@@ -347,14 +347,49 @@ class ProfileController extends GetxController {
 
   submitProfile(BuildContext context) async {
     if (selectedImagePath.toString() == "") {
-      snackBar(context, "Please Select your image", Colors.pink);
-    } else if (multipleImagesDownloadLinks!.length<5) {
-      snackBar(context, "Please Add your 5 images in step 1", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kAbout).toString() ==
+      snackBar(context, "Please Add your image in step 1", Colors.pink);
+    } else if (Get.find<GetSTorageController>().box.read(kHeight).toString() ==
+        "" ||
+        Get.find<GetSTorageController>().box.read(kHeight).toString() ==
+            "null") {
+      snackBar(context, "Please Enter your Height", Colors.pink);
+    }else if (Get.find<GetSTorageController>().box.read(kMartial_Statius).toString() ==
+        "" ||
+        Get.find<GetSTorageController>().box.read(kMartial_Statius).toString() ==
+            "null") {
+      snackBar(context, "Please Select Martial Status", Colors.pink);
+    }
+    else if(getList.isEmpty){
+      snackBar(context, "Please add interests", Colors.pink);
+    }
+    else if (Get.find<GetSTorageController>().box.read(kAbout).toString() ==
             "" ||
         Get.find<GetSTorageController>().box.read(kAbout).toString() ==
             "null") {
       snackBar(context, "Please enter about", Colors.pink);
+    } else if (Get.find<GetSTorageController>().box.read(kReligion).toString() ==
+        "" ||
+        Get.find<GetSTorageController>().box.read(kReligion).toString() ==
+            "null") {
+      snackBar(context, "Please Select Your Religion", Colors.pink);
+    } else if (Get.find<GetSTorageController>()
+        .box
+        .read(kReligiousPractice)
+        .toString() ==
+        "" ||
+        Get.find<GetSTorageController>()
+            .box
+            .read(kReligiousPractice)
+            .toString() ==
+            "null") {
+      snackBar(context, "Please add your Religious Practice", Colors.pink);
+    } else if (Get.find<GetSTorageController>().box.read(kCaste).toString() ==
+        "" ||
+        Get.find<GetSTorageController>().box.read(kCaste).toString() ==
+            "null") {
+      snackBar(context, "Please Select Caste", Colors.pink);
+    } else if (kList!.length == 0) {
+      snackBar(context, "Please add your Language", Colors.pink);
     } else if (Get.find<GetSTorageController>()
                 .box
                 .read(kEducation)
@@ -363,49 +398,21 @@ class ProfileController extends GetxController {
         Get.find<GetSTorageController>().box.read(kEducation).toString() ==
             "null") {
       snackBar(context, "Please Select your education level", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kIncome).toString() ==
+    }  else if (Get.find<GetSTorageController>().box.read(kWork).toString() ==
             "" ||
+        Get.find<GetSTorageController>().box.read(kWork).toString() == "null") {
+      snackBar(context, "Please Select your profession", Colors.pink);
+    } else if (jobtitleController.value.text.isEmpty) {
+      snackBar(context, "Please add your Job title", Colors.pink);
+    } else if (addindustryController.value.text.isEmpty) {
+      snackBar(context, "Please add your Industry", Colors.pink);
+    } else if (Get.find<GetSTorageController>().box.read(kIncome).toString() ==
+        "" ||
         Get.find<GetSTorageController>().box.read(kIncome).toString() ==
             "null") {
       snackBar(context, "Please Enter your income", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kWork).toString() ==
-            "" ||
-        Get.find<GetSTorageController>().box.read(kWork).toString() == "null") {
-      snackBar(context, "Please Enter your occupation sector", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kHeight).toString() ==
-            "" ||
-        Get.find<GetSTorageController>().box.read(kHeight).toString() ==
-            "null") {
-      snackBar(context, "Please Enter your Height", Colors.pink);
-    } else if (kList!.length == 0) {
-      snackBar(context, "Please add your Language", Colors.pink);
-    } else if (Get.find<GetSTorageController>()
-                .box
-                .read(kJobTitle)
-                .toString() ==
-            "" ||
-        Get.find<GetSTorageController>().box.read(kJobTitle).toString() ==
-            "null") {
-      snackBar(context, "Please add your Job title", Colors.pink);
-    } else if (Get.find<GetSTorageController>()
-                .box
-                .read(kReligiousPractice)
-                .toString() ==
-            "" ||
-        Get.find<GetSTorageController>()
-                .box
-                .read(kReligiousPractice)
-                .toString() ==
-            "null") {
-      snackBar(context, "Please add your Religious Practice", Colors.pink);
-    } else if (Get.find<GetSTorageController>()
-                .box
-                .read(kIndustry)
-                .toString() ==
-            "" ||
-        Get.find<GetSTorageController>().box.read(kIndustry).toString() ==
-            "null") {
-      snackBar(context, "Please add your Industry", Colors.pink);
+    }  else if (multipleImagesDownloadLinks!.isEmpty) {
+      snackBar(context, "Please Add your images in step 1", Colors.pink);
     } else {
       User? user = FirebaseAuth.instance.currentUser!;
       try {

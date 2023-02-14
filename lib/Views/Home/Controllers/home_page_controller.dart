@@ -75,8 +75,8 @@ class Home_page_controller extends GetxController {
                 element.get('martial_status') == filterMartialStatus ||
                 element.get('religion') == filterReligion) {
               double datainMeter = GetLocation.DistanceInMeters(
-                  double.parse(element.get('latitude')),
-                  double.parse(element.get('longitude')),
+                  double.parse(element.get('latitude').toString()),
+                  double.parse(element.get('longitude').toString()),
                   double.parse(userModel.latitude.toString()),
                   double.parse(userModel.longitude.toString()));
               double kilomter = datainMeter / 1000;

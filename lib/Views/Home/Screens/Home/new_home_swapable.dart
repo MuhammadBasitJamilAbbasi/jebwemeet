@@ -245,13 +245,13 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                              ),
                                                            ): Positioned(top: 0,left: 0,right: 0,child: Text(""),),
                                                             Positioned(
-                                                              top: 20,
-                                                              left: 20,
+                                                              top: 15,
+                                                              left: 15,
                                                               child:
                                                                   BlurryContainer(
                                                                 blur: 8,
                                                                 height: 34,
-                                                                width: 82,
+                                                                width: 86,
                                                                 elevation: 0,
                                                                 borderRadius:
                                                                     BorderRadius
@@ -265,8 +265,9 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                                   padding: EdgeInsets
                                                                       .only(
                                                                           left:
-                                                                              8),
+                                                                              2),
                                                                   child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                     children: [
                                                                       Image.asset(
                                                                         "assets/locnew.png",
@@ -276,20 +277,23 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                                         color: Colors
                                                                             .white,
                                                                       ),
-                                                                      SizedBox(
-                                                                        width: 5,
-                                                                      ),
+                                                                      SizedBox(width: 3,),
                                                                       Expanded(
                                                                           child:
-                                                                              Text(
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: [
+                                                                                  Text(
                                                                         kilomter
-                                                                                .round()
-                                                                                .toString() +
+                                                                                    .round()
+                                                                                    .toString() +
                                                                             " km"
-                                                                                .toString(),
+                                                                                    .toString(),
                                                                         style:
                                                                             k12styleWhite,
-                                                                      ))
+                                                                      ),
+                                                                                ],
+                                                                              ))
                                                                     ],
                                                                   ),
                                                                 ),
@@ -562,7 +566,12 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                 ),
                               )
                             : Center(
-                                child: CircularProgressIndicator(),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                  Text("No Matches Found",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,color: textcolor),),
+                                  Text("Loading..."),
+                                ],),
                               ),
                       ],
                     ),

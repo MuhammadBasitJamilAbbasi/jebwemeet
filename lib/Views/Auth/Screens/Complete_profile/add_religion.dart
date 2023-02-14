@@ -21,7 +21,7 @@ class Add_Religion extends StatelessWidget {
             Get
                 .find<GetSTorageController>()
                 .box
-                .write(kReligion, "Shia");
+                .write(kReligion, "Sunni");
           }
           return SingleChildScrollView(
             child: Padding(
@@ -42,6 +42,34 @@ class Add_Religion extends StatelessWidget {
                     ),
                   ),
                   AppComponents().sizedBox50,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),                child: Center(
+                      child: kAppButton(
+                        buttonCheck: true,
+                        color: Get.find<GetSTorageController>()
+                            .box
+                            .read(kReligion)
+                            .toString() ==
+                            "Sunni"
+                            ? textcolor
+                            : Colors.white,
+                        textColor: Get.find<GetSTorageController>()
+                            .box
+                            .read(kReligion)
+                            .toString() ==
+                            "Sunni"
+                            ? Colors.white
+                            : Colors.black,
+                        buttonText: "Sunni",
+                        onButtonPressed: () {
+                          Get.find<GetSTorageController>().box.write(kReligion, "Sunni");
+                          Get.off(() => Complete_Profile1());
+                        },
+
+                      )),
+                  ),
+
+                  AppComponents().sizedBox15,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Center(
@@ -69,33 +97,6 @@ class Add_Religion extends StatelessWidget {
                           },
 
                         )),
-                  ),
-                  AppComponents().sizedBox15,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),                child: Center(
-                      child: kAppButton(
-                        buttonCheck: true,
-                        color: Get.find<GetSTorageController>()
-                            .box
-                            .read(kReligion)
-                            .toString() ==
-                            "Sunni"
-                            ? textcolor
-                            : Colors.white,
-                        textColor: Get.find<GetSTorageController>()
-                            .box
-                            .read(kReligion)
-                            .toString() ==
-                            "Sunni"
-                            ? Colors.white
-                            : Colors.black,
-                        buttonText: "Sunni",
-                        onButtonPressed: () {
-                          Get.find<GetSTorageController>().box.write(kReligion, "Sunni");
-                          Get.off(() => Complete_Profile1());
-                        },
-
-                      )),
                   ),
                   AppComponents().sizedBox15,
                   Padding(

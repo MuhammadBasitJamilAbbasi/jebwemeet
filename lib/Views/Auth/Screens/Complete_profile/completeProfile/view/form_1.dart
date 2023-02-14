@@ -296,12 +296,7 @@ class Form1 extends StatelessWidget {
                   controller.filesImages =
                   await controller.pickImage(multiple: true);
                   controller.update();
-                  if(controller.filesImages.length<5){
-                    snackBar(context, "Please Select more than 5 images", Colors.pink);
-                  }
-                  else {
                     await controller.uploadImages(context);
-                  }
                 },
                 child: Container(
                   height: 210,

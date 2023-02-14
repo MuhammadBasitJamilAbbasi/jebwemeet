@@ -42,9 +42,9 @@ dependencies:
   fluttertoast:
   intl_phone_field: ^3.1.0
   image_picker:
-  geolocator: ^8.0.3
+  geolocator: ^9.0.2
   geocoding: ^2.0.2
-  permission_handler: ^8.3.0
+#  permission_handler:
   google_maps_flutter: ^2.2.1
   images_picker:
   dropdown_button2: ^1.8.9
@@ -66,14 +66,11 @@ dependencies:
   cached_network_image:
   range_slider_flutter: ^0.0.2
   flutter_datetime_picker: ^1.5.1
-  pay:
   font_awesome_flutter:
   carousel_slider:
   flutter_local_notifications: ^9.8.0+1
   firebase_messaging: ^14.1.4
-  flutter_stripe: ^7.0.0
   contained_tab_bar_view:
-  lottie: ^2.2.0
   otp_pin_field:
   dotted_decoration:
   readmore: ^2.2.0
@@ -115,7 +112,6 @@ flutter:
   assets:
     - assets/
     - assets/icons/
-    - assets/json/
     - assets/fonts/
   #   - images/a_dot_ham.jpeg
 
