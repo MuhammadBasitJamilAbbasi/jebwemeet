@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/plan_subscription.dart';
 import 'package:range_slider_flutter/range_slider_flutter.dart';
 
@@ -44,11 +45,10 @@ class _FilterScreenState extends State<FilterScreen> {
                    Positioned(
                      top: 8,
                      right: 15,
-                     child:    InkWell(
+                     child: InkWell(
                      onTap: () {
                        controller.clearAll(context);
-                       controller.getData();
-                       Get.back();
+                       Get.offAll(()=> HomeSwapNew());
                      },
                      child: Text(
                        "Clear",
@@ -205,9 +205,9 @@ class _FilterScreenState extends State<FilterScreen> {
                     onChanged: (value) {
                       controller.selectedMilesRangeFunction(value);
                     },
-                      min: 500,
+                      min: 0,
                       max: 1000,
-                      divisions: 1,
+                      divisions: 2,
                     autofocus: true,
                     label: controller.selectedMilesRange
                         .round()
@@ -240,8 +240,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     child: kAppButton(
                       buttonText: "Continue",
                       onButtonPressed: () {
-                        controller.getData();
-                        Get.back();
+                       Get.offAll(()=> HomeSwapNew());
                       },
                     ),
                   ),

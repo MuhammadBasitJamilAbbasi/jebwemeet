@@ -72,6 +72,8 @@ class ProfileController extends GetxController {
     update();
   }
 
+
+
   void pickTourImages(BuildContext context) async {
     final pickedImages = await imagePicker.pickMultiImage();
     if (pickedImages != null) {
@@ -128,6 +130,7 @@ class ProfileController extends GetxController {
   TextEditingController addindustryController = TextEditingController();
   List<String>? kList = [];
   String? selectedMartialStatus = "Select Status";
+
   String? selectedReligion = "Select Religion";
   String? selectedCaste = "Select Caste";
   String? selectedCity = "Select City";
@@ -168,6 +171,7 @@ class ProfileController extends GetxController {
     selectedCity = value;
     update();
   }
+
 
   selectedReligionFunction(String? value) {
     selectedReligion = value;
@@ -312,13 +316,13 @@ class ProfileController extends GetxController {
       return [];
   }
 
-  List<String>? imagelist;
+  int imagelistlength=0;
   // createPostController.images
   //     .addAll(files.map((e) => File(e.path)).toList());
   Future<List<String>?> uploadImages(BuildContext context) async {
     multipleImagesDownloadLinks = [];
+    imagelistlength=filesImages.length;
     try {
-
        for(var img in filesImages){
          print(img);
          print(img.path);
@@ -413,12 +417,15 @@ class ProfileController extends GetxController {
       snackBar(context, "Please Enter your income", Colors.pink);
     }  else if (multipleImagesDownloadLinks!.isEmpty) {
       snackBar(context, "Please Add your images in step 1", Colors.pink);
-    } else {
+    } else if (multipleImagesDownloadLinks!.length!=imagelistlength) {
+      snackBar(context, "Images uploading take some time please wait", Colors.pink);
+    }  else {
       User? user = FirebaseAuth.instance.currentUser!;
       try {
         isLoader = true;
         update();
         await uploadProfile(context).then((value) async {
+          log("Blur Profile = "+isBlured.toString());
           await FirebaseFirestore.instance
               .collection("users")
               .doc(user.uid)

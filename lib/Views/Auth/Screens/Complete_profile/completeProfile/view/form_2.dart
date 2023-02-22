@@ -138,7 +138,7 @@ class _Form_2State extends State<Form_2> {
                       children: [
                         Essential_Widget(
                   leadingImage: "assets/child.png",
-                  title: "Childerns",
+                  title: "Childrens",
                   onTap: () {
                         Get.to(() => Add_Childern());
                   },

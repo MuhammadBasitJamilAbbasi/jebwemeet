@@ -125,31 +125,31 @@ class _PersonMessageViewState extends State<PersonMessageView> {
                             color: Colors.black,fontWeight: FontWeight.w600,fontSize: 23,
                           ),
                         ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: (){
-                              dynamic state = _menuKey.currentState;
-                              state.showButtonMenu();
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  height: 45,
-                                  width: 45,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: Colors.white,
-                                      border: Border.all(color: Colors.grey.shade300)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(1),
-                                    child: button,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // Expanded(
+                        //   child: GestureDetector(
+                        //     onTap: (){
+                        //       dynamic state = _menuKey.currentState;
+                        //       state.showButtonMenu();
+                        //     },
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.end,
+                        //       children: [
+                        //         Container(
+                        //           height: 45,
+                        //           width: 45,
+                        //           decoration: BoxDecoration(
+                        //               borderRadius: BorderRadius.circular(15),
+                        //               color: Colors.white,
+                        //               border: Border.all(color: Colors.grey.shade300)),
+                        //           child: Padding(
+                        //             padding: const EdgeInsets.all(1),
+                        //             child: button,
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

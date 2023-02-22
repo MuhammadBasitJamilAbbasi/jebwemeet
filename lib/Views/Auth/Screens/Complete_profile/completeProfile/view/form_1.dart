@@ -327,7 +327,7 @@ class Form1 extends StatelessWidget {
                             ),
                             AppComponents().sizedBox10,
                             Text(
-                              "Tap to add more 5 photos",
+                              "Tap to add more photos",
                               style: k14styleblack,
                             )
                           ],

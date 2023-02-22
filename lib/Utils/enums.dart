@@ -1,6 +1,6 @@
 enum createRecipeEnum { one, two }
 
-enum gender { Man, Women }
+enum gender { Male, Women }
 
 enum martial_status { Never_Married, Divorced, Separated, Annulled, Widowed }
 

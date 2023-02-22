@@ -28,7 +28,7 @@ class HomeSwapNew extends StatefulWidget {
 }
 
 class _HomeSwapNewState extends State<HomeSwapNew> {
-  final controller = Get.find<Home_page_controller>();
+  final controllerrrr = Get.find<Home_page_controller>();
 
   _get_to_previous() {
     stackController.canRewind
@@ -81,7 +81,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
       stackController = SwipableStackController()..addListener(() {});
     });
     pagecontroller = PageController(initialPage: 0);
-    controller.getData();
+    controllerrrr.getData();
   }
 
   // PageController pagecontroller = PageController();
@@ -115,13 +115,13 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                 style: k25styleblack,
                               ),
                               Text(
-                                controller.userModel.address.toString(),
+                                controller.userModel.address.toString()=="null"? "": controller.userModel.address.toString(),
                                 style: k14styleblack,
                               ),
                             ],
                           ),
                         ),
-                        controller.userList.length > 0
+                        controller.homeLoader==true? Center(child: CircularProgressIndicator()):  controller.userList.length > 0
                             ? Positioned(
                                 left: 30,
                                 right: 30,
@@ -565,12 +565,11 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                   ),
                                 ),
                               )
-                            : Center(
+                            :  Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                   Text("No Matches Found",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,color: textcolor),),
-                                  Text("Loading..."),
                                 ],),
                               ),
                       ],

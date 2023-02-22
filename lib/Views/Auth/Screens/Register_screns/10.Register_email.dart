@@ -105,7 +105,7 @@ class Register_email extends StatelessWidget {
                                 .write(kPhone, phone.completeNumber);
                           },
                         )),
-                AppComponents().sizedBox30,
+                AppComponents().sizedBox20,
                 Get.find<GetSTorageController>().box.read("isPhone") ==
                         "isPhone"
                     ? Center(

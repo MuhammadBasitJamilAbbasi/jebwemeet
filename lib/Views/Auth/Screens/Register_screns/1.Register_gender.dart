@@ -19,7 +19,7 @@ class Register_Gender extends StatelessWidget {
           .read(kGender).toString()=="null") {
         Get.find<GetSTorageController>()
             .box
-            .write(kGender,"Man");
+            .write(kGender,"Male");
       }
 
       return SingleChildScrollView(
@@ -29,9 +29,9 @@ class Register_Gender extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppComponents().backIconWithSkip(() {
+              AppComponents().backIcon(() {
                 Get.back();
-              }, () {}),
+              },),
               AppComponents().sizedBox30,
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -45,26 +45,26 @@ class Register_Gender extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Center(
                           child: kAppButton(
-                        buttonText: "Man",
+                        buttonText: "Male",
                         buttonCheck: true,
                         color: Get.find<GetSTorageController>()
                                     .box
                                     .read(kGender)
                                     .toString() ==
-                                "Man"
+                                "Male"
                             ? textcolor
                             : Colors.white,
                         textColor: Get.find<GetSTorageController>()
                                     .box
                                     .read(kGender)
                                     .toString() ==
-                                "Man"
+                                "Male"
                             ? Colors.white
                             : Colors.black,
                         onButtonPressed: () {
                           Get.find<GetSTorageController>()
                               .box
-                              .write(kGender, "Man");
+                              .write(kGender, "Male");
                           controller.setRegisterViewPage(
                               RegisterViewEnum.RegisterView2);
                         },
@@ -80,21 +80,21 @@ class Register_Gender extends StatelessWidget {
                               .box
                               .read(kGender)
                               .toString() ==
-                          "Woman"
+                          "Female"
                       ? textcolor
                       : Colors.white,
                   textColor: Get.find<GetSTorageController>()
                               .box
                               .read(kGender)
                               .toString() ==
-                          "Woman"
+                          "Female"
                       ? Colors.white
                       : Colors.black,
-                  buttonText: "Woman",
+                  buttonText: "Female",
                   onButtonPressed: () {
                     Get.find<GetSTorageController>()
                         .box
-                        .write(kGender, "Woman");
+                        .write(kGender, "Female");
                     controller
                         .setRegisterViewPage(RegisterViewEnum.RegisterView2);
                   },

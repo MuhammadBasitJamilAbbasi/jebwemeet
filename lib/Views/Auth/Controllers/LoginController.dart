@@ -351,7 +351,6 @@ class LoginController extends GetxController {
       await FirebaseAuth.instance.verifyPhoneNumber(
           phoneNumber: phoneNumber,
           verificationCompleted: (credentials) {
-
           },
           verificationFailed: (ex) {
             snackBar(context, ex.message.toString(), textcolor);
@@ -393,7 +392,7 @@ class LoginController extends GetxController {
 
   Future<bool> verifyOtp(BuildContext context) async {
     log("<=============================================>");
-    log("Inside Phone Authentication verifyOtp Service");
+    log("Inside Phone Authentication verifyOtp Service origiNAL");
     bool verificationStatus = false;
     PhoneAuthCredential credential = await PhoneAuthProvider.credential(
         verificationId: verification_Id, smsCode: otp);
@@ -401,13 +400,13 @@ class LoginController extends GetxController {
     try {
       log("Inside try statement.");
           await FirebaseAuth.instance.signInWithCredential(credential).then((userCredential) async {
-            log("Agaya agaya ");
             if (userCredential.user != null) {
               log("Firebase Verification Successful");
               verificationStatus = true;
               log("Verification Status inside if statement is: $verificationStatus");
                 await addUserdetailsPhone();
             } else {
+              log("Firebase Verification UnSuccessful");
               verificationStatus = false;
               snackBar(context, "Enter OTP is inavlid", textcolor);
             }

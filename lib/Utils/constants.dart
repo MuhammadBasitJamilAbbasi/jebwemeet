@@ -117,7 +117,7 @@ List<String>? kIncomeList = [
   "40,000 - 50,000",
   "60,000 - 70,000",
   "80,000 - 90,000",
-  ">100,000",
+  "+100,000",
 ];
 List<String>? kChildernList = [
   "0",
@@ -154,6 +154,13 @@ List<String>? kSportsList = [
   "Badminton",
   "Running",
   "Athletics",
+];
+List<String>? kPractisingList=[
+  "Select Practising",
+  "Very Practising",
+  "Practising",
+  "Moderately Practising",
+  "Not Practising",
 ];
 List<String>? kWorkList = [
   "Select Occupation Sector",

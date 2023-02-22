@@ -46,28 +46,21 @@ class Add_Childern extends StatelessWidget {
                         controller: controller),
                   ),
                   AppComponents().sizedBox30,
-                  controller.selectedChild != "0"
-                      ? Center(
+                  Center(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: kAppButton(
                               buttonText: "Save",
                               buttonstyleSmall: true,
                               onButtonPressed: () {
-                                if (controller.selectedChild.toString() != "0") {
                                   Get.find<GetSTorageController>().box.write(
                                       kchildern,
                                       controller.selectedChild.toString());
                                   Get.off(() => Complete_Profile1());
-                                } else {
-                                  snackBar(context, "Please Select your Child",
-                                      Colors.pink);
-                                }
                               },
                             ),
                           ),
                         )
-                      : SizedBox.shrink()
                 ],
               ),
             ),

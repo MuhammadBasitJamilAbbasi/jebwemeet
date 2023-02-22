@@ -51,6 +51,7 @@ class RegisterController extends GetxController {
   String? selectedValue = "Select Caste";
   String? selectedLanguage = "Select Language";
   String? selectedCity = "Select City";
+  String? selectedPractisingStatus = "Select Practising";
   String? selectedStar = "Select Star";
   String? selectedHeight = "Select height";
   String? selectedIncome = "Select income";
@@ -87,6 +88,11 @@ class RegisterController extends GetxController {
 
   selectedCreativityFunction(String? value) {
     selectedCreativity = value;
+    update();
+  }
+
+  selectedPractisingFunction(String? value) {
+    selectedPractisingStatus = value;
     update();
   }
 
@@ -137,7 +143,7 @@ class RegisterController extends GetxController {
     return isPasswordVisible;
   }
 
-  gender gendr = gender.Man;
+  gender gendr = gender.Male;
   get getGender => gendr;
   gender setGender(gender setType) {
     gendr = setType;
@@ -374,8 +380,9 @@ class RegisterController extends GetxController {
         context: context,
         initialDate: DateTime(2000),
         firstDate: DateTime(1970),
-        initialDatePickerMode:DatePickerMode.year ,
+        initialDatePickerMode:DatePickerMode.day ,
         lastDate: DateTime.now(),
+        initialEntryMode: DatePickerEntryMode.inputOnly,
         builder: (context, child) {
           return Theme(
               data: Theme.of(context).copyWith(

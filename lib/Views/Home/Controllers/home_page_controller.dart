@@ -35,11 +35,12 @@ class Home_page_controller extends GetxController {
   String? gender = "";
   Stream<QuerySnapshot<Map<String, dynamic>>>? queryValue;
   UserModel userModel = UserModel();
-
+  bool homeLoader=false;
   List<QueryDocumentSnapshot> userList = [];
   final storageController = Get.find<GetSTorageController>();
   Future getData() async {
     userList.clear();
+    homeLoader=true;
     await FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -69,10 +70,16 @@ class Home_page_controller extends GetxController {
                 filterMartialStatus.toString());
             log(element.get('religion').toString() + " == " +
                 filterReligion.toString());
+            homeLoader=false;
+            update();
+            if(filterReligion==null){
+              filterReligion= element.get('religion');
+              update();
+            }
             if (element.get('age') >= filterlowerValue.round() &&
                 element.get('gender') == gender &&
-                element.get('age') < filterupperValue.round() ||
-                element.get('martial_status') == filterMartialStatus ||
+                element.get('age') < filterupperValue.round() &&
+                // element.get('martial_status') == filterMartialStatus &&
                 element.get('religion') == filterReligion) {
               double datainMeter = GetLocation.DistanceInMeters(
                   double.parse(element.get('latitude').toString()),
@@ -114,15 +121,15 @@ class Home_page_controller extends GetxController {
         .then((value) async {
       userModel = UserModel.fromMap(value.data()!);
       update();
-      if (userModel.gender.toString() == "Man") {
-        gender = "Woman";
+      if (userModel.gender.toString() == "Male") {
+        gender = "Female";
         update();
-        print("Woman=" + gender.toString());
+        print("Female=" + gender.toString());
       }
-      if (userModel.gender.toString() == "Woman") {
-        gender = "Man";
+      if (userModel.gender.toString() == "Female") {
+        gender = "Male";
         update();
-        print("Man" + gender.toString());
+        print("Male" + gender.toString());
       }
       log(userModel.gender.toString());
       log("Init Call Start");
@@ -180,7 +187,7 @@ class Home_page_controller extends GetxController {
         filterCity == "Select City") {
       filterMartialStatus = null;
       filterReligion = null;
-      gender = "Woman";
+      gender = "Female";
       filterCaste = null;
       filterCity = null;
       update();
