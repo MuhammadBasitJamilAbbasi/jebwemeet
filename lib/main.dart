@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
         initialBinding: InitialBindings(),
+
         theme: ThemeData(
           primarySwatch: Colors.red,
           scaffoldBackgroundColor: Colors.white,

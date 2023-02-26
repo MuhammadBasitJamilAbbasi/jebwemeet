@@ -464,7 +464,7 @@ class LoginController extends GetxController {
       subscribe: false,
       blur: false,
       address: storage.box.read(kAddress),
-      age: storage.box.read(kAge),
+      age: 0,
       caste: storage.box.read(kCaste),
       job_title: storage.box.read(kJobTitle),
       education: storage.box.read(kEducation),
@@ -501,7 +501,7 @@ class LoginController extends GetxController {
               .set(userModel.toMap())
               .then((value) => Get.to(() => Register_screen()));
         } else {
-          if (value.get("age") == null) {
+          if (value.get("age") == 0 || value.get("age")==null) {
             Get.to(() => Register_screen());
           } else if (value.get("imageUrl") == null) {
             Get.to(() => Complete_Profile1());

@@ -35,10 +35,14 @@ class ProfileDetails extends StatelessWidget {
   final jobtitle;
   final industry;
   final about;
+  // final caste;
+  // final religion;
   List<dynamic>? imgeList;
 
   ProfileDetails({
     required this.name,
+    // required this.caste,
+    // required this.religion,
     required this.martial_status,
     required this.work,
     required this.blur,
@@ -155,26 +159,26 @@ class ProfileDetails extends StatelessWidget {
                                   Text(
                                     work.toString(),
                                     style: k14styleblack,
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                height: 45,
-                                width: 45,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.white,
-                                    border:
-                                        Border.all(color: Colors.grey.shade300)),
-                                child: Padding(
-                                  padding: EdgeInsets.all(12),
-                                  child: Image.asset("assets/arrownew.png"),
-                                ),
-                              ),
-                            )
+                            // Expanded(
+                            //   flex: 1,
+                            //   child: Container(
+                            //     height: 45,
+                            //     width: 45,
+                            //     decoration: BoxDecoration(
+                            //         borderRadius: BorderRadius.circular(15),
+                            //         color: Colors.white,
+                            //         border:
+                            //             Border.all(color: Colors.grey.shade300)),
+                            //     child: Padding(
+                            //       padding: EdgeInsets.all(12),
+                            //       child: Image.asset("assets/arrownew.png"),
+                            //     ),
+                            //   ),
+                            // )
                           ],
                         ),
                         AppComponents().sizedBox20,
@@ -273,13 +277,14 @@ class ProfileDetails extends StatelessWidget {
                             children: List.generate(interests!.length, (index) {
                               return Container(
                                 height: 32,
-                                padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-
+                                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 7),
+                                // alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(color: textcolor)
                                 ),
-                                child: Text(interests![index].toString()),
+                                child: Text(interests![index].title.toString()+"  "+interests![index].image.toString()),
+
                               );
                             }),
                           ),
@@ -295,7 +300,7 @@ class ProfileDetails extends StatelessWidget {
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600),
                             ),
-                            Text("See All",style: TextStyle(color: textcolor,fontSize: 16,fontWeight: FontWeight.w600),)
+                            // Text("See All",style: TextStyle(color: textcolor,fontSize: 16,fontWeight: FontWeight.w600),)
                           ],
                         ),
                         AppComponents().sizedBox10,
@@ -373,7 +378,7 @@ class ProfileDetails extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: (){
-                          Get.find<Home_page_controller>().ignorswap(opponent_user: model).then((value) => Get.back());
+                          Get.find<Home_page_controller>().ignorswap(opponent_user: model,visitType: "passed").then((value) => Get.back());
                         },
                         child: Container(
                             height: 50,

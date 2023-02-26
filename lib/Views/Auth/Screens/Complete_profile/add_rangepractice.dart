@@ -31,14 +31,14 @@ class Add_RangePractice extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 5),
                     child: Text(
-                      "Add Religious Practice",
+                      "How Religious are you?",
                       style: k25styleblack,
                     ),
                   ),
                   AppComponents().sizedBox40,
                   Center(
                     child: buildRegisterDropDown(
-                        text: "Select Practising",
+                        text: "Please Select",
                         list: kPractisingList!,
                         value: controller.selectedPractisingStatus,
                         onchange: (value) {
@@ -47,7 +47,7 @@ class Add_RangePractice extends StatelessWidget {
                         controller: controller),
                   ),
                   AppComponents().sizedBox20,
-                  controller.selectedwork != "Select Practising"
+                  controller.selectedPractisingStatus != "Please Select"
                       ? Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),

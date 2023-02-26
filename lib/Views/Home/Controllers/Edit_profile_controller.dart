@@ -43,6 +43,7 @@ class EditProfileController extends GetxController {
     selectedCaste = userModel.caste;
     selectedCity = userModel.address;
     selectedReligion = userModel.religion;
+    isBlured=userModel.blur!;
   }
 
 /*

@@ -78,7 +78,7 @@ class Profile extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Column(
                           children: [
-                            AppComponents().sizedBox50,
+                            AppComponents().sizedBox30,
                             Row(
                               children: [
                                 Expanded(
@@ -99,22 +99,22 @@ class Profile extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    height: 45,
-                                    width: 45,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Colors.white,
-                                        border:
-                                        Border.all(color: Colors.grey.shade300)),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(12),
-                                      child: Image.asset("assets/arrownew.png"),
-                                    ),
-                                  ),
-                                )
+                                // Expanded(
+                                //   flex: 1,
+                                //   child: Container(
+                                //     height: 45,
+                                //     width: 45,
+                                //     decoration: BoxDecoration(
+                                //         borderRadius: BorderRadius.circular(15),
+                                //         color: Colors.white,
+                                //         border:
+                                //         Border.all(color: Colors.grey.shade300)),
+                                //     child: Padding(
+                                //       padding: EdgeInsets.all(12),
+                                //       child: Image.asset("assets/arrownew.png"),
+                                //     ),
+                                //   ),
+                                // )
                               ],
                             ),
                             AppComponents().sizedBox20,
@@ -212,13 +212,12 @@ class Profile extends StatelessWidget {
                                 children: List.generate(userModel!.hobbies!.length, (index) {
                                   return Container(
                                     height: 32,
-                                    padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-
+                                    padding: EdgeInsets.symmetric(horizontal: 20,vertical: 7),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(color: textcolor)
                                     ),
-                                    child: Text(userModel!.hobbies![index].toString()),
+                                    child: Text(userModel!.hobbies![index].title.toString()+"  "+userModel!.hobbies![index].image.toString()),
                                   );
                                 }),
                               ),
@@ -234,7 +233,7 @@ class Profile extends StatelessWidget {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600),
                                 ),
-                                Text("See All",style: TextStyle(color: textcolor,fontSize: 16,fontWeight: FontWeight.w600),)
+                                // Text("See All",style: TextStyle(color: textcolor,fontSize: 16,fontWeight: FontWeight.w600),)
                               ],
                             ),
                             AppComponents().sizedBox10,
@@ -280,8 +279,8 @@ class Profile extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top:  MediaQuery.of(context).size.height/2 - 40,
-                  right: 30,
+                  top:  MediaQuery.of(context).size.height/2 - 30,
+                  right: 25,
                   child: Column(
                     children: [
                     Row(
@@ -322,7 +321,60 @@ class Profile extends StatelessWidget {
                   right: 20,
                   child: GestureDetector(
                     onTap: (){
-                      Get.find<GetSTorageController>().removeStorage();
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: Container(
+                                height: 180,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      "assets/appicon.png",
+                                      height: 45,
+                                      width: 45,
+                                    ),
+                                    SizedBox(height: 20),
+                                    Center(child: Text("Are you sure you want to logout?")),
+                                    SizedBox(height: 20),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              print('yes selected');
+                                              Get.find<GetSTorageController>().removeStorage();
+                                             },
+                                            child: Container(
+                                                height: 35,
+                                                child: Center(child: Text("Yes"))),
+                                            style: ElevatedButton.styleFrom(primary: textcolor),
+                                          ),
+                                        ),
+                                        SizedBox(width: 15),
+                                        Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                print('no selected');
+                                                Navigator.of(context).pop();
+                                              },
+                                              child:
+                                              Container(
+                                                  height:35,
+                                                  child: Center(child: Text("No", style: TextStyle(color: Colors.white)))),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: textcolor,
+                                              ),
+                                            ))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
                     },
                     child: Container(
                       decoration: BoxDecoration(

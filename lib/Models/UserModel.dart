@@ -1,3 +1,5 @@
+import 'package:jabwemeet/Models/Hobbies_Model.dart';
+
 class UserModel {
   String? gender;
   bool? subscribe;
@@ -16,7 +18,7 @@ class UserModel {
   String? password;
   String? fcm_token;
   String? education;
-  dynamic hobbies;
+  List<InterestModel>? hobbies;
   String? about;
   String? height;
   String? income;
@@ -84,7 +86,6 @@ class UserModel {
     about = map['about'];
     work = map['work'];
     languages = map['languages'];
-    hobbies = map['hobbies'];
     fcm_token = map['fcm_token'];
     height = map['height'];
     religion = map['religion'];
@@ -95,6 +96,12 @@ class UserModel {
     phone_number = map['phone_number'];
     uid = map['uid'];
     religious_practice = map['religious_practice'];
+    if (map['hobbies'] != null) {
+      hobbies = <InterestModel>[];
+
+      map['hobbies'].forEach(
+              (items) => hobbies!.add(new InterestModel.fromMap(items)));
+    }
   }
 
   Map<String, dynamic> toMap() {

@@ -97,7 +97,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         child: kAppButton(
                             buttonText: "Create an account",
                             onButtonPressed: () {
-                              Get.off(()=> JabWeMet_Screen());
+                              Get.to(()=> JabWeMet_Screen());
                             }),
                       ),
                       AppComponents().sizedBox20,

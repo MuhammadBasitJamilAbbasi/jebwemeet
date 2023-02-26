@@ -1,112 +1,123 @@
 import 'package:flutter/material.dart';
 
-class TopicsModel extends ChangeNotifier {
-  String image;
-  String title;
-  bool isSeleted;
+class InterestModel {
+  String? image;
+  String? title;
 
-  TopicsModel({
+  InterestModel({
     required this.title,
     required this.image,
-    required this.isSeleted,
   });
+  InterestModel.fromMap(Map<String, dynamic> map) {
+    image = map['image'];
+    title = map['title'];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'icon': image,
+      'title': title,
+    };
+  }
+  @override
+  String toString() {
+    return '{title: $title, image: $image,}';
+  }
 }
 
-List<TopicsModel> topicContents = [
-  TopicsModel(
+List<InterestModel> topicContents = [
+  InterestModel(
     image: '🎨',
     title: 'Art',
-    isSeleted: false,
   ),
-  TopicsModel(
+  InterestModel(
     image: '🏀',
     title: 'Basketball',
-    isSeleted: false,
   ),
-  TopicsModel(
+  InterestModel(
     image: '🥔',
     title: 'Baking',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '🏎',
     title: 'Cars',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '🍳',
     title: 'Cooking',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '💰',
     title: 'Crypto',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '🏕️',
     title: 'Camping & Hiking',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '👪',
     title: 'Family',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '🍔',
     title: 'Food',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '💪',
     title: 'Fitness',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '🕹',
     title: 'Gaming',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '🧑‍🌾',
     title: 'Gradening',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '🥒',
     title: 'Healthy',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '🏺',
     title: 'History',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '💄',
     title: 'Makeup',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '😂',
     title: 'Memes',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '🌱',
     title: 'Nature',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '⚽',
     title: 'Football',
-    isSeleted: false,
+    
   ),
-  TopicsModel(
+  InterestModel(
     image: '🎾',
     title: 'Tennis',
-    isSeleted: false,
+    
   ),
 ];
 //

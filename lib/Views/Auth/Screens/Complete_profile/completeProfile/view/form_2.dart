@@ -186,7 +186,7 @@ class _Form_2State extends State<Form_2> {
                   onTap: () {
                     Get.to(() => Add_Hoobies());
                   },
-                  iconfil: controller.getList.length == 0
+                  iconfil: controller.getList!.length == 0
                       ? Icons.arrow_forward_ios_outlined
                       : Icons.check,
                 ),
@@ -197,27 +197,28 @@ class _Form_2State extends State<Form_2> {
                   runSpacing: 10,
                   spacing: 10,
                   children:
-                  List.generate(controller.getList.length, (index) {
-                    final topic = controller.getList[index];
+                  List.generate(controller.getList!.length, (index) {
+                    final topic = controller.getList![index];
                     return IntrinsicWidth(
                       child: InterestWidget(
-                        textstyle: controller.getList.contains(topic)
+                        textstyle: controller.getList!.contains(topic)
                             ? k14styleWhite
                             : k14styleblack,
                         horizontalDistance: 15,
-                        borderColor: controller.getList.contains(topic)
+                        image:  controller.getList![index].image!,
+                        borderColor: controller.getList!.contains(topic)
                             ? primarycolor
                             : Colors.grey.shade300,
-                       onlyTilte: true,
-                        title: controller.getList[index],
+                       onlyTilte: false,
+                        title: controller.getList![index].title,
                         onTap: () {
-                            // if (!controller.getList.contains(topic)) {
+                            // if (!controller.getList!!!.contains(topic)) {
                             //   controller.addTopics(topic);
                             // } else {
                             //   controller.removeTopics(topic);
                             // }
                         },
-                        color: controller.getList.contains(topic)
+                        color: controller.getList!.contains(topic)
                             ? primarycolor
                             : Colors.white,
                       ),

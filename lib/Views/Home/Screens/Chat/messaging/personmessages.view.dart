@@ -57,12 +57,14 @@ class _PersonMessageViewState extends State<PersonMessageView> {
   Widget build(BuildContext context) {
     final messageController = Get.find<MessageController>();
     return
-        PageStorage(
-          bucket: bucket,
-          child: getBody(
-            messageController,
-            context,
-        ));
+        Scaffold(
+          body: PageStorage(
+              bucket: bucket,
+              child: getBody(
+                messageController,
+                context,
+              )),
+        );
   }
 
 
@@ -102,7 +104,7 @@ class _PersonMessageViewState extends State<PersonMessageView> {
               return  Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  AppComponents().sizedBox20,
+                  AppComponents().sizedBox40,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: Row(

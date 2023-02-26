@@ -158,7 +158,13 @@ class MatchScreen extends StatelessWidget {
                     .getchatRoom(
                     opponent_id,
                     context);
-                showMaterialModalBottomSheet(
+                Get.to(()=> PersonMessageView(
+                    name:opponent_name,
+                    profilePicture:opponent_image,
+                    uid: opponent_id,
+                    chatRoomModel:
+                    chatRoom!));
+            /*    showMaterialModalBottomSheet(
                   context: context,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
@@ -217,7 +223,7 @@ class MatchScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                );
+                );*/
 
 
 

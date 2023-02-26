@@ -12,20 +12,20 @@ class Add_Education extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storageController = Get.find<GetSTorageController>();
-    if (Get.find<GetSTorageController>()
-        .box
-        .read(kEducation)
-        .toString() ==
-        "" ||
-        Get.find<GetSTorageController>()
-            .box
-            .read(kEducation)
-            .toString() ==
-            "null") {
-      Get.find<GetSTorageController>()
-          .box
-          .write(kEducation, "Bachelor’s degree");
-    }
+    // if (Get.find<GetSTorageController>()
+    //     .box
+    //     .read(kEducation)
+    //     .toString() ==
+    //     "" ||
+    //     Get.find<GetSTorageController>()
+    //         .box
+    //         .read(kEducation)
+    //         .toString() ==
+    //         "null") {
+    //   Get.find<GetSTorageController>()
+    //       .box
+    //       .write(kEducation, "Bachelor’s degree");
+    // }
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

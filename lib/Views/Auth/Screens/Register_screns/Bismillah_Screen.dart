@@ -145,16 +145,12 @@ class _Bismillah_ScreenState extends State<Bismillah_Screen> {
                             onButtonPressed: () async {
                               final con =
                               Get.find<GetSTorageController>();
-                              print("isAccept: " +
-                                  controller.isAccept.value
-                                      .toString());
                               print("isTerm: " +
                                   controller.isTerm.value.toString());
                               print("isPolicy: " +
                                   controller.isPolicy.value
                                       .toString());
-                              if (con.box.read("isAccept") ==
-                                  "true" &&
+                              if (
                                   con.box.read("isTerm") == "true" &&
                                   con.box.read("isPolicy") ==
                                       "true") {

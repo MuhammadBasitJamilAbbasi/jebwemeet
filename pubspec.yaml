@@ -79,6 +79,7 @@ dependencies:
   profanity_filter: ^2.0.0
   blurrycontainer: ^1.0.2
   skeletons: ^0.0.3
+  flutter_cupertino_datetime_picker: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

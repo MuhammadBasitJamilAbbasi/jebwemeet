@@ -48,7 +48,7 @@ class _LikesViewState extends State<LikesView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
               AppComponents().sizedBox50,
-              Text("Matches",style: k25styleblack,),
+              Center(child: Text("Explore",style: k25styleblack,)),
               SizedBox(height: 5,),
               Text("This is a list of people who have liked you and your matches.",style: k14styleblack,),
           AppComponents().sizedBox10,
@@ -117,13 +117,16 @@ class _LikesViewState extends State<LikesView> {
                               child: ContainedTabBarView(
                                 tabBarProperties: TabBarProperties(
                                   unselectedLabelColor: Colors.grey,
-                                  labelColor: Colors.black,
-                                  indicatorColor: Colors.black,
+                                  labelColor: textcolor,
+                                  indicatorColor: textcolor,
+
                                   indicatorSize: TabBarIndicatorSize.tab,
                                   indicatorWeight: 2,
+                                  labelPadding: EdgeInsets.symmetric(horizontal: 20),
+                                  isScrollable: true,
                                   labelStyle: TextStyle(
                                       fontSize: 15,
-                                      color: Colors.black,
+                                      color: textcolor,
                                       fontWeight: FontWeight.w500),
                                   unselectedLabelStyle: TextStyle(
                                       fontSize: 15,
@@ -135,6 +138,8 @@ class _LikesViewState extends State<LikesView> {
                                   Text('Matches'),
                                   Text('Liked you'),
                                   Text('Favourites'),
+                                  Text('Liked'),
+                                  Text('Passed'),
                                 ],
                                 views: [
                                   matcheslist.length > 0
@@ -180,94 +185,26 @@ class _LikesViewState extends State<LikesView> {
                                                             .toString(),
                                                         context);
                                                     log("2 chat room not null");
-                                                    showMaterialModalBottomSheet(
-                                                      context: context,
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.only(
-                                                              topLeft: Radius.circular(50),
-                                                              topRight: Radius.circular(50))),
-                                                      builder: (context) => Padding(
-                                                        padding: EdgeInsets.only(
-                                                            bottom: MediaQuery.of(context).viewInsets.bottom),
-                                                        child: SingleChildScrollView(
-                                                          controller: ModalScrollController.of(context),
-                                                          child: Stack(
-                                                            children: [
-                                                              Container(
-                                                                height: MediaQuery.of(context).size.height * 0.85,
-                                                                width: MediaQuery.of(context).size.width,
-                                                                padding: EdgeInsets.only(top: 50),
-                                                                decoration: BoxDecoration(
-                                                                    color: Colors.black,
-                                                                    borderRadius: BorderRadius.only(
-                                                                        topLeft: Radius.circular(50),
-                                                                        topRight: Radius.circular(50))),
-                                                                child:PersonMessageView(
-                                                                    name:
-                                                                    controller.userModel.name.toString()==matcheslist[index]["isReceiverName"]
-                                                                        .toString() ?
-                                                                    matcheslist[index]["isSenderName"]
-                                                                        .toString() : matcheslist[index]["isReceiverName"]
-                                                                        .toString(),
-                                                                    profilePicture:
-                                                                    controller.userModel.imageUrl.toString()==matcheslist[index]["isSenderImage"]
-                                                                        .toString() ?
-                                                                    matcheslist[index]["isReceiverImage"]
-                                                                        .toString() : matcheslist[index]["isSenderImage"]
-                                                                        .toString(),
-                                                                    uid: controller.userModel.uid.toString()==matcheslist[index]["isSender"]
-                                                                        .toString() ?
-                                                                    matcheslist[index]["isReceiver"]
-                                                                        .toString() : matcheslist[index]["isSender"]
-                                                                        .toString(),
-                                                                    chatRoomModel:
-                                                                    chatRoom!),
-                                                              ),
-                                                              Container(
-                                                                height: MediaQuery.of(context).size.height * 0.85,
-                                                                width: MediaQuery.of(context).size.width,
-                                                                padding: EdgeInsets.only(top: 10),
-                                                                decoration: BoxDecoration(
-                                                                    image: DecorationImage(
-                                                                      image: AssetImage("assets/crop.png"),
-                                                                      fit: BoxFit.fill,
-                                                                    ),
-                                                                    borderRadius: BorderRadius.only(
-                                                                        topLeft: Radius.circular(50),
-                                                                        topRight: Radius.circular(50))),
-                                                                child:PersonMessageView(
-                                                                    name:
-                                                                    controller.userModel.name.toString()==matcheslist[index]["isReceiverName"]
-                                                                        .toString() ?
-                                                                    matcheslist[index]["isSenderName"]
-                                                                        .toString() : matcheslist[index]["isReceiverName"]
-                                                                        .toString(),
-                                                                    profilePicture:
-                                                                    controller.userModel.imageUrl.toString()==matcheslist[index]["isSenderImage"]
-                                                                        .toString() ?
-                                                                    matcheslist[index]["isReceiverImage"]
-                                                                        .toString() : matcheslist[index]["isSenderImage"]
-                                                                        .toString(),
-                                                                    uid: controller.userModel.uid.toString()==matcheslist[index]["isSender"]
-                                                                        .toString() ?
-                                                                    matcheslist[index]["isReceiver"]
-                                                                        .toString() : matcheslist[index]["isSender"]
-                                                                        .toString(),
-                                                                    chatRoomModel:
-                                                                    chatRoom),
-                                                              ),
-                                                              Center(
-                                                                child: Image.asset(
-                                                                  "assets/c.png",
-                                                                  width: 47,
-                                                                  height: 25,
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
+                                                    Get.to(()=> PersonMessageView(
+                                                        name:
+                                                        controller.userModel.name.toString()==matcheslist[index]["isReceiverName"]
+                                                            .toString() ?
+                                                        matcheslist[index]["isSenderName"]
+                                                            .toString() : matcheslist[index]["isReceiverName"]
+                                                            .toString(),
+                                                        profilePicture:
+                                                        controller.userModel.imageUrl.toString()==matcheslist[index]["isSenderImage"]
+                                                            .toString() ?
+                                                        matcheslist[index]["isReceiverImage"]
+                                                            .toString() : matcheslist[index]["isSenderImage"]
+                                                            .toString(),
+                                                        uid: controller.userModel.uid.toString()==matcheslist[index]["isSender"]
+                                                            .toString() ?
+                                                        matcheslist[index]["isReceiver"]
+                                                            .toString() : matcheslist[index]["isSender"]
+                                                            .toString(),
+                                                        chatRoomModel:
+                                                        chatRoom!));
                                                   },
                                                   child:
                                                   Card(
@@ -318,6 +255,7 @@ class _LikesViewState extends State<LikesView> {
                                                                   [
                                                                   "isReceiverName"]
                                                                       .toString(),
+                                                                  overflow: TextOverflow.ellipsis,
                                                                   style: TextStyle(
                                                                       fontWeight: FontWeight
                                                                           .w500,
@@ -331,6 +269,7 @@ class _LikesViewState extends State<LikesView> {
                                                                   [
                                                                   "isSenderName"]
                                                                       .toString(),
+                                                                  overflow: TextOverflow.ellipsis,
                                                                   style: TextStyle(
                                                                       fontWeight: FontWeight
                                                                           .w500,
@@ -448,6 +387,7 @@ class _LikesViewState extends State<LikesView> {
                                                             likeslist[index]["isReceiverName"]
                                                                 .toString() : likeslist[index]["isSenderName"]
                                                                 .toString(),
+                                                            overflow: TextOverflow.ellipsis,
                                                             style: TextStyle(
                                                                 fontSize: 16,
                                                                 fontWeight:
@@ -520,7 +460,7 @@ class _LikesViewState extends State<LikesView> {
                                         );
                                       } else if (!snapshot.hasData ||
                                           snapshot.hasError ||
-                                          snapshot.data == null) {
+                                          snapshot.data == null || snapshot.data!.size==0) {
                                         return     Container(
                                           height: MediaQuery.of(context)
                                               .size
@@ -622,6 +562,7 @@ class _LikesViewState extends State<LikesView> {
                                                                       child:Text(
                                                                       snapshot.data!.docs[index]["name"]
                                                                             .toString(),
+                                                                        overflow: TextOverflow.ellipsis,
                                                                         style: TextStyle(
                                                                             fontWeight: FontWeight
                                                                                 .w500,
@@ -634,19 +575,19 @@ class _LikesViewState extends State<LikesView> {
                                                                     ),
                                                                   ),
                                                                 Positioned(
-                                                                  top: 10,
-                                                                  right: 10,
+                                                                  top: 2,
+                                                                  right: 1,
                                                                   child: GestureDetector(
                                                                     onTap: (){
                                                                       controller.removefavourite(opponent_user:snapshot.data!.docs[index]["uid"]);
                                                                     },
                                                                     child: Container(
-                                                                        height: 45,
-                                                                        width: 45,
+                                                                        height: 35,
+                                                                        width: 35,
                                                                         alignment: Alignment.center,
                                                                         decoration: BoxDecoration(
                                                                             shape: BoxShape.circle,
-                                                                            color: Colors.white,
+                                                                            color: Colors.white.withOpacity(0.5),
                                                                             boxShadow: [
                                                                               BoxShadow(
                                                                                 color: Colors.grey.shade300.withOpacity(0.5),
@@ -658,8 +599,8 @@ class _LikesViewState extends State<LikesView> {
                                                                             ]),
                                                                         child: Image.asset(
                                                                           "assets/heartnew.png",
-                                                                          height: 24,
-                                                                          width: 24,
+                                                                          height: 20,
+                                                                          width: 20,
                                                                           color: textcolor,
                                                                         )),
                                                                   ),
@@ -682,7 +623,429 @@ class _LikesViewState extends State<LikesView> {
                                       );
                                     },
                                   ),
-
+                                  //Liked
+                                  StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(user.uid).collection("visits")
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      } else if (!snapshot.hasData ||
+                                          snapshot.hasError ||
+                                          snapshot.data == null) {
+                                        return Container(
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height -
+                                              300,
+                                          alignment: Alignment.center,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Text('No Liked yet',
+                                                  style: k20styleblack),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 30),
+                                                child: Text(
+                                                  'When you liked profile they’ll show up here',
+                                                  style: k14styleblack,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                      print(snapshot.data!.docs.length);
+                                      List<QueryDocumentSnapshot> youlikedList = [];
+                                      snapshot.data!.docs.forEach((element) {
+                                        if(element["visitType"]=="like"){
+                                          youlikedList.add(element);
+                                        }
+                                      });
+                                      return youlikedList.length>0?  Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          AppComponents().sizedBox20,
+                                          Expanded(
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 15,vertical: 5),
+                                              child: GridView.builder(
+                                                  gridDelegate:
+                                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                                      maxCrossAxisExtent:
+                                                      300,
+                                                      childAspectRatio:
+                                                      2 / 3 ,
+                                                      crossAxisSpacing:
+                                                      20,
+                                                      mainAxisSpacing:
+                                                      10),
+                                                  physics:
+                                                  BouncingScrollPhysics(),
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                  Axis.vertical,
+                                                  itemCount:
+                                                  youlikedList.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return InkWell(
+                                                        onTap: () async {
+                                                          Get.to(()=> ProfileWithID(id: youlikedList[index]["uid"]));
+                                                        },
+                                                        child:
+                                                        Card(
+                                                          clipBehavior: Clip.antiAlias,
+                                                          elevation: 4.0,
+                                                          margin: EdgeInsets.zero,
+                                                          shape: defaultCardBorder(),
+                                                          child: Container(
+                                                            alignment: Alignment.center,
+                                                            decoration: BoxDecoration(
+                                                              /// User profile image
+                                                              image: DecorationImage(
+                                                                //   colorFilter: controller.Listing_List[properties.index].imageBlur??false? ColorFilter.mode(Colors.black, BlendMode.xor) : null,
+                                                                /// Show VIP icon if user is not vip member
+                                                                image: NetworkImage(
+                                                                    youlikedList[index]["image"]
+                                                                        .toString() ),
+                                                                fit: BoxFit.cover,
+                                                              ),
+                                                            ),
+                                                            child: Stack(
+                                                              children: [
+                                                                Positioned(
+                                                                  bottom: 0,
+                                                                  left: 0,
+                                                                  right: 0,
+                                                                  child: BlurryContainer(
+                                                                    blur: 8,
+                                                                    height: 40,
+                                                                    elevation: 0,
+                                                                    borderRadius: BorderRadius.circular(0),
+                                                                    color: Colors
+                                                                        .black.withOpacity(0.5),
+                                                                    child: Padding(
+                                                                      padding: EdgeInsets.only(left: 10,),
+                                                                      child:Text(
+                                                                        youlikedList[index]["name"]
+                                                                            .toString(),
+                                                                        overflow: TextOverflow.ellipsis,
+                                                                        style: TextStyle(
+                                                                            fontWeight: FontWeight
+                                                                                .w500,
+                                                                            fontSize:
+                                                                            16,
+                                                                            color:
+                                                                            Colors.white),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Positioned(
+                                                                  top: 2,
+                                                                  right: 1,
+                                                                  child: GestureDetector(
+                                                                    onTap: (){
+                                                                      controller.removeLiked(opponent_user:youlikedList[index]["uid"]);
+                                                                    },
+                                                                    child: Container(
+                                                                        height: 35,
+                                                                        width: 35,
+                                                                        alignment: Alignment.center,
+                                                                        decoration: BoxDecoration(
+                                                                            shape: BoxShape.circle,
+                                                                            color: Colors.white.withOpacity(0.5),
+                                                                            boxShadow: [
+                                                                              BoxShadow(
+                                                                                color: Colors.grey.shade300.withOpacity(0.5),
+                                                                                spreadRadius: 3,
+                                                                                blurRadius: 12,
+                                                                                offset:
+                                                                                Offset(0, 10), // changes position of shadow
+                                                                              ),
+                                                                            ]),
+                                                                        child: Image.asset(
+                                                                          "assets/heartnew.png",
+                                                                          height: 20,
+                                                                          width: 20,
+                                                                          color: textcolor,
+                                                                        )),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                    );
+                                                  }),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Divider(
+                                            height: 1,
+                                          ),
+                                        ],
+                                      ) :  Container(
+                                        height: MediaQuery.of(context)
+                                            .size
+                                            .height -
+                                            300,
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            Text('No Liked yet',
+                                                style: k20styleblack),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 30),
+                                              child: Text(
+                                                'When you liked profile they’ll show up here',
+                                                style: k14styleblack,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  //Ignor
+                                  StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(user.uid).collection("visits")
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      } else if (!snapshot.hasData ||
+                                          snapshot.hasError ||
+                                          snapshot.data == null) {
+                                        return Container(
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height -
+                                              300,
+                                          alignment: Alignment.center,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Text('No Liked yet',
+                                                  style: k20styleblack),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 30),
+                                                child: Text(
+                                                  'When you passed profile they’ll show up here',
+                                                  style: k14styleblack,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                      print(snapshot.data!.docs.length);
+                                      List<QueryDocumentSnapshot> ignorList = [];
+                                      snapshot.data!.docs.forEach((element) {
+                                        if(element["visitType"]=="passed"){
+                                          ignorList.add(element);
+                                        }
+                                      });
+                                      return ignorList.length>0 ? Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          AppComponents().sizedBox20,
+                                          Expanded(
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 15,vertical: 5),
+                                              child: GridView.builder(
+                                                  gridDelegate:
+                                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                                      maxCrossAxisExtent:
+                                                      300,
+                                                      childAspectRatio:
+                                                      2 / 3 ,
+                                                      crossAxisSpacing:
+                                                      20,
+                                                      mainAxisSpacing:
+                                                      10),
+                                                  physics:
+                                                  BouncingScrollPhysics(),
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                  Axis.vertical,
+                                                  itemCount:
+                                                  ignorList.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return InkWell(
+                                                        onTap: () async {
+                                                          Get.to(()=> ProfileWithID(id: ignorList[index]["uid"]));
+                                                        },
+                                                        child:
+                                                        Card(
+                                                          clipBehavior: Clip.antiAlias,
+                                                          elevation: 4.0,
+                                                          margin: EdgeInsets.zero,
+                                                          shape: defaultCardBorder(),
+                                                          child: Container(
+                                                            alignment: Alignment.center,
+                                                            decoration: BoxDecoration(
+                                                              /// User profile image
+                                                              image: DecorationImage(
+                                                                //   colorFilter: controller.Listing_List[properties.index].imageBlur??false? ColorFilter.mode(Colors.black, BlendMode.xor) : null,
+                                                                /// Show VIP icon if user is not vip member
+                                                                image: NetworkImage(
+                                                                    ignorList[index]["image"]
+                                                                        .toString() ),
+                                                                fit: BoxFit.cover,
+                                                              ),
+                                                            ),
+                                                            child: Stack(
+                                                              children: [
+                                                                Positioned(
+                                                                  bottom: 0,
+                                                                  left: 0,
+                                                                  right: 0,
+                                                                  child: BlurryContainer(
+                                                                    blur: 8,
+                                                                    height: 40,
+                                                                    elevation: 0,
+                                                                    borderRadius: BorderRadius.circular(0),
+                                                                    color: Colors
+                                                                        .black.withOpacity(0.5),
+                                                                    child: Padding(
+                                                                      padding: EdgeInsets.only(left: 10,),
+                                                                      child:Text(
+                                                                        ignorList[index]["name"]
+                                                                            .toString(),
+                                                                        overflow: TextOverflow.ellipsis,
+                                                                        style: TextStyle(
+                                                                            fontWeight: FontWeight
+                                                                                .w500,
+                                                                            fontSize:
+                                                                            16,
+                                                                            color:
+                                                                            Colors.white),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Positioned(
+                                                                  top: 2,
+                                                                  right: 1,
+                                                                  child: GestureDetector(
+                                                                    onTap: (){
+                                                                      controller.removeLiked(opponent_user:ignorList[index]["uid"]);
+                                                                    },
+                                                                    child: Container(
+                                                                        height: 35,
+                                                                        width: 35,
+                                                                        alignment: Alignment.center,
+                                                                        decoration: BoxDecoration(
+                                                                            shape: BoxShape.circle,
+                                                                            color: Colors.white.withOpacity(0.5),
+                                                                            boxShadow: [
+                                                                              BoxShadow(
+                                                                                color: Colors.grey.shade300.withOpacity(0.5),
+                                                                                spreadRadius: 3,
+                                                                                blurRadius: 12,
+                                                                                offset:
+                                                                                Offset(0, 10), // changes position of shadow
+                                                                              ),
+                                                                            ]),
+                                                                        child: Image.asset(
+                                                                          "assets/dislikenew.png",
+                                                                          height: 15,
+                                                                          width: 15,
+                                                                        )),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                    );
+                                                  }),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Divider(
+                                            height: 1,
+                                          ),
+                                        ],
+                                      ) :  Container(
+                                        height: MediaQuery.of(context)
+                                            .size
+                                            .height -
+                                            300,
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            Text('No Passed yet',
+                                                style: k20styleblack),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 30),
+                                              child: Text(
+                                                'When you passed profile they’ll show up here',
+                                                style: k14styleblack,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ],
                                 onChange: (index) {},
                               ));

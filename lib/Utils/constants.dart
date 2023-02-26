@@ -135,8 +135,8 @@ List<String>? kChildernList = [
 ];
 List<String>? kReligionList = [
   "Select Religion",
-  "Shia",
-  "Sunni",
+  "Muslim Shia",
+  "Muslim Sunni",
   "Christian",
   "Ahmadi",
   "Hindu",
@@ -156,7 +156,7 @@ List<String>? kSportsList = [
   "Athletics",
 ];
 List<String>? kPractisingList=[
-  "Select Practising",
+  "Please Select",
   "Very Practising",
   "Practising",
   "Moderately Practising",
@@ -165,7 +165,7 @@ List<String>? kPractisingList=[
 List<String>? kWorkList = [
   "Select Occupation Sector",
   "Accountancy, banking and finance",
-  "Business, consulting and nanagement",
+  "Business, consulting and Management",
   "Charity and volutary work",
   "Creative arts and design",
   "Energy and utilities",
@@ -446,6 +446,7 @@ List<String>? kLanguageList = [
 ];
 List<String>? kcasteList = [
   "Select Caste",
+  "Abbasi",
   "Arain",
   "Aulakh",
   "Ansari",

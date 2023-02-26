@@ -11,6 +11,7 @@ import 'package:jabwemeet/Models/likes_model.dart';
 import 'package:jabwemeet/Utils/locations.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/match_screen.dart';
+import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
 import 'package:jabwemeet/Views/Home/Screens/Likes/LIke.dart';
 import 'package:uuid/uuid.dart';
 
@@ -40,11 +41,12 @@ class Home_page_controller extends GetxController {
   final storageController = Get.find<GetSTorageController>();
   Future getData() async {
     userList.clear();
+    visitedList!.clear();
     homeLoader=true;
     await FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('visits')
+        .collection('visits').limit(50)
         .get()
         .then((value) {
       value.docs.forEach((element) {
@@ -55,31 +57,22 @@ class Home_page_controller extends GetxController {
     });
     await FirebaseFirestore.instance
         .collection("users")
-        .limit(50)
         .get()
         .then((snapshot) {
       snapshot.docs.forEach((element) {
         if(element.get('age')!=null || element.get('gender')!=null) {
           if (visitedList!.contains(element.id) == false) {
-            log(element.get('age').toString() + " == " +
-                filterlowerValue.round().toString());
-            log(element.get('gender').toString() + " == " + gender.toString());
-            log(element.get('age').toString() + " == " +
-                filterupperValue.round().toString());
-            log(element.get('martial_status').toString() + " == " +
-                filterMartialStatus.toString());
-            log(element.get('religion').toString() + " == " +
-                filterReligion.toString());
-            homeLoader=false;
+            // if(filterReligion==null && element.get('age') >= filterlowerValue.round() &&
+            //     element.get('gender') == gender &&
+            //     element.get('age') < filterupperValue.round()){
+            //   filterReligion= element.get('religion');
+            //   update();
+            // }
+            filterReligion= element.get('religion');
             update();
-            if(filterReligion==null){
-              filterReligion= element.get('religion');
-              update();
-            }
             if (element.get('age') >= filterlowerValue.round() &&
                 element.get('gender') == gender &&
                 element.get('age') < filterupperValue.round() &&
-                // element.get('martial_status') == filterMartialStatus &&
                 element.get('religion') == filterReligion) {
               double datainMeter = GetLocation.DistanceInMeters(
                   double.parse(element.get('latitude').toString()),
@@ -106,6 +99,7 @@ class Home_page_controller extends GetxController {
           }
         }
       });
+      homeLoader=false;
       update();
       print("Length: " + userList.length.toString());
     });
@@ -161,7 +155,6 @@ class Home_page_controller extends GetxController {
     selectedMilesRange = 500.0;
     selectedMilesRangeDefault = 2490000.0;
     update();
-    snackBar(context, "Filters Clear", Colors.pink);
   }
 
   var selectedMilesRange = 500.0;
@@ -552,14 +545,11 @@ class Home_page_controller extends GetxController {
       }
       return likesModel;
     }
+    // getData();
+    // update();
   }
 
-  Future ignorswap({opponent_user,})async{
-    print(userList
-        .length
-        .toString());
-    print(
-        "Remove tap");
+  Future ignorswap({required UserModel opponent_user,required String visitType})async{
     await FirebaseFirestore
         .instance
         .collection(
@@ -574,8 +564,13 @@ class Home_page_controller extends GetxController {
         .set({
       "uid": opponent_user
           .uid
-          .toString()
+          .toString(),
+      "image":opponent_user.imageUrl,
+      "name":opponent_user.name,
+      "visitType":visitType
     });
+    // getData();
+    // update();
   }
   Future addtofavourite({required UserModel opponent_user}) async{
     await FirebaseFirestore
@@ -610,6 +605,18 @@ class Home_page_controller extends GetxController {
         .doc(opponent_user)
         .delete();
   }
+  Future removeLiked({ opponent_user}) async{
+    await FirebaseFirestore
+        .instance
+        .collection(
+        "users")
+        .doc(userModel
+        .uid)
+        .collection(
+        "visits")
+        .doc(opponent_user)
+        .delete();
+  }
   Future likeswap(BuildContext context,{opponent_user}) async{
     log("Like TAp");
      await
@@ -637,7 +644,7 @@ class Home_page_controller extends GetxController {
         .then(
             (value) async {
           print("Remove tap");
-         ignorswap(opponent_user:opponent_user );
+         ignorswap(opponent_user:opponent_user,visitType: "like" );
          // getData();
         });
   }

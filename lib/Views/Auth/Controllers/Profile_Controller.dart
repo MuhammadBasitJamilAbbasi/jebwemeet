@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -189,115 +190,34 @@ class ProfileController extends GetxController {
   int? topicsSelected;
   List usersInterest = [];
 
-  Map<String, dynamic>? topic;
 
-  bool isSelection(int index) {
-    topicContents[index].isSeleted = !topicContents[index].isSeleted;
-    update();
-    return topicContents[index].isSeleted;
-  }
 
-  bool topicSelection(int index) {
-    topicContents[index].isSeleted = !topicContents[index].isSeleted;
-    update();
-    return topicContents[index].isSeleted;
-  }
 
-  addToInterestList() {
-    interestList.add(topicContents.length);
-  }
 
-  addTopicsToList(int index) {
-    if (topicContents[index].isSeleted == true) interestList.add(topicContents);
-    update();
-  }
-
-//Select the interest of the user
-  bool userInterests(int index) {
-    topicContents[index].isSeleted = !topicContents[index].isSeleted;
-    update();
-    return topicContents[index].isSeleted;
-  }
-
-  //add the interest to the user  profile
-  addUserInterests() {
-    topicContents.forEach((item) {
-      if (item.isSeleted == true) {
-        if (!usersInterest.contains(item.title)) {
-          usersInterest.add(
-            item.title,
-          );
-        }
-
-        update();
-      }
-    });
-
-    log(usersInterest.toString());
-    return usersInterest;
-  }
-
-  //------------->//
-  //topic view controller
-  // List<TopicsModel> allTopics = topicList;
-  // List<TopicsModel> get topics => allTopics;
-
-  List<TopicsModel> selectedList = [];
-  List<TopicsModel> get selectedItems => selectedList;
-
-  List<String> selectTitles = [];
-  List<String> get getSelectedTitles => selectTitles;
-
-  List<String> titleSelected = [];
-  List<String> get getTitlesSelected => titleSelected;
-
-  List<String> randomTitles = [];
-  List<String> get getRandomTitles => randomTitles;
-  List<String> getList = [];
+  List<InterestModel>? getList = [];
+  List<Map<String, dynamic>> interestsList = [];
   //add topics to the list
-  void addTopics(TopicsModel topics) {
-    print("okay");
-    if(getList.isEmpty){
-      getList.add(topics.title);
+  void addTopics(InterestModel topics) {
+    if(getList!.isEmpty){
+      print("Inbterest 1");
+      getList!.add(topics);
       update();
     }
     else {
-      getList.forEach((element) {
-        if (element == topics.title) {
-          print("okay hai");
-        }
-        else {
-          getList.add(topics.title);
-          update();
-          print("okay 2");
-        }
-      });
+      print("Inbterest 1 say zyda");
+      getList!.add(topics);
+      update();
+      print("okay 2");
     }
-    update();
-    // selectedList.forEach((element) {
-    //   getList.add(element.title);
-    //   update();
-    // });
-    print(getList);
+    print("Interesrt List  ${getList!.length}");
   }
 
   //remove topics from the list
-  void removeTopics(TopicsModel topics) {
-    getList.remove(topics.title);
+  void removeTopics(InterestModel topics) {
+    getList!.remove(topics);
     update();
   }
 
-  //add topics to the list
-  void addTitles(TopicsModel topics) {
-    getTitlesSelected.add(topics.title);
-    update();
-  }
-
-  //add topics to the list
-  void removeTitles(TopicsModel topics) {
-    getTitlesSelected.remove(topics.title);
-    update();
-  }
 
   List<XFile> filesImages = [];
   List<String>? multipleImagesDownloadLinks = [];
@@ -350,6 +270,13 @@ class ProfileController extends GetxController {
   }
 
   submitProfile(BuildContext context) async {
+    print(getList!.toString());
+    for (var i in getList!) {
+      interestsList.add({
+        'image': i.image,
+        'title': i.title,
+      });
+    }
     if (selectedImagePath.toString() == "") {
       snackBar(context, "Please Add your image in step 1", Colors.pink);
     } else if (Get.find<GetSTorageController>().box.read(kHeight).toString() ==
@@ -363,7 +290,7 @@ class ProfileController extends GetxController {
             "null") {
       snackBar(context, "Please Select Martial Status", Colors.pink);
     }
-    else if(getList.isEmpty){
+    else if(getList!.isEmpty){
       snackBar(context, "Please add interests", Colors.pink);
     }
     else if (Get.find<GetSTorageController>().box.read(kAbout).toString() ==
@@ -415,9 +342,11 @@ class ProfileController extends GetxController {
         Get.find<GetSTorageController>().box.read(kIncome).toString() ==
             "null") {
       snackBar(context, "Please Enter your income", Colors.pink);
-    }  else if (multipleImagesDownloadLinks!.isEmpty) {
-      snackBar(context, "Please Add your images in step 1", Colors.pink);
-    } else if (multipleImagesDownloadLinks!.length!=imagelistlength) {
+    }
+    // else if (multipleImagesDownloadLinks!.isEmpty) {
+    //   snackBar(context, "Please Add your images in step 1", Colors.pink);
+    // }
+    else if (multipleImagesDownloadLinks!.length!=imagelistlength) {
       snackBar(context, "Images uploading take some time please wait", Colors.pink);
     }  else {
       User? user = FirebaseAuth.instance.currentUser!;
@@ -425,7 +354,6 @@ class ProfileController extends GetxController {
         isLoader = true;
         update();
         await uploadProfile(context).then((value) async {
-          log("Blur Profile = "+isBlured.toString());
           await FirebaseFirestore.instance
               .collection("users")
               .doc(user.uid)
@@ -445,7 +373,7 @@ class ProfileController extends GetxController {
             "languages": kList,
             "height":
                 Get.find<GetSTorageController>().box.read(kHeight).toString(),
-            "hobbies": getList,
+            "hobbies": interestsList,
             "martial_status": Get.find<GetSTorageController>()
                 .box
                 .read(kMartial_Statius)
@@ -463,52 +391,17 @@ class ProfileController extends GetxController {
                 Get.find<GetSTorageController>().box.read(kchildern).toString()
           }).then((value) => Get.offAll(() => HomeSwapNew()));
         });
-
         isLoader = false;
         update();
       } catch (e) {
         isLoader = false;
         update();
+        print(e.toString());
         snackBar(context, e.toString(), Colors.pink);
       }
     }
 
-    List interestList = [];
-    List usersInterest = [];
 
-    addToInterestList() {
-      interestList.add(topicContents.length);
-    }
-
-    addTopicsToList(int index) {
-      if (topicContents[index].isSeleted == true)
-        interestList.add(topicContents);
-      update();
-    }
-
-//Select the interest of the user
-    bool userInterests(int index) {
-      topicContents[index].isSeleted = !topicContents[index].isSeleted;
-      update();
-      return topicContents[index].isSeleted;
-    }
-
-    //add the interest to the user  profile
-    addUserInterests() {
-      topicContents.forEach((item) {
-        if (item.isSeleted == true) {
-          if (!usersInterest.contains(item.title)) {
-            usersInterest.add(
-              item.title,
-            );
-          }
-
-          update();
-        }
-      });
-      log(usersInterest.toString());
-      return usersInterest;
-    }
 
     //------------->//
 

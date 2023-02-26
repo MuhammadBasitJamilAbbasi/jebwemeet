@@ -13,6 +13,7 @@ import 'package:jabwemeet/Models/likes_model.dart';
 import 'package:jabwemeet/Utils/Dialouge_Boxes.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Utils/locations.dart';
+import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/Home_Components.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/Profile_details.dart';
@@ -51,12 +52,12 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
   int length = 0;
 
   _update_favourite() {
-    stackController.next(
-        duration: Duration(milliseconds: 700),
-        swipeDirection: SwipeDirection.up);
+    // stackController.next(
+    //     duration: Duration(milliseconds: 700),
+    //     swipeDirection: SwipeDirection.up);
+    // snackBar(context, "Add to ", backgroundColor)
     setState(() {});
   }
-
   _ignore_it() async {
     stackController.next(
         duration: Duration(milliseconds: 1400),
@@ -87,6 +88,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
   // PageController pagecontroller = PageController();
   @override
   Widget build(BuildContext context) {
+    Get.find<GetSTorageController>().box.write("loggedin","loggedin").toString();
     final bool isImageBlur = false;
     return Scaffold(
       bottomNavigationBar: kCustomBottomNavBar(
@@ -166,6 +168,8 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                             child: InkWell(
                                               onTap: () {
                                                 Get.to(() => ProfileDetails(
+                                                  // caste: userModel.caste,
+                                                  //   religion: userModel.religion,
                                                     latitude: userModel.latitude,
                                                     longitude:
                                                         userModel.longitude,
@@ -352,6 +356,19 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                                     SizedBox(
                                                                       height: 5,
                                                                     ),
+                                                                    // Padding(
+                                                                    //   padding: const EdgeInsets
+                                                                    //       .only(
+                                                                    //       left:
+                                                                    //       10),
+                                                                    //   child: Text(
+                                                                    //     userModel
+                                                                    //         .caste
+                                                                    //         .toString()+", "+userModel.religion.toString(),
+                                                                    //     style:
+                                                                    //     TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w600),
+                                                                    //   ),
+                                                                    // ),
                                                                     Padding(
                                                                       padding: const EdgeInsets
                                                                               .only(
@@ -361,6 +378,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                                         userModel
                                                                             .work
                                                                             .toString(),
+                                                                        overflow: TextOverflow.ellipsis,
                                                                         style:
                                                                             k16styleWhite,
                                                                       ),
@@ -388,6 +406,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                             print("asd"),
                                                             _ignore_it(),
                                                             controller.ignorswap(
+                                                              visitType: "passed",
                                                                 opponent_user:
                                                                     userModel)
                                                           });
@@ -523,6 +542,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                         .data()
                                                     as Map<String, dynamic>);
                                             controller.ignorswap(
+                                              visitType: "passed",
                                                 opponent_user: userModel,);
                                             return true;
                                           }
@@ -590,7 +610,8 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
         children: [
           GestureDetector(
             onTap: () {
-              showMaterialModalBottomSheet(
+              Get.to(()=> FilterScreen());
+             /* showMaterialModalBottomSheet(
                 context: context,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
@@ -635,7 +656,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                     ],
                   ),
                 ),
-              );
+              );*/
             },
             child: Container(
               height: 45,

@@ -12,20 +12,20 @@ class Add_Martial extends StatelessWidget {
     final storageController = Get.find<GetSTorageController>();
     return Scaffold(
       body: GetBuilder<RegisterController>(builder: (controller) {
-        if (Get.find<GetSTorageController>()
-                    .box
-                    .read(kMartial_Statius)
-                    .toString() ==
-                "" ||
-            Get.find<GetSTorageController>()
-                    .box
-                    .read(kMartial_Statius)
-                    .toString() ==
-                "null") {
-          Get.find<GetSTorageController>()
-              .box
-              .write(kMartial_Statius, "Never Married");
-        }
+        // if (Get.find<GetSTorageController>()
+        //             .box
+        //             .read(kMartial_Statius)
+        //             .toString() ==
+        //         "" ||
+        //     Get.find<GetSTorageController>()
+        //             .box
+        //             .read(kMartial_Statius)
+        //             .toString() ==
+        //         "null") {
+        //   Get.find<GetSTorageController>()
+        //       .box
+        //       .write(kMartial_Statius, "Never Married");
+        // }
         return SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),

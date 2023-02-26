@@ -100,7 +100,7 @@ class _Splash_ScreenState extends State<Splash_Screen>
                   else
                     {
                       if (value.get("imageUrl") == null ||
-                          value.get("imageUrl") == "null")
+                          value.get("imageUrl") == "")
                         {Get.offAll(() => OnboardingScreen())}
                       else
                         {

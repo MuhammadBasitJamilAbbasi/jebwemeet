@@ -13,16 +13,16 @@ class Add_Religion extends StatelessWidget {
     return Scaffold( 
       body: SafeArea(
         child: GetBuilder<RegisterController>(builder: (controller) {
-          if(Get.find<GetSTorageController>()
-              .box
-              .read(kReligion).toString()==""|| Get.find<GetSTorageController>()
-              .box
-              .read(kReligion).toString()=="null") {
-            Get
-                .find<GetSTorageController>()
-                .box
-                .write(kReligion, "Sunni");
-          }
+          // if(Get.find<GetSTorageController>()
+          //     .box
+          //     .read(kReligion).toString()==""|| Get.find<GetSTorageController>()
+          //     .box
+          //     .read(kReligion).toString()=="null") {
+          //   Get
+          //       .find<GetSTorageController>()
+          //       .box
+          //       .write(kReligion, "Sunni");
+          // }
           return SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
@@ -50,19 +50,19 @@ class Add_Religion extends StatelessWidget {
                             .box
                             .read(kReligion)
                             .toString() ==
-                            "Sunni"
+                            "Muslim Sunni"
                             ? textcolor
                             : Colors.white,
                         textColor: Get.find<GetSTorageController>()
                             .box
                             .read(kReligion)
                             .toString() ==
-                            "Sunni"
+                            "Muslim Sunni"
                             ? Colors.white
                             : Colors.black,
-                        buttonText: "Sunni",
+                        buttonText: "Muslim Sunni",
                         onButtonPressed: () {
-                          Get.find<GetSTorageController>().box.write(kReligion, "Sunni");
+                          Get.find<GetSTorageController>().box.write(kReligion, "Muslim Sunni");
                           Get.off(() => Complete_Profile1());
                         },
 
@@ -79,19 +79,19 @@ class Add_Religion extends StatelessWidget {
                               .box
                               .read(kReligion)
                               .toString() ==
-                              "Shia"
+                              "Muslim Shia"
                               ? textcolor
                               : Colors.white,
                           textColor: Get.find<GetSTorageController>()
                               .box
                               .read(kReligion)
                               .toString() ==
-                              "Shia"
+                              "Muslim Shia"
                               ? Colors.white
                               : Colors.black,
-                          buttonText: "Shia",
+                          buttonText: "Muslim Shia",
                           onButtonPressed: () {
-                            Get.find<GetSTorageController>().box.write(kReligion, "Shia");
+                            Get.find<GetSTorageController>().box.write(kReligion, "Muslim Shia");
                             Get.off(() => Complete_Profile1());
 
                           },

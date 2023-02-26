@@ -41,50 +41,52 @@ class _MessageViewState extends State<MessageView> {
 
     User? user = _firebaseAuth.currentUser;
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        bottomNavigationBar: kCustomBottomNavBar(
-          index: 2,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      bottomNavigationBar: kCustomBottomNavBar(
+        index: 2,
+      ),
+      appBar: PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, 100),
+        child: Column(
+          children: [
+            AppComponents().sizedBox50,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(child: Text("Your Chats",style: k25styleblack,)),
+                  // Container(
+                  //   height: 45,
+                  //   width: 45,
+                  //   decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(15),
+                  //       color: Colors.white,
+                  //       border: Border.all(color: Colors.grey.shade300)),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(11),
+                  //     child: Center(
+                  //       child: Image.asset(
+                  //         "assets/filter.png",
+                  //         height: 45,
+                  //         width: 45,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
+            AppComponents().sizedBox10,
+            Divider()
+          ],
         ),
-        appBar: PreferredSize(
-          preferredSize: Size(MediaQuery.of(context).size.width, 100),
-          child: Column(
-            children: [
-              AppComponents().sizedBox20,
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Messages",style: k25styleblack,),
-                    Container(
-                      height: 45,
-                      width: 45,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white,
-                          border: Border.all(color: Colors.grey.shade300)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(11),
-                        child: Center(
-                          child: Image.asset(
-                            "assets/filter.png",
-                            height: 45,
-                            width: 45,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        body: user == null
-            ? NoMessageWidget()
-            : StreamBuilder<QuerySnapshot>(
+      ),
+      body: user == null
+          ? SafeArea(child: NoMessageWidget()) 
+          : SafeArea(
+            child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('chatrooms')
                     .where('participants.${user.uid}', isEqualTo: true)
@@ -171,7 +173,22 @@ class _MessageViewState extends State<MessageView> {
                                                   .seeMsg(
                                                       dataQuery.docs[index].id,
                                                       messageValue.data!['uid']);
-                                                showMaterialModalBottomSheet(
+                                              Get.to(()=> PersonMessageView(
+                                                chatRoomModel:
+                                                chatRoomModel,
+                                                name: messageValue
+                                                    .data!['name']
+                                                    .toString(),
+                                                profilePicture:
+                                                messageValue
+                                                    .data![
+                                                'imageUrl']
+                                                    .toString(),
+                                                uid: messageValue
+                                                    .data!['uid']
+                                                    .toString(),
+                                              ));
+                                                /*showMaterialModalBottomSheet(
                                                   context: context,
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius: BorderRadius.only(
@@ -248,7 +265,7 @@ class _MessageViewState extends State<MessageView> {
                                                       ),
                                                     ),
                                                   ),
-                                                );
+                                                );*/
                                             },
                                             isRead: chatRoomModel
                                                         .lastMesgUserId ==
@@ -277,7 +294,7 @@ class _MessageViewState extends State<MessageView> {
                     return Text('Something wrong happened');
                   }
                 }),
-      ),
+          ),
     );
   }
 }

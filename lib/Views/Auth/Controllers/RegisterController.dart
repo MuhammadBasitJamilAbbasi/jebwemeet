@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:geolocator/geolocator.dart';
@@ -51,7 +52,7 @@ class RegisterController extends GetxController {
   String? selectedValue = "Select Caste";
   String? selectedLanguage = "Select Language";
   String? selectedCity = "Select City";
-  String? selectedPractisingStatus = "Select Practising";
+  String? selectedPractisingStatus = "Please Select";
   String? selectedStar = "Select Star";
   String? selectedHeight = "Select height";
   String? selectedIncome = "Select income";
@@ -375,50 +376,66 @@ class RegisterController extends GetxController {
   int age = 0;
   RxString birthdayDate = 'Select date'.obs;
   datePicker(BuildContext context) async{
-
-    final DateTime? date = await showDatePicker(
+    // final DateTime? date = await showDatePicker(
+    //     context: context,
+    //     initialDate: DateTime(2000),
+    //     firstDate: DateTime(1970),
+    //     initialDatePickerMode:DatePickerMode.day ,
+    //     lastDate: DateTime.now(),
+    //     initialEntryMode: DatePickerEntryMode.inputOnly,
+    //     builder: (context, child) {
+    //       return Theme(
+    //           data: Theme.of(context).copyWith(
+    //         colorScheme: ColorScheme.light(
+    //           shadow: textcolor,
+    //           primary: textcolor, // <-- SEE HERE
+    //           onPrimary: Colors.white, // <-- SEE HERE
+    //           onSurface: textcolor, // <-- SEE HERE
+    //         ),
+    //         textButtonTheme: TextButtonThemeData(
+    //           style: TextButton.styleFrom(
+    //             primary: textcolor, // button text color
+    //           ),
+    //         ),
+    //       ),
+    // child: child!,);});
+    late DateTime date;
+    showCupertinoModalPopup(
         context: context,
-        initialDate: DateTime(2000),
-        firstDate: DateTime(1970),
-        initialDatePickerMode:DatePickerMode.day ,
-        lastDate: DateTime.now(),
-        initialEntryMode: DatePickerEntryMode.inputOnly,
-        builder: (context, child) {
-          return Theme(
-              data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              shadow: textcolor,
-              primary: textcolor, // <-- SEE HERE
-              onPrimary: Colors.white, // <-- SEE HERE
-              onSurface: textcolor, // <-- SEE HERE
+        builder: (BuildContext builder) {
+          return Container(
+            height: MediaQuery.of(context).copyWith().size.height * 0.25,
+            color: Colors.white,
+            child: CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.date,
+              onDateTimeChanged: (value) {
+                date = value;
+                birthdayDate.value = DateFormat.yMMMd().format(date);
+                DateTime currentDate = DateTime.now();
+                age = currentDate.year - date.year;
+                int month1 = currentDate.month;
+                int month2 = date.month;
+                if (month2 > month1) {
+                  age--;
+                  update();
+                } else if (month1 == month2) {
+                  int day1 = currentDate.day;
+                  int day2 = date.day;
+                  if (day2 > day1) {
+                    age--;
+                    update();
+                  }
+                }
+                update();
+                print("age" + age.toString());
+              },
+              initialDateTime: DateTime.now(),
+              minimumYear: 1970,
+              maximumYear: DateTime.now().year,
             ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                primary: textcolor, // button text color
-              ),
-            ),
-          ),
-    child: child!,);});
-    DateTime currentDate = DateTime.now();
-    age = currentDate.year - date!.year;
-    update();
-    int month1 = currentDate.month;
-    int month2 = date.month;
-    if (month2 > month1) {
-      age--;
-      update();
-    } else if (month1 == month2) {
-      int day1 = currentDate.day;
-      int day2 = date.day;
-      if (day2 > day1) {
-        age--;
-        update();
-      }
-    }
-    update();
-    print("age" + age.toString());
-  birthdayDate.value = DateFormat.yMMMd().format(date);
-  update();
+          );
+        });
+
 /*
     DatePicker.showDatePicker(context,
         showTitleActions: true, maxTime: DateTime.now(), onChanged: (date) {

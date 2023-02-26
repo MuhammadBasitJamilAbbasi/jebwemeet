@@ -12,15 +12,15 @@ class Register_Gender extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RegisterController>(builder: (controller) {
-      if(Get.find<GetSTorageController>()
-          .box
-          .read(kGender).toString()=="" || Get.find<GetSTorageController>()
-          .box
-          .read(kGender).toString()=="null") {
-        Get.find<GetSTorageController>()
-            .box
-            .write(kGender,"Male");
-      }
+      // if(Get.find<GetSTorageController>()
+      //     .box
+      //     .read(kGender).toString()=="" || Get.find<GetSTorageController>()
+      //     .box
+      //     .read(kGender).toString()=="null") {
+      //   Get.find<GetSTorageController>()
+      //       .box
+      //       .write(kGender,"Male");
+      // }
 
       return SingleChildScrollView(
         child: Padding(
@@ -36,7 +36,7 @@ class Register_Gender extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  "I am a",
+                  "I am",
                   style: kboldStyleHeading,
                 ),
               ),

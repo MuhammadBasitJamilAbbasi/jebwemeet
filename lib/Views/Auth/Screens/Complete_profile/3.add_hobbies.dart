@@ -59,23 +59,23 @@ class _Add_HoobiesState extends State<Add_Hoobies> {
                         final topic = topicContents[index];
                         return IntrinsicWidth(
                           child: InterestWidget(
-                            textstyle: controller.getList.contains(topic.title)
+                            textstyle: controller.getList!.contains(topic)
                                 ? k14styleWhite
                                 : k14styleblack,
                             horizontalDistance: 15,
-                            borderColor: controller.getList.contains(topic.title)
+                            borderColor: controller.getList!.contains(topic)
                                 ? primarycolor
                                 : Colors.grey.shade300,
-                            image: topicContents[index].image,
+                            image: topicContents[index].image!,
                             title: topicContents[index].title,
                             onTap: () {
-                                if (!controller.getList.contains(topic.title)) {
+                                if (!controller.getList!.contains(topic)) {
                                   controller.addTopics(topic);
                                 } else {
                                   controller.removeTopics(topic);
                                 }
                             },
-                            color: controller.getList.contains(topic.title)
+                            color: controller.getList!.contains(topic)
                                 ? primarycolor
                                 : Colors.white,
                           ),
@@ -89,7 +89,7 @@ class _Add_HoobiesState extends State<Add_Hoobies> {
                         child: kAppButton(
                             buttonText: "Continue",
                             onButtonPressed: () {
-                              if (controller.getList.length == 0) {
+                              if (controller.getList!.length == 0) {
                                 snackBar(
                                     context, "Select Interests", Colors.pink);
                               } else
