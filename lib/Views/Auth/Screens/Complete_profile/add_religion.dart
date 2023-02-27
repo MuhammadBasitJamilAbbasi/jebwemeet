@@ -50,19 +50,19 @@ class Add_Religion extends StatelessWidget {
                             .box
                             .read(kReligion)
                             .toString() ==
-                            "Muslim Sunni"
+                            "Sunni"
                             ? textcolor
                             : Colors.white,
                         textColor: Get.find<GetSTorageController>()
                             .box
                             .read(kReligion)
                             .toString() ==
-                            "Muslim Sunni"
+                            "Sunni"
                             ? Colors.white
                             : Colors.black,
-                        buttonText: "Muslim Sunni",
+                        buttonText: "Sunni",
                         onButtonPressed: () {
-                          Get.find<GetSTorageController>().box.write(kReligion, "Muslim Sunni");
+                          Get.find<GetSTorageController>().box.write(kReligion, "Sunni");
                           Get.off(() => Complete_Profile1());
                         },
 
@@ -79,19 +79,19 @@ class Add_Religion extends StatelessWidget {
                               .box
                               .read(kReligion)
                               .toString() ==
-                              "Muslim Shia"
+                              "Shia"
                               ? textcolor
                               : Colors.white,
                           textColor: Get.find<GetSTorageController>()
                               .box
                               .read(kReligion)
                               .toString() ==
-                              "Muslim Shia"
+                              "Shia"
                               ? Colors.white
                               : Colors.black,
-                          buttonText: "Muslim Shia",
+                          buttonText: "Shia",
                           onButtonPressed: () {
-                            Get.find<GetSTorageController>().box.write(kReligion, "Muslim Shia");
+                            Get.find<GetSTorageController>().box.write(kReligion, "Shia");
                             Get.off(() => Complete_Profile1());
 
                           },

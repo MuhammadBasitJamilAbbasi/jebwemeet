@@ -21,6 +21,8 @@ class ProfileDetails extends StatelessWidget {
   final name;
   final age;
   final work;
+  final children;
+  final r_practice;
   final gender;
   List<dynamic>? interests;
   final martial_status;
@@ -35,14 +37,16 @@ class ProfileDetails extends StatelessWidget {
   final jobtitle;
   final industry;
   final about;
-  // final caste;
-  // final religion;
+  final caste;
+  final religion;
   List<dynamic>? imgeList;
 
   ProfileDetails({
     required this.name,
-    // required this.caste,
-    // required this.religion,
+    required this.caste,
+    required this.children,
+    required this.r_practice,
+    required this.religion,
     required this.martial_status,
     required this.work,
     required this.blur,
@@ -125,6 +129,31 @@ class ProfileDetails extends StatelessWidget {
                   child: Text("")),
             ),
             Positioned(
+              top: 30,
+              left: 20,
+              child: GestureDetector(
+                onTap: (){
+                  Get.back();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade300)),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                    child: Center(
+                      child: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: textcolor,
+                        size: 15,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
               top: MediaQuery.of(context).size.height/2,
               left: 0,
               right: 0,
@@ -157,7 +186,7 @@ class ProfileDetails extends StatelessWidget {
                                   ),
                                   AppComponents().sizedBox10,
                                   Text(
-                                    work.toString(),
+                                    jobtitle.toString(),
                                     style: k14styleblack,
                                   ),
                                 ],
@@ -185,7 +214,7 @@ class ProfileDetails extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                              flex: 7,
+                              flex: 8,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -203,10 +232,10 @@ class ProfileDetails extends StatelessWidget {
                               ),
                             ),
                             Expanded(
-                              flex: 2,
+                              flex: 3,
                               child: Container(
                                 height: 34,
-                                width: 82,
+                                // width: 130,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: Color(0xFFE94057).withOpacity(0.1),),
@@ -290,7 +319,102 @@ class ProfileDetails extends StatelessWidget {
                           ),
                         ),
                         AppComponents().sizedBox20,
-                        Row(
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Caste",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        AppComponents().sizedBox10,
+
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            caste.toString(),
+                            style: k14styleblack,
+                          ),
+                        ),
+                        AppComponents().sizedBox20,
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Religion",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        AppComponents().sizedBox10,
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            religion.toString(),
+                            style: k14styleblack,
+                          ),
+                        ),
+                        AppComponents().sizedBox20,
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Religion Practise",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        AppComponents().sizedBox10,
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            r_practice.toString(),
+                            style: k14styleblack,
+                          ),
+                        ),
+                        AppComponents().sizedBox20,
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Martial Status",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        AppComponents().sizedBox10,
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            martial_status.toString(),
+                            style: k14styleblack,
+                          ),
+                        ),
+                        AppComponents().sizedBox20,
+                        martial_status.toString()=="Never Married"? SizedBox.shrink():   Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Children",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        martial_status.toString()=="Never Married"? SizedBox.shrink():   AppComponents().sizedBox10,
+                        martial_status.toString()=="Never Married"? SizedBox.shrink():  Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            children.toString(),
+                            style: k14styleblack,
+                          ),
+                        ),
+                        imgeList!.length>0 ?  Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
@@ -302,7 +426,7 @@ class ProfileDetails extends StatelessWidget {
                             ),
                             // Text("See All",style: TextStyle(color: textcolor,fontSize: 16,fontWeight: FontWeight.w600),)
                           ],
-                        ),
+                        ) : SizedBox.shrink(),
                         AppComponents().sizedBox10,
                        /* Wrap(
                           runSpacing: 8,
@@ -340,7 +464,7 @@ class ProfileDetails extends StatelessWidget {
                                 ),
                                 blur==true?
                                     BlurryContainer(
-                                        height: index==0 || index==1 ? 190 : 122,
+                                        height: index==0 || index==1 ? 170 : 122,
                                         width: index==0 || index==1 ? 142 : 92,
                                       blur: 20,
                                       elevation: 0,

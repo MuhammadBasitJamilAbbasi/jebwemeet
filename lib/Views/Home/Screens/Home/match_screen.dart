@@ -4,19 +4,23 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/chatroom.model.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
-import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/personmessages.view.dart';
+import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/inbox.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
-import 'package:jabwemeet/Views/Home/Screens/Likes/LIke.dart';
+import 'package:jabwemeet/Views/Home/Screens/Likes/Likes_screens.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class MatchScreen extends StatelessWidget {
   final opponent_image;
   final opponent_name;
+  final opponent_age;
+  final user_age;
+  final opponent_address;
+  final user_address;
   final opponent_id;
   final user_image;
   final username;
   final userid;
-   MatchScreen({required this.opponent_image,required this.user_image,required this.username,required this.opponent_id,required this.opponent_name,required this.userid});
+   MatchScreen({required this.opponent_image,required this.user_age,required this.user_address,required this.opponent_address,required this.opponent_age,required this.user_image,required this.username,required this.opponent_id,required this.opponent_name,required this.userid});
   final controller=Get.find<Home_page_controller>();
   @override
   Widget build(BuildContext context) {
@@ -161,6 +165,8 @@ class MatchScreen extends StatelessWidget {
                 Get.to(()=> PersonMessageView(
                     name:opponent_name,
                     profilePicture:opponent_image,
+                    age: opponent_age,
+                    location: opponent_address,
                     uid: opponent_id,
                     chatRoomModel:
                     chatRoom!));

@@ -12,7 +12,7 @@ import 'package:jabwemeet/Utils/locations.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/match_screen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
-import 'package:jabwemeet/Views/Home/Screens/Likes/LIke.dart';
+import 'package:jabwemeet/Views/Home/Screens/Likes/Likes_screens.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../Services/notification/notification_api/notification_api.dart';
@@ -276,6 +276,10 @@ class Home_page_controller extends GetxController {
     required isSenderName,
     required isRecImage,
     required isRecName,
+    required isReceiverAddress,
+    required int isReceiverAge,
+    required isSenderAddress,
+    required int isSenderAge,
   }) async {
     LikesModel likesModel = LikesModel();
     User? user = FirebaseAuth.instance.currentUser;
@@ -323,6 +327,10 @@ class Home_page_controller extends GetxController {
             });
             Get.to(() => MatchScreen(
               opponent_image: isRecImage ,
+              opponent_address:isReceiverAddress ,
+              opponent_age: isReceiverAge,
+              user_address: isSenderAddress,
+              user_age: isSenderAge,
               opponent_id: opponent_id,
               opponent_name: isRecName,
               userid:user.uid ,
@@ -381,6 +389,10 @@ class Home_page_controller extends GetxController {
                 opponent_id: opponent_id,
                 opponent_name: isRecName,
                 userid:user.uid ,
+                opponent_address:isReceiverAddress ,
+                opponent_age: isReceiverAge,
+                user_address: isSenderAddress,
+                user_age: isSenderAge,
                 user_image: isSenderImage,
                 username: isSenderName,));
               print("second");// snackBar(context, "You like the profile", Colors.pink);
@@ -452,6 +464,10 @@ class Home_page_controller extends GetxController {
                     opponent_id: opponent_id,
                     opponent_name: isRecName,
                     userid: user.uid,
+                    opponent_age: isReceiverAge,
+                    user_address: isSenderAddress,
+                    user_age: isSenderAge,
+                    opponent_address: isReceiverAddress,
                     user_image: isSenderImage,
                     username: isSenderName,));
               // snackBar(context, "You like the profile", Colors.pink);
@@ -523,6 +539,10 @@ class Home_page_controller extends GetxController {
             isReceiverImage: isRecImage,
             isReceiverName: isRecName,
             isSenderImage: isSenderImage,
+            isReceiverAddress: isReceiverAddress,
+            isReceiverAge: isReceiverAge,
+            isSenderAddress:isSenderAddress ,
+            isSenderAge:isSenderAge ,
             isSenderName: isSenderName);
         await FirebaseFirestore.instance
             .collection('likes')
@@ -624,6 +644,10 @@ class Home_page_controller extends GetxController {
         opponent_id: opponent_user
             .uid
             .toString(),
+        isSenderAge: userModel.age!,
+        isSenderAddress: userModel.address,
+        isReceiverAge: opponent_user.age,
+        isReceiverAddress: opponent_user.address,
         fcm_token: opponent_user
             .fcm_token
             .toString(),

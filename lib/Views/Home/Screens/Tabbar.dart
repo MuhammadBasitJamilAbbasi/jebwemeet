@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Controllers/message_controller.dart';
-import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/message.view.dart';
+import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/chatlist.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
-import 'package:jabwemeet/Views/Home/Screens/Likes/LIke.dart';
+import 'package:jabwemeet/Views/Home/Screens/Likes/Likes_screens.dart';
 import 'package:jabwemeet/Views/Home/Screens/Profile/Profile.dart';
 
 class kCustomBottomNavBar extends StatefulWidget {

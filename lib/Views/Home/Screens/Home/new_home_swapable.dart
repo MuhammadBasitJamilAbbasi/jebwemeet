@@ -38,33 +38,21 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
   }
 
   _update_like() {
-    //  widget.user!.isLiked = true;
     stackController.next(
         duration: Duration(milliseconds: 1400),
         swipeDirection: SwipeDirection.right);
-
     setState(() {});
-    // if (!widget.user!.isLiked!) {
-    //  all_CRUD_user_operation().add_user_to_interest(widget.user!);
-    // }
   }
 
   int length = 0;
 
   _update_favourite() {
-    // stackController.next(
-    //     duration: Duration(milliseconds: 700),
-    //     swipeDirection: SwipeDirection.up);
-    // snackBar(context, "Add to ", backgroundColor)
     setState(() {});
   }
   _ignore_it() async {
     stackController.next(
         duration: Duration(milliseconds: 1400),
         swipeDirection: SwipeDirection.left);
-    //  bool val = await all_CRUD_user_operation().add_user_to_ignore(widget.user!);
-
-    // print(val);
   }
 
   SwipableStackController stackController = SwipableStackController();
@@ -84,8 +72,6 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
     pagecontroller = PageController(initialPage: 0);
     controllerrrr.getData();
   }
-
-  // PageController pagecontroller = PageController();
   @override
   Widget build(BuildContext context) {
     Get.find<GetSTorageController>().box.write("loggedin","loggedin").toString();
@@ -168,8 +154,10 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                             child: InkWell(
                                               onTap: () {
                                                 Get.to(() => ProfileDetails(
-                                                  // caste: userModel.caste,
-                                                  //   religion: userModel.religion,
+                                                  caste: userModel.caste,
+                                                  children: userModel.childerns,
+                                                  r_practice: userModel.religious_practice,
+                                                    religion: userModel.religion,
                                                     latitude: userModel.latitude,
                                                     longitude:
                                                         userModel.longitude,
@@ -216,10 +204,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                         alignment:
                                                             Alignment.center,
                                                         decoration: BoxDecoration(
-                                                          /// User profile image
                                                           image: DecorationImage(
-                                                            //   colorFilter: controller.Listing_List[properties.index].imageBlur??false? ColorFilter.mode(Colors.black, BlendMode.xor) : null,
-                                                            /// Show VIP icon if user is not vip member
                                                             image: NetworkImage(
                                                                 userModel.imageUrl
                                                                     .toString()),
@@ -310,7 +295,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                               child:
                                                                   BlurryContainer(
                                                                 blur: 8,
-                                                                height: 80,
+                                                                height: 90,
                                                                 elevation: 0,
                                                                 borderRadius:
                                                                     BorderRadius
@@ -331,56 +316,64 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                                       CrossAxisAlignment
                                                                           .start,
                                                                   children: [
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .only(
-                                                                          left:
-                                                                              10),
-                                                                      child: Text.rich(
-                                                                          TextSpan(
-                                                                              children: [
+                                                                    Expanded(
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets
+                                                                                .only(
+                                                                            left:
+                                                                                10),
+                                                                        child: Text.rich(
                                                                             TextSpan(
-                                                                              text:
-                                                                                  userModel.name.toString(),
-                                                                              style:
-                                                                                  k18styleWhite,
-                                                                            ),
-                                                                            if (userModel.age.toString() !=
-                                                                                "null")
+                                                                                children: [
                                                                               TextSpan(
-                                                                                text: ", " + userModel.age.toString(),
-                                                                                style: k18styleWhite,
-                                                                              )
-                                                                          ])),
+                                                                                text:
+                                                                                    userModel.name.toString(),
+                                                                                style:
+                                                                                    k18styleWhite,
+                                                                              ),
+                                                                              if (userModel.age.toString() !=
+                                                                                  "null")
+                                                                                TextSpan(
+                                                                                  text: ", " + userModel.age.toString(),
+                                                                                  style: k18styleWhite,
+                                                                                )
+                                                                            ])),
+                                                                      ),
                                                                     ),
                                                                     SizedBox(
                                                                       height: 5,
                                                                     ),
-                                                                    // Padding(
-                                                                    //   padding: const EdgeInsets
-                                                                    //       .only(
-                                                                    //       left:
-                                                                    //       10),
-                                                                    //   child: Text(
-                                                                    //     userModel
-                                                                    //         .caste
-                                                                    //         .toString()+", "+userModel.religion.toString(),
-                                                                    //     style:
-                                                                    //     TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w600),
-                                                                    //   ),
-                                                                    // ),
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .only(
-                                                                          left:
-                                                                              10),
-                                                                      child: Text(
-                                                                        userModel
-                                                                            .work
-                                                                            .toString(),
-                                                                        overflow: TextOverflow.ellipsis,
-                                                                        style:
-                                                                            k16styleWhite,
+                                                                    Expanded(
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets
+                                                                                .only(
+                                                                            left:
+                                                                                10),
+                                                                        child: Text(
+                                                                          userModel
+                                                                              .job_title
+                                                                              .toString(),
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          style:
+                                                                              k16styleWhite,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    AppComponents().sizedBox5,
+                                                                    Expanded(
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets
+                                                                            .only(
+                                                                            left:
+                                                                            10),
+                                                                        child: Text(
+                                                                          userModel
+                                                                              .address
+                                                                              .toString(),
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          style:
+                                                                          k16styleWhite,
+                                                                        ),
                                                                       ),
                                                                     )
                                                                   ],
@@ -562,9 +555,6 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                         case SwipeDirection.up:
                                           {
                                             print("====> up");
-                                            // controller.Listing_List.value
-                                            //     .remove(index--);
-                                            // setState(() {});
 
                                             return true;
                                           }

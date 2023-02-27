@@ -79,7 +79,9 @@ class AppComponents {
       ],
     );
   }
-
+  SizedBox sizedBox5= SizedBox(
+    height: 5,
+  );
   SizedBox sizedBox10 = SizedBox(
     height: 10,
   );

@@ -24,7 +24,7 @@ import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
 import 'package:profanity_filter/profanity_filter.dart';
 
 import '../../../Services/notification/local_notifications/local_notification_service.dart';
-import '../../Home/Screens/Likes/LIke.dart';
+import '../../Home/Screens/Likes/Likes_screens.dart';
 
 class Splash_Screen extends StatefulWidget {
   @override

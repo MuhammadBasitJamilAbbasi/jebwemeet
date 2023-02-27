@@ -214,8 +214,8 @@ class _FilterScreenState extends State<FilterScreen> {
                     controller.selectedMilesRangeFunction(value);
                   },
                   min: 0,
-                  max: 1000,
-                  divisions: 2,
+                  max: 3000,
+                  divisions: 60,
                   autofocus: true,
                   label: controller.selectedMilesRange.round().toString()),
             ),
@@ -245,7 +245,7 @@ class _FilterScreenState extends State<FilterScreen> {
                 child: kAppButton(
                   buttonText: "Continue",
                   onButtonPressed: () {
-                    Get.offAll(() => HomeSwapNew());
+                    Get.to(()=> HomeSwapNew());
                   },
                 ),
               ),

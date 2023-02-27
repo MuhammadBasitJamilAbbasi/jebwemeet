@@ -85,7 +85,7 @@ class Dialouge_Box {
                             // Get.offUntil( GetPageRoute(page: () => HomePage()) , (route) => route.settings.name =="/homeScreen" );
                           },
                           child: Container(
-                              height: 45,
+                              height: 35,
                               child: Center(child: Text("Yes"))),
                           style: ElevatedButton.styleFrom(primary: textcolor),
                         ),
@@ -99,7 +99,7 @@ class Dialouge_Box {
                         },
                         child:
                             Container(
-                                height:45,
+                                height:35,
                                 child: Center(child: Text("No", style: TextStyle(color: Colors.white)))),
                         style: ElevatedButton.styleFrom(
                           primary: textcolor,

@@ -10,7 +10,7 @@ import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/chatroom.model.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
-import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/personmessages.view.dart';
+import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/inbox.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/Home_Components.dart';
 import 'package:jabwemeet/Views/Home/Screens/Profile/profilewithid.dart';
 import 'package:jabwemeet/Views/Home/Screens/Tabbar.dart';
@@ -86,9 +86,8 @@ class _LikesViewState extends State<LikesView> {
                             id1 = element["isReceiver"].toString();
                             id2 = element["isSender"].toString();
                             if (element["isReceiver"].toString() ==
-                                user.uid.toString() || element['participants'][id1] == true &&
-                                element['participants'][id2] == true &&
-                                element['participants'][user.uid] == true ) {
+                                user.uid.toString() &&
+                                element['participants'][user.uid] == false ) {
                               likeslist.add(element);
                             }
                             if (element['participants'][id1] == true &&
@@ -186,6 +185,14 @@ class _LikesViewState extends State<LikesView> {
                                                         context);
                                                     log("2 chat room not null");
                                                     Get.to(()=> PersonMessageView(
+                                                      location: controller.userModel.address.toString()==matcheslist[index]["isReceiverAddress"]
+                                                          .toString() ?
+                                                      matcheslist[index]["isSenderAddress"]
+                                                          .toString() : matcheslist[index]["isReceiverAddress"]
+                                                          .toString(),
+                                                        age: controller.userModel.age==matcheslist[index]["isReceiverAge"] ?
+                                                        matcheslist[index]["isSenderAge"]
+                                                             : matcheslist[index]["isReceiverAge"],
                                                         name:
                                                         controller.userModel.name.toString()==matcheslist[index]["isReceiverName"]
                                                             .toString() ?
@@ -281,7 +288,161 @@ class _LikesViewState extends State<LikesView> {
                                                               ),
                                                             ),
                                                           ),
+                                                          Positioned(
+                                                            top: 2,
+                                                            right: 1,
+                                                            child: GestureDetector(
+                                                              onTap: (){
+                                                                showDialog(
+                                                                    context: context,
+                                                                    builder: (BuildContext context) {
+                                                                      return AlertDialog(
+                                                                        content: Container(
+                                                                          height: 180,
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                                            children: [
+                                                                              Image.asset(
+                                                                                "assets/appicon.png",
+                                                                                height: 45,
+                                                                                width: 45,
+                                                                              ),
+                                                                              SizedBox(height: 20),
+                                                                              Center(child: Text("Are you sure you wish to unmatch from ${controller.userModel.name.toString()==matcheslist[index]["isReceiverName"]
+                                                                                  .toString() ?
+                                                                              matcheslist[index]["isSenderName"]
+                                                                                  .toString() : matcheslist[index]["isReceiverName"]
+                                                                                  .toString()}")),
+                                                                              SizedBox(height: 20),
+                                                                              Row(
+                                                                                children: [
+                                                                                  Expanded(
+                                                                                    child: ElevatedButton(
+                                                                                      onPressed: () {
+                                                                                        controller.getLikes(
+                                                                                            isSenderAddress: controller.userModel.address,
+                                                                                            isReceiverAddress: controller.userModel.address.toString()==matcheslist[index]["isReceiverAddress"]
+                                                                                                .toString() ?
+                                                                                            matcheslist[index]["isSenderAddress"]
+                                                                                                .toString() : matcheslist[index]["isReceiverAddress"]
+                                                                                                .toString(),
+                                                                                            isReceiverAge: controller.userModel.age==matcheslist[index]["isReceiverAge"] ?
+                                                                                            matcheslist[index]["isSenderAge"]
+                                                                                                : matcheslist[index]["isReceiverAge"],
+                                                                                            isRecName:
+                                                                                            controller.userModel.name.toString()==matcheslist[index]["isReceiverName"]
+                                                                                                .toString() ?
+                                                                                            matcheslist[index]["isSenderName"]
+                                                                                                .toString() : matcheslist[index]["isReceiverName"]
+                                                                                                .toString(),
+                                                                                            isRecImage:
+                                                                                            controller.userModel.imageUrl.toString()==matcheslist[index]["isSenderImage"]
+                                                                                                .toString() ?
+                                                                                            matcheslist[index]["isReceiverImage"]
+                                                                                                .toString() : matcheslist[index]["isSenderImage"]
+                                                                                                .toString(),
+                                                                                            opponent_id: controller.userModel.uid.toString()==matcheslist[index]["isSender"]
+                                                                                                .toString() ?
+                                                                                            matcheslist[index]["isReceiver"]
+                                                                                                .toString() : matcheslist[index]["isSender"]
+                                                                                                .toString(),
+                                                                                            fcm_token: controller.userModel.fcm_token,
+                                                                                            context: context,
+                                                                                            isSenderImage: controller.userModel.imageUrl,
+                                                                                            isSenderName: controller.userModel.name,
+                                                                                            isSenderAge: controller.userModel.age!).then((value) async {
+                                                                                              Get.back();
+                                                                                              QuerySnapshot
+                                                                                              snapshotData =
+                                                                                                  await FirebaseFirestore
+                                                                                                  .instance
+                                                                                                  .collection(
+                                                                                                  'chatrooms')
+                                                                                                  .where(
+                                                                                                  'participants.${controller.userModel.uid}',
+                                                                                                  isEqualTo:
+                                                                                                  true)
+                                                                                                  .where(
+                                                                                                  'participants.${controller.userModel.uid.toString()==matcheslist[index]["isSender"]
+                                                                                                      .toString() ?
+                                                                                                  matcheslist[index]["isReceiver"]
+                                                                                                      .toString() : matcheslist[index]["isSender"]
+                                                                                                      .toString()}',
+                                                                                                  isEqualTo:
+                                                                                                  true)
+                                                                                                  .get();
 
+                                                                                              if (snapshotData
+                                                                                                  .docs.length >
+                                                                                                  0) {
+                                                                                                snapshotData.docs
+                                                                                                    .forEach(
+                                                                                                        (element) async {
+                                                                                                      await FirebaseFirestore
+                                                                                                          .instance
+                                                                                                          .collection(
+                                                                                                          'chatrooms')
+                                                                                                          .doc(element.id)
+                                                                                                          .delete();
+                                                                                                    });
+                                                                                              }
+                                                                                            });
+                                                                                      },
+                                                                                      child: Container(
+                                                                                          height: 35,
+                                                                                          child: Center(child: Text("Yes"))),
+                                                                                      style: ElevatedButton.styleFrom(primary: textcolor),
+                                                                                    ),
+                                                                                  ),
+                                                                                  SizedBox(width: 15),
+                                                                                  Expanded(
+                                                                                      child: ElevatedButton(
+                                                                                        onPressed: () {
+                                                                                          print('no selected');
+                                                                                          Navigator.of(context).pop();
+                                                                                        },
+                                                                                        child:
+                                                                                        Container(
+                                                                                            height:35,
+                                                                                            child: Center(child: Text("No", style: TextStyle(color: Colors.white)))),
+                                                                                        style: ElevatedButton.styleFrom(
+                                                                                          primary: textcolor,
+                                                                                        ),
+                                                                                      ))
+                                                                                ],
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    });
+
+                                                              },
+                                                              child: Container(
+                                                                  height: 35,
+                                                                  width: 35,
+                                                                  alignment: Alignment.center,
+                                                                  decoration: BoxDecoration(
+                                                                      shape: BoxShape.circle,
+                                                                      color: Colors.white.withOpacity(0.5),
+                                                                      boxShadow: [
+                                                                        BoxShadow(
+                                                                          color: Colors.grey.shade300.withOpacity(0.5),
+                                                                          spreadRadius: 3,
+                                                                          blurRadius: 12,
+                                                                          offset:
+                                                                          Offset(0, 10), // changes position of shadow
+                                                                        ),
+                                                                      ]),
+                                                                  child: Image.asset(
+                                                                    "assets/heartnew.png",
+                                                                    height: 20,
+                                                                    width: 20,
+                                                                    color: textcolor,
+                                                                  )),
+                                                            ),
+                                                          )
                                                         ],
                                                       ),
                                                     ),
@@ -448,6 +609,7 @@ class _LikesViewState extends State<LikesView> {
                                             ],
                                           ),
                                         ),
+                                  //Favourites
                                   StreamBuilder<QuerySnapshot>(
                                     stream: FirebaseFirestore.instance
                                         .collection("users")
@@ -673,6 +835,12 @@ class _LikesViewState extends State<LikesView> {
                                       snapshot.data!.docs.forEach((element) {
                                         if(element["visitType"]=="like"){
                                           youlikedList.add(element);
+                                          matcheslist.forEach((match) {
+                                            if(match["isSenderName"]==element["name"] || match["isReceiverName"]==element["name"] ){
+                                              youlikedList.remove(element);
+                                            }
+                                          });
+
                                         }
                                       });
                                       return youlikedList.length>0?  Column(
@@ -885,6 +1053,13 @@ class _LikesViewState extends State<LikesView> {
                                       snapshot.data!.docs.forEach((element) {
                                         if(element["visitType"]=="passed"){
                                           ignorList.add(element);
+                                          matcheslist.forEach((match) {
+                                            if(match["isSenderName"]==element["name"] || match["isReceiverName"]==element["name"] ){
+                                              ignorList.remove(element);
+                                              // controller.removeLiked(opponent_user:ignorList[index]["uid"]);
+
+                                            }
+                                          });
                                         }
                                       });
                                       return ignorList.length>0 ? Column(

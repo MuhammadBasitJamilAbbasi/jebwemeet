@@ -204,10 +204,15 @@ class ProfileController extends GetxController {
       update();
     }
     else {
-      print("Inbterest 1 say zyda");
-      getList!.add(topics);
-      update();
-      print("okay 2");
+      // if (getList!.contains(topics) == true) {
+      //
+      // }
+      // else {
+        print("Inbterest 1 say zyda");
+        getList!.add(topics);
+        update();
+        print("okay 2");
+      // }
     }
     print("Interesrt List  ${getList!.length}");
   }
@@ -216,6 +221,7 @@ class ProfileController extends GetxController {
   void removeTopics(InterestModel topics) {
     getList!.remove(topics);
     update();
+    print("Interesrt List  ${getList!.length}");
   }
 
 
@@ -335,8 +341,6 @@ class ProfileController extends GetxController {
       snackBar(context, "Please Select your profession", Colors.pink);
     } else if (jobtitleController.value.text.isEmpty) {
       snackBar(context, "Please add your Job title", Colors.pink);
-    } else if (addindustryController.value.text.isEmpty) {
-      snackBar(context, "Please add your Industry", Colors.pink);
     } else if (Get.find<GetSTorageController>().box.read(kIncome).toString() ==
         "" ||
         Get.find<GetSTorageController>().box.read(kIncome).toString() ==
@@ -400,12 +404,6 @@ class ProfileController extends GetxController {
         snackBar(context, e.toString(), Colors.pink);
       }
     }
-
-
-
-    //------------->//
-
-//----------->//
   }
 
   Future getImage(BuildContext context, ImageSource imageSource) async {

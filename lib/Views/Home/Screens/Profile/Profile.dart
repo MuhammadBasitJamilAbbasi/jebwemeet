@@ -93,9 +93,9 @@ class Profile extends StatelessWidget {
                                       ),
                                       AppComponents().sizedBox10,
                                       Text(
-                                        userModel!.work.toString(),
+                                        userModel!.job_title.toString(),
                                         style: k14styleblack,
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -223,7 +223,103 @@ class Profile extends StatelessWidget {
                               ),
                             ),
                             AppComponents().sizedBox20,
-                            Row(
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Caste",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            AppComponents().sizedBox10,
+
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                userModel!.caste.toString(),
+                                style: k14styleblack,
+                              ),
+                            ),
+                            AppComponents().sizedBox20,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Religion",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            AppComponents().sizedBox10,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                userModel!.religion.toString(),
+                                style: k14styleblack,
+                              ),
+                            ),
+                            AppComponents().sizedBox20,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Religion Practise",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            AppComponents().sizedBox10,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                userModel!.religious_practice.toString(),
+                                style: k14styleblack,
+                              ),
+                            ),
+                            AppComponents().sizedBox20,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Martial Status",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            AppComponents().sizedBox10,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                userModel!.martial_status.toString(),
+                                style: k14styleblack,
+                              ),
+                            ),
+                            AppComponents().sizedBox20,
+                            userModel!.martial_status.toString()=="Never Married"? SizedBox.shrink():   Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Children",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            userModel!.martial_status.toString()=="Never Married"? SizedBox.shrink():   AppComponents().sizedBox10,
+                            userModel!.martial_status.toString()=="Never Married"? SizedBox.shrink():  Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                userModel!.childerns.toString(),
+                                style: k14styleblack,
+                              ),
+                            ),
+                            AppComponents().sizedBox20,
+                          userModel!.imagesList!.length>0?  Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
@@ -235,7 +331,7 @@ class Profile extends StatelessWidget {
                                 ),
                                 // Text("See All",style: TextStyle(color: textcolor,fontSize: 16,fontWeight: FontWeight.w600),)
                               ],
-                            ),
+                            ) : SizedBox.shrink(),
                             AppComponents().sizedBox10,
                             /* Wrap(
                   runSpacing: 8,
@@ -255,7 +351,7 @@ class Profile extends StatelessWidget {
                                     Get.to(()=> kFullScreenImageViewer(userModel!.imagesList![index]));
                                   },
                                   child: Container(
-                                    height: index==0 || index==1 ? 190 : 122,
+                                    height: index==0 || index==1 ? 170 : 122,
                                     width: index==0 || index==1 ? 142 : 92,
                                     margin: EdgeInsets.only(right: 5,bottom: 5),
                                     decoration: BoxDecoration(

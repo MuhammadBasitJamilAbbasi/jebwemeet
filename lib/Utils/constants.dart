@@ -135,8 +135,8 @@ List<String>? kChildernList = [
 ];
 List<String>? kReligionList = [
   "Select Religion",
-  "Muslim Shia",
-  "Muslim Sunni",
+  "Shia",
+  "Sunni",
   "Christian",
   "Ahmadi",
   "Hindu",

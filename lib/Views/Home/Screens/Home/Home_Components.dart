@@ -9,7 +9,7 @@ import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Models/chatroom.model.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
-import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/personmessages.view.dart';
+import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/inbox.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/filterScreen.dart';
 import 'package:uuid/uuid.dart';
 
@@ -146,6 +146,9 @@ class _ProfileCardState extends State<ProfileCard> {
                                                                     .imageUrl
                                                                     .toString(),
                                                             uid: userModel.uid
+                                                                .toString(),
+                                                            age: userModel.age!,
+                                                            location: userModel.address
                                                                 .toString(),
                                                             chatRoomModel:
                                                                 chatRoom));

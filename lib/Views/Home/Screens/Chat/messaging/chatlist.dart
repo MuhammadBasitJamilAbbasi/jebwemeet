@@ -14,7 +14,7 @@ import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Controllers/message_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Chat/messaging.widgets/getmessages.list.widget.dart';
 import 'package:jabwemeet/Views/Home/Screens/Chat/messaging.widgets/nomessage.widget.dart';
-import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/personmessages.view.dart';
+import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/inbox.dart';
 import 'package:jabwemeet/Views/Home/Screens/Tabbar.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -186,6 +186,11 @@ class _MessageViewState extends State<MessageView> {
                                                     .toString(),
                                                 uid: messageValue
                                                     .data!['uid']
+                                                    .toString(),
+                                                age: messageValue
+                                                    .data!['age'],
+                                                location: messageValue
+                                                    .data!['address']
                                                     .toString(),
                                               ));
                                                 /*showMaterialModalBottomSheet(

@@ -144,27 +144,6 @@ class _Form_4State extends State<Form_4> {
                       ),
                     ),
                     Essential_Widget(
-                      leadingImage: "assets/ind.png",
-                      title: "Industry",
-                      onTap: () {
-                        Get.to(() => Add_Industry());
-                      },
-                      iconfil: controller
-                          .addindustryController.value.text.isEmpty
-                          ? Icons.arrow_forward_ios_outlined
-                          : Icons.check,
-                    ),
-                    controller.addindustryController.value.text.isEmpty
-                        ? SizedBox.shrink()
-                        : Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 40),
-                      child: Text(
-                        controller.addindustryController.value.text,
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    Essential_Widget(
                         leadingImage: "assets/income.png",
                         title: "Income",
                         onTap: () {
