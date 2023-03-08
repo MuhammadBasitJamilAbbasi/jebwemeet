@@ -113,6 +113,7 @@ class Register_email extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: kAppButton(
                             buttonText: "Continue",
+                            buttonstyleSmall: false,
                             onButtonPressed: () {
                               if (controller
                                       .emailController.value.text.isNotEmpty &&
@@ -135,11 +136,12 @@ class Register_email extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: kAppButton(
                             buttonText: "Continue",
+
                             onButtonPressed: () {
                               controller.setRegisterViewPage(
                                   RegisterViewEnum.RegisterView7);
                             },
-                          buttonstyleSmall: true,
+                          buttonstyleSmall: false,
                           ),
                         ),
                       )

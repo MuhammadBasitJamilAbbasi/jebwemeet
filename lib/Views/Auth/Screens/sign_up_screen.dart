@@ -122,6 +122,7 @@ class SignUpScreen extends StatelessWidget {
                         ],
                       ),
                     ),
+                    AppComponents().sizedBox40,
                     AppComponents().sizedBox20,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

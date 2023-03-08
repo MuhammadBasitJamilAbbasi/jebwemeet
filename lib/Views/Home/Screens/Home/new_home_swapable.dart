@@ -155,6 +155,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                               onTap: () {
                                                 Get.to(() => ProfileDetails(
                                                   caste: userModel.caste,
+                                                  salary: userModel.income,
                                                   children: userModel.childerns,
                                                   r_practice: userModel.religious_practice,
                                                     religion: userModel.religion,

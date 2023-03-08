@@ -10,24 +10,39 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
+import 'package:jabwemeet/Models/Hobbies_Model.dart';
 import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
+import 'package:jabwemeet/Views/Auth/Controllers/RegisterController.dart';
+import 'package:jabwemeet/Views/Home/Screens/Profile/Edit_Profile.dart';
 
 class EditProfileController extends GetxController {
   EditProfileController({required this.userModel});
   UserModel userModel;
   bool isBlured = false;
-  blurFunction(bool value) {
+  blurFunction(bool value)async {
     isBlured = value;
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userModel.uid)
+        .update({
+      'blur': value,
+    });
     update();
   }
 
+
+  final storage=Get.find<GetSTorageController>();
   TextEditingController nameController = TextEditingController();
+  TextEditingController aboutController = TextEditingController();
+  TextEditingController jobtitleController = TextEditingController();
   String? selectedMartialStatus = "Select Status";
-  String? selectedReligion = "Select Religion";
-  String? selectedCaste = "Select Caste";
-  String? selectedCity = "Select City";
+  String? selectedReligion = "Sunni";
+  String? selectedPractisingStatus = "Very Practising";
+  String? selectedCaste = "Abbasi";
+  String? selectedCity = "Islamabad";
+
   var selectedImagePath = "";
   bool isLoader = false;
   bool isImageLoading = false;
@@ -39,28 +54,32 @@ class EditProfileController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     nameController.text = userModel.name.toString();
+    aboutController.text = userModel.about.toString();
+    jobtitleController.text = userModel.job_title.toString();
     selectedMartialStatus = userModel.martial_status.toString();
+    Get.find<RegisterController>().selectedChild = userModel.childerns.toString();
     selectedCaste = userModel.caste;
     selectedCity = userModel.address;
     selectedReligion = userModel.religion;
     isBlured=userModel.blur!;
-  }
+    userModel.hobbies!.forEach((element) {
+      getListt!.add(element);
+    });
 
-/*
-  Future getImage(ImageSource imageSource) async {
-    // ignore: deprecated_member_use
-    final pickedFile = await imagePicker.getImage(source: imageSource);
-    if (pickedFile != null) {
-      selectedImagePath = pickedFile.path;
-      update();
-      file = File(pickedFile.path);
-      selectedImageSize = ((File(selectedImagePath)).lengthSync() / 1024 / 1024)
-              .toStringAsFixed(2) +
-          "Mb";
-      update();
-    }
+    multipleImagesDownloadLinks=userModel.imagesList;
+    storage.box.write(kEducation, userModel.education);
+    storage.box.write(kReligion, userModel.religion);
+    storage.box.write(kMartial_Statius, userModel.martial_status);
+    storage.box.write(kchildern, userModel.childerns);
+    storage.box.write(kCaste, userModel.caste);
+    storage.box.write(kAddress, userModel.address);
+    storage.box.write(kReligiousPractice, userModel.religious_practice);
   }
-*/
+  selectedPractisingFunction(String? value) {
+    selectedPractisingStatus = value;
+    storage.box.write(kReligiousPractice, value);
+    update();
+  }
   selectedMartialFunction(String? value) {
     selectedMartialStatus = value;
     update();
@@ -68,61 +87,51 @@ class EditProfileController extends GetxController {
 
   selectedCityFunction(String? value) {
     selectedCity = value;
+    storage.box.write(kAddress, value);
     update();
   }
 
   selectedReligionFunction(String? value) {
     selectedReligion = value;
+    storage.box.write(kReligion, value);
     update();
   }
 
   selectedCasteFunction(String? value) {
     selectedCaste = value;
+    storage.box.write(kCaste, value);
     update();
   }
 
+  List<InterestModel>? getListt = [];
+  List<Map<String, dynamic>> interestsList = [];
+  //add topics to the list
+  void addTopics(InterestModel topics) {
+    if(getListt!.isEmpty){
+      getListt!.add(topics);
+      update();
+    }
+    else {
+      getListt!.add(topics);
+      update();
+    }
+  }
+  void removeTopics(InterestModel topics) {
+    getListt!.remove(topics);
+    update();
+  }
+
+  sendInteresetList(){
+    print(getListt!.toString());
+    for (var i in getListt!) {
+      interestsList.add({
+        'image': i.image,
+        'title': i.title,
+      });
+    }
+  }
 //----------->//
-  submitProfile(BuildContext context) async {
-/*    if (file.toString() == "") {
-      snackBar(context, "Please Select your image", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kAbout).toString() ==
-            "" ||
-        Get.find<GetSTorageController>().box.read(kAbout).toString() ==
-            "null") {
-      snackBar(context, "Please enter about", Colors.pink);
-    } else if (Get.find<GetSTorageController>()
-                .box
-                .read(kEducation)
-                .toString() ==
-            "" ||
-        Get.find<GetSTorageController>().box.read(kEducation).toString() ==
-            "null") {
-      snackBar(context, "Please Select your education level", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kIncome).toString() ==
-            "" ||
-        Get.find<GetSTorageController>().box.read(kIncome).toString() ==
-            "null") {
-      snackBar(context, "Please Enter your income", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kWork).toString() ==
-            "" ||
-        Get.find<GetSTorageController>().box.read(kWork).toString() == "null") {
-      snackBar(context, "Please Enter your occupation sector", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kHeight).toString() ==
-            "" ||
-        Get.find<GetSTorageController>().box.read(kHeight).toString() ==
-            "null") {
-      snackBar(context, "Please Enter your Height", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kSports).toString() ==
-            "" ||
-        Get.find<GetSTorageController>().box.read(kSports).toString() ==
-            "null") {
-      snackBar(context, "Please add your sports", Colors.pink);
-    } else if (Get.find<GetSTorageController>().box.read(kMovies).toString() ==
-            "" ||
-        Get.find<GetSTorageController>().box.read(kMovies).toString() ==
-            "null") {
-      snackBar(context, "Please add your movies", Colors.pink);
-    } else {*/
+  updateProfile(BuildContext context,{required parameter,required value}) async {
     User? user = FirebaseAuth.instance.currentUser!;
     try {
       isLoader = true;
@@ -132,14 +141,10 @@ class EditProfileController extends GetxController {
           .collection("users")
           .doc(user.uid)
           .update({
-        "name": nameController.value.text,
-        "martial_status": selectedMartialStatus,
-        "religion": selectedReligion,
-        "blur": isBlured,
-        "caste": selectedCaste,
-        "address": selectedCity
-      }).then((value) => Get.back());
-
+        parameter: value,
+      }).then((value) {
+         Get.back();
+      });
       isLoader = false;
       update();
     } catch (e) {
@@ -157,7 +162,6 @@ class EditProfileController extends GetxController {
     try {
       XFile? imagePick =
           await ImagePicker().pickImage(source: ImageSource.gallery);
-
       if (imagePick != null) {
         File convertedFile = File(imagePick.path);
         file = convertedFile;
@@ -211,10 +215,75 @@ class EditProfileController extends GetxController {
     listenEvent.cancel();
     Get.find<GetSTorageController>().box.write(kImageUrl, downloadUrl);
     log(downloadUrl);
-
-    //upload the data
-    // await FirebaseFirestore.instance.collection('users').doc(user.uid).update(({
-    //       'profilePic': downloadUrl,
-    //     }));
   }
+
+
+  List<XFile> filesImages = [];
+  List<dynamic>? multipleImagesDownloadLinks = [];
+  Future<List<XFile>> pickImage(
+      {ImageSource imageSource = ImageSource.gallery,
+        bool multiple = false}) async {
+    if (multiple) {
+      return imagePicker.pickMultiImage();
+    }
+    update();
+    final singleImage = await imagePicker.pickImage(source: imageSource);
+    update();
+    if (singleImage != null) {
+      return [singleImage];
+    } else
+      return [];
+  }
+
+  int imagelistlength=0;
+  // createPostController.images
+  //     .addAll(files.map((e) => File(e.path)).toList());
+
+  removepic(index,userid)async{
+    multipleImagesDownloadLinks!.remove(index);
+    update();
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userid)
+        .update({
+      "imagesList": multipleImagesDownloadLinks,
+    });
+
+  }
+  bool imagesss=false;
+  Future<List?> uploadImages(BuildContext context) async {
+    imagesss=true;
+    update();
+    // multipleImagesDownloadLinks = [];
+    imagelistlength=filesImages.length;
+    try {
+      for(var img in filesImages){
+        print(img);
+        print(img.path);
+        Reference ref;
+        ref = FirebaseStorage.instance
+            .ref()
+            .child('profilePics')
+            .child(img.path);
+        await ref.putFile(File(img.path)).whenComplete(() async {
+          await ref.getDownloadURL().then((value) {
+            multipleImagesDownloadLinks!.add(value);
+            debugPrint("multiple images are ${multipleImagesDownloadLinks.toString()}");
+
+          });
+        });
+      }
+      log(" uploading images succesffully");
+      imagesss=false;
+      update();
+    } catch (e) {
+      log(e.toString());
+      log("Error in uploading images");
+    }
+    update();
+    debugPrint("multiple images are ${multipleImagesDownloadLinks.toString()}");
+    return multipleImagesDownloadLinks;
+  }
+
+
 }

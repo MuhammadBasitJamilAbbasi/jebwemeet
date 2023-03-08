@@ -318,7 +318,46 @@ class ProfileWithID extends StatelessWidget {
                                 style: k14styleblack,
                               ),
                             ),
+                            AppComponents().sizedBox10,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Salary",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            AppComponents().sizedBox10,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                userModel!.income.toString(),
+                                style: k14styleblack,
+                              ),
+                            ),
                             AppComponents().sizedBox20,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Height",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            AppComponents().sizedBox10,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                userModel!.height.toString(),
+                                style: k14styleblack,
+                              ),
+                            ),
+                            AppComponents().sizedBox20,
+
                             userModel!.imagesList!.length>0?  Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

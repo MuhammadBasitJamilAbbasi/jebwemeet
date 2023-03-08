@@ -15,6 +15,14 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
     UserModel? userModel;
+    final storage=Get.find<GetSTorageController>();
+    storage.box.write(kEducation,"");
+    storage.box.write(kReligion,"");
+    storage.box.write(kMartial_Statius,"");
+    storage.box.write(kchildern,"");
+    storage.box.write(kCaste, "");
+    storage.box.write(kAddress,"");
+    storage.box.write(kReligiousPractice,"");
     return Scaffold(
       bottomNavigationBar: kCustomBottomNavBar(
         index: 3,
@@ -28,8 +36,11 @@ class Profile extends StatelessWidget {
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(),
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             } else if (!snapshot.hasData ||
                 snapshot.hasError ||
@@ -315,6 +326,44 @@ class Profile extends StatelessWidget {
                               alignment: Alignment.topLeft,
                               child: Text(
                                 userModel!.childerns.toString(),
+                                style: k14styleblack,
+                              ),
+                            ),
+                            AppComponents().sizedBox10,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Salary",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            AppComponents().sizedBox10,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                userModel!.income.toString(),
+                                style: k14styleblack,
+                              ),
+                            ),
+                            AppComponents().sizedBox20,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Height",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            AppComponents().sizedBox10,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                userModel!.height.toString(),
                                 style: k14styleblack,
                               ),
                             ),

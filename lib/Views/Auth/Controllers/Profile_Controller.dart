@@ -363,7 +363,7 @@ class ProfileController extends GetxController {
               .doc(user.uid)
               .update({
             "about":
-                Get.find<GetSTorageController>().box.read(kAbout).toString(),
+                aboutController.value.text,
             "education": Get.find<GetSTorageController>()
                 .box
                 .read(kEducation)
@@ -371,7 +371,7 @@ class ProfileController extends GetxController {
             "imagesList": multipleImagesDownloadLinks,
             "blur": isBlured,
             "job_title":
-                Get.find<GetSTorageController>().box.read(kJobTitle).toString(),
+                jobtitleController.value.text,
             "industry":
                 Get.find<GetSTorageController>().box.read(kIndustry).toString(),
             "languages": kList,

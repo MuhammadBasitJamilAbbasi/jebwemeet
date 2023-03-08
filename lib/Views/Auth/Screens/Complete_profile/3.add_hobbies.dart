@@ -55,8 +55,8 @@ class _Add_HoobiesState extends State<Add_Hoobies> {
                       runSpacing: 10,
                       spacing: 10,
                       children:
-                          List.generate(topicContents.length, (index) {
-                        final topic = topicContents[index];
+                          List.generate(topicContents!.length, (index) {
+                        final topic = topicContents![index];
                         return IntrinsicWidth(
                           child: InterestWidget(
                             textstyle: controller.getList!.contains(topic)
@@ -66,8 +66,8 @@ class _Add_HoobiesState extends State<Add_Hoobies> {
                             borderColor: controller.getList!.contains(topic)
                                 ? primarycolor
                                 : Colors.grey.shade300,
-                            image: topicContents[index].image!,
-                            title: topicContents[index].title,
+                            image: topicContents![index].image!,
+                            title: topicContents![index].title,
                             onTap: () {
                                 if (!controller.getList!.contains(topic)) {
                                   controller.addTopics(topic);

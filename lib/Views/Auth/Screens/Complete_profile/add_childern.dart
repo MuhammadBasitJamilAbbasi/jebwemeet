@@ -30,7 +30,7 @@ class Add_Childern extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
                     child: Text(
-                      "My Childern is",
+                      "My Children",
                       style: k25styleblack,
                     ),
                   ),

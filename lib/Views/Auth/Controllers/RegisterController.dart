@@ -79,6 +79,7 @@ class RegisterController extends GetxController {
 
   selectedChildFunction(String? value) {
     selectedChild = value;
+    Get.find<GetSTorageController>().box.write(kchildern, value);
     update();
   }
 

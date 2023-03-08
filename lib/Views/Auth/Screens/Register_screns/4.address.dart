@@ -46,7 +46,7 @@ class Register_address extends StatelessWidget {
                     child: Center(
                         child: kAppButton(
                           buttonText: "Continue",
-                         buttonstyleSmall: true,
+                         buttonstyleSmall: false,
                           onButtonPressed: () {
                             if (controller.selectedCity.toString().isNotEmpty &&
                                 controller.selectedCity.toString() !=

@@ -45,7 +45,7 @@ class Register_caste extends StatelessWidget {
                     child: Center(
                         child: kAppButton(
                           buttonText: "Continue",
-                          buttonstyleSmall: true,
+                          buttonstyleSmall: false,
                           onButtonPressed: () {
                             if (controller.selectedValue.toString().isNotEmpty &&
                                 controller.selectedValue.toString() !=

@@ -16,8 +16,10 @@ import 'package:jabwemeet/Views/Home/Screens/Likes/Likes_screens.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../Services/notification/notification_api/notification_api.dart';
+import 'package:jabwemeet/Utils/constants.dart';
 
 class Home_page_controller extends GetxController {
+
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -74,16 +76,14 @@ class Home_page_controller extends GetxController {
                 element.get('gender') == gender &&
                 element.get('age') < filterupperValue.round() &&
                 element.get('religion') == filterReligion) {
+
               double datainMeter = GetLocation.DistanceInMeters(
-                  double.parse(element.get('latitude').toString()),
-                  double.parse(element.get('longitude').toString()),
+                  double.parse(element.get('latitude').toString()=="null"? "0" : element.get('latitude').toString() ),
+                  double.parse(element.get('longitude').toString()=="null"?"0": element.get('longitude').toString() ),
                   double.parse(userModel.latitude.toString()),
                   double.parse(userModel.longitude.toString()));
               double kilomter = datainMeter / 1000;
-              print("datainMeter: " + datainMeter.toString());
-              print("datainKiloMeter: " + kilomter.toString());
-              print("selectedMilesRangeDefault: " +
-                  selectedMilesRangeDefault.toString());
+
               if (kilomter < selectedMilesRangeDefault) {
                 if (userList.contains(element.id) == true) {
                   userList.remove(element);
@@ -157,7 +157,7 @@ class Home_page_controller extends GetxController {
     update();
   }
 
-  var selectedMilesRange = 500.0;
+  var selectedMilesRange = 0.0;
   var selectedMilesRangeDefault = 2490000.0;
   selectedMilesRangeFunction(value) {
     selectedMilesRange = value;
@@ -592,6 +592,26 @@ class Home_page_controller extends GetxController {
     // getData();
     // update();
   }
+  Future block({required opponent_userid,name,image,required String visitType})async{
+    await FirebaseFirestore
+        .instance
+        .collection(
+        "users")
+        .doc(userModel
+        .uid)
+        .collection(
+        "visits")
+        .doc(opponent_userid)
+        .set({
+      "uid":opponent_userid,
+      "image":image,
+      "name":name,
+      "visitType":visitType
+    });
+    // getData();
+    // update();
+  }
+
   Future addtofavourite({required UserModel opponent_user}) async{
     await FirebaseFirestore
         .instance

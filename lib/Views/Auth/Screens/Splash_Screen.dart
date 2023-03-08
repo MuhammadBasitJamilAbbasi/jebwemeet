@@ -18,6 +18,7 @@ import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/vi
 import 'package:jabwemeet/Views/Auth/Screens/JabWeMetScreen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/onboarding2.dart';
+import 'package:jabwemeet/Views/Auth/Screens/onboarding_testing.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
@@ -81,7 +82,7 @@ class _Splash_ScreenState extends State<Splash_Screen>
       if (getStorageController.box.read("loggedin").toString() == "loggedin") {
         await initFunction();
       } else {
-        Get.offAll(() => OnboardingScreen());
+        Get.offAll(() => OnboardingTesting());
       }
     });
   }
@@ -96,19 +97,19 @@ class _Splash_ScreenState extends State<Splash_Screen>
               if (value.exists)
                 {
                   if (value.get("age") == 0)
-                    {Get.offAll(() => OnboardingScreen())}
+                    {Get.offAll(() => OnboardingTesting())}
                   else
                     {
                       if (value.get("imageUrl") == null ||
                           value.get("imageUrl") == "")
-                        {Get.offAll(() => OnboardingScreen())}
+                        {Get.offAll(() => OnboardingTesting())}
                       else
                         {
                           Get.offAll(() => HomeSwapNew())}
                     }
                 }
               else
-                {Get.offAll(() => OnboardingScreen())}
+                {Get.offAll(() => OnboardingTesting())}
             });
   }
 

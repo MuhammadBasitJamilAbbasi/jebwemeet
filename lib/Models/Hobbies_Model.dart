@@ -25,7 +25,7 @@ class InterestModel {
   }
 }
 
-List<InterestModel> topicContents = [
+List<InterestModel>? topicContents = [
   InterestModel(
     image: '🎨',
     title: 'Art',

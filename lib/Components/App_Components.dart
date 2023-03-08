@@ -984,8 +984,8 @@ class buildProfileDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 56,
-        margin: EdgeInsets.symmetric(horizontal: 30),
+        height: 54,
+        margin: EdgeInsets.symmetric(horizontal: 10),
         child: DropdownButtonHideUnderline(
           child: DropdownButton2(
             isDense: true,
@@ -1097,7 +1097,7 @@ class buildRegisterDropDown extends StatelessWidget {
                 Expanded(
                   child: Text(
                     text,
-                    style: k14styleWhite,
+                    style: k14styleblack,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -1108,7 +1108,7 @@ class buildRegisterDropDown extends StatelessWidget {
                       value: item,
                       child: Text(
                         item,
-                        style: k14styleWhite,
+                        style: k14styleblack,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ))
@@ -1121,7 +1121,7 @@ class buildRegisterDropDown extends StatelessWidget {
             dropdownMaxHeight: dropDownHeight,
 // dropdownWidth: 247,
             iconSize: 24,
-            iconEnabledColor: Colors.white,
+            iconEnabledColor: Colors.grey,
             iconDisabledColor: Colors.grey,
             buttonHeight: 47,
             buttonPadding: const EdgeInsets.only(
@@ -1131,26 +1131,15 @@ class buildRegisterDropDown extends StatelessWidget {
             offset: Offset(0, -20),
             buttonDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colors.pink,
-                    textcolor,
-                  ]),
+              color: Colors.white,
+border: Border.all(color: Colors.grey.shade200)
             ),
             itemHeight: 47,
             itemPadding: const EdgeInsets.only(left: 14, right: 14),
             dropdownDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colors.pink,
-                    textcolor,
-                  ]),
-            ),
+color: Colors.white
+),
             scrollbarRadius: const Radius.circular(16),
             scrollbarThickness: 6,
             scrollbarAlwaysShow: true,

@@ -7,6 +7,7 @@ import 'package:jabwemeet/Bindings/Bindings.dart';
 
 import 'package:jabwemeet/Views/Auth/Screens/Splash_Screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/onboarding2.dart';
+import 'package:jabwemeet/Views/Auth/Screens/onboarding_testing.dart';
 
 import 'Services/notification/firebase_notifications/notification_service.dart';
 
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
         initialBinding: InitialBindings(),
-
+        defaultTransition: Transition.noTransition,
         theme: ThemeData(
           primarySwatch: Colors.red,
           scaffoldBackgroundColor: Colors.white,
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
           fontFamily: "Gotham-Font",
         ),
         debugShowCheckedModeBanner: false,
-        home: OnboardingScreen(),
+        home: Splash_Screen(),
         // home: StripePaymentScreen(),
         /*=============================*/
         );
