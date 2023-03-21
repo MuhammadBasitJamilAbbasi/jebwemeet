@@ -22,7 +22,10 @@ import 'package:jabwemeet/Views/Auth/Screens/onboarding_testing.dart';
 import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
+import 'package:jabwemeet/main.dart';
+import 'package:jabwemeet/testing_sub.dart';
 import 'package:profanity_filter/profanity_filter.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../Services/notification/local_notifications/local_notification_service.dart';
 import '../../Home/Screens/Likes/Likes_screens.dart';
@@ -47,12 +50,47 @@ class _Splash_ScreenState extends State<Splash_Screen>
   final filter = ProfanityFilter();
   final string="ass";
   String badString = 'you are an dog';
+
+  Future<void> initPlatformState() async {
+    // Enable debug logs before calling `configure`.
+    await Purchases.setLogLevel(LogLevel.debug);
+
+    /*
+    - appUserID is nil, so an anonymous ID will be generated automatically by the Purchases SDK. Read more about Identifying Users here: https://docs.revenuecat.com/docs/user-ids
+    - observerMode is false, so Purchases will automatically handle finishing transactions. Read more about Observer Mode here: https://docs.revenuecat.com/docs/observer-mode
+    */
+    PurchasesConfiguration configuration;
+      configuration = PurchasesConfiguration('goog_aYSJTGPsDmGWnKCcwYpeKIGIrqy')
+        ..appUserID = appData.appUserID
+        ..observerMode = false;
+    await Purchases.configure(configuration);
+    appData.appUserID = await Purchases.appUserID;
+    if(mounted) {
+      CustomerInfo purchaserInfo = await Purchases.restorePurchases();
+      if (purchaserInfo.activeSubscriptions.length > 0) {
+        print("Active Subscription");
+        setState(() {
+          appData.entitlementIsActive = true;
+        });
+      } else {
+        print("Not Active Subscription");
+       setState(() {
+         appData.entitlementIsActive = false;
+       });
+      }
+      print("<==========  " + appData.entitlementIsActive.toString() + " ============>");
+    }
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    initPlatformState();
+  }
+
   @override
   void initState() {
-    print("<===== Bad string========>");
-    print(filter.hasProfanity(string).toString());
-    String cleanString = filter.censor('you are an ass');
-    print(cleanString.toString());
+    initPlatformState();
     //Method called.
     getInitialMessage(context);
     /* If the app is open then the the notification occurs.

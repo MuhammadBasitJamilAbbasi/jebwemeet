@@ -54,7 +54,6 @@ class _kCustomBottomNavBarState extends State<kCustomBottomNavBar> {
             CustomNavigationBarItem(
               icon: InkWell(
                 onTap: () {
-                  Get.find<Home_page_controller>().query();
                   Get.to(() => HomeSwapNew());
                 },
                 child: Container(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+ bool kSubscription=false;
 /*
 * Stripe Keys
 */

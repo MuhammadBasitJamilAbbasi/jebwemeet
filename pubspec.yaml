@@ -80,7 +80,10 @@ dependencies:
   blurrycontainer: ^1.0.2
   skeletons: ^0.0.3
   flutter_cupertino_datetime_picker: ^3.0.0
-  purchases_flutter: ^4.10.3
+  purchases_flutter: ^4.0.0
+  in_app_purchase:
+#  shared_preferences:
+#  cron:
 dev_dependencies:
   flutter_test:
     sdk: flutter

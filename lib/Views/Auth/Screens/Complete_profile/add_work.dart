@@ -53,7 +53,6 @@ class Add_Work extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: kAppButton(
                               buttonText: "Save",
-                              buttonstyleSmall: true,
                               onButtonPressed: () {
                                 if (controller.selectedwork.toString() !=
                                     "Select Occupation Sector") {

@@ -51,7 +51,6 @@ class Add_Childern extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: kAppButton(
                               buttonText: "Save",
-                              buttonstyleSmall: true,
                               onButtonPressed: () {
                                   Get.find<GetSTorageController>().box.write(
                                       kchildern,

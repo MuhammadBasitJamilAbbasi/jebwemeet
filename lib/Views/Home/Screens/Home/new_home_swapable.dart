@@ -1,11 +1,12 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:math' as math;
 import 'dart:ui';
-
 import 'package:blur/blur.dart';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/UserModel.dart';
@@ -19,8 +20,10 @@ import 'package:jabwemeet/Views/Home/Screens/Home/Home_Components.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/Profile_details.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/filterScreen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Tabbar.dart';
+import 'package:jabwemeet/testing_sub.dart';
 import 'package:like_button/like_button.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:swipable_stack/swipable_stack.dart';
 
 class HomeSwapNew extends StatefulWidget {
@@ -49,6 +52,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
   _update_favourite() {
     setState(() {});
   }
+
   _ignore_it() async {
     stackController.next(
         duration: Duration(milliseconds: 1400),
@@ -58,23 +62,119 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
   SwipableStackController stackController = SwipableStackController();
   PageController? pagecontroller = PageController();
 
+  bool _isLoading = false;
+  Timer? timer;
+
+  /*
+    We should check if we can magically change the weather
+    (subscription active) and if not, display the paywall.
+  */
+  void openSubscriptionSheetMethod() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+
+    if (customerInfo.entitlements.all[entitlementID] != null &&
+        customerInfo.entitlements.all[entitlementID]!.isActive == true ||  customerInfo.entitlements.all[entitlementID2] != null &&
+        customerInfo.entitlements.all[entitlementID2]!.isActive == true) {
+      appData.currentData = WeatherData.generateData();
+
+      setState(() {
+        _isLoading = false;
+      });
+    } else {
+      Offerings? offerings;
+      try {
+        offerings = await Purchases.getOfferings();
+      } on PlatformException catch (e) {
+        await showDialog(
+            context: context,
+            builder: (BuildContext context) => ShowDialogToDismiss(
+                title: "Error", content: e.message!, buttonText: 'OK'));
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (offerings == null || offerings.current == null) {
+        // offerings are empty, show a message to your user
+      } else {
+        // current offering is available, show paywall
+        await showModalBottomSheet(
+          useRootNavigator: true,
+          isDismissible: true,
+          isScrollControlled: true,
+          backgroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+          ),
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(
+                builder: (BuildContext context, StateSetter setModalState) {
+                  return Paywall(
+                    offering: offerings!.current!,
+                  );
+                });
+          },
+        );
+      }
+    }
+  }
+
+  firstCall() async {
+    CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+    if (customerInfo.entitlements.all[entitlementID] != null &&
+        customerInfo.entitlements.all[entitlementID]!.isActive == true ||  customerInfo.entitlements.all[entitlementID2] != null &&
+        customerInfo.entitlements.all[entitlementID2]!.isActive == true) {
+      print("<===== SubScription First check========>");
+      setState(() {
+        kSubscription = true;
+        appData.entitlementIsActive=true;
+      });
+      print("<===== SubScription second========>");
+      print("<==========  " + kSubscription.toString() + " ============>");
+      print("<==========  " + appData.entitlementIsActive.toString() + " ============>");
+    }
+
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+       timer = Timer.periodic(Duration(minutes: 15), (Timer t) => openSubscriptionSheetMethod());
     if (stackController.hasListeners) {
       print("has listem");
       stackController.removeListener(() {});
     }
     setState(() {
-      stackController = SwipableStackController()..addListener(() {});
+      stackController = SwipableStackController()..addListener(() {
+      });
     });
     pagecontroller = PageController(initialPage: 0);
     controllerrrr.getData();
+    if(controllerrrr.purchasekar){
+      openSubscriptionSheetMethod();
+    }
   }
+
   @override
   Widget build(BuildContext context) {
-    Get.find<GetSTorageController>().box.write("loggedin","loggedin").toString();
+    Get.find<GetSTorageController>()
+        .box
+        .write("loggedin", "loggedin")
+        .toString();
+    firstCall();
     final bool isImageBlur = false;
     return Scaffold(
       bottomNavigationBar: kCustomBottomNavBar(
@@ -103,486 +203,619 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                 style: k25styleblack,
                               ),
                               Text(
-                                controller.userModel.address.toString()=="null"? "": controller.userModel.address.toString(),
+                                controller.userModel.address.toString() ==
+                                        "null"
+                                    ? ""
+                                    : controller.userModel.address.toString(),
                                 style: k14styleblack,
                               ),
                             ],
                           ),
                         ),
-                        controller.homeLoader==true? Center(child: CircularProgressIndicator()):  controller.userList.length > 0
-                            ? Positioned(
-                                left: 30,
-                                right: 30,
-                                top: 100,
-                                child: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height - 180,
-                                  child: SwipableStack(
-                                    detectableSwipeDirections: const {
-                                      SwipeDirection.right,
-                                      SwipeDirection.left,
-                                    },
-                                    itemCount: controller.userList.length,
-                                    controller: stackController,
-                                    stackClipBehaviour: Clip.none,
-                                    allowVerticalSwipe: true,
-                                    viewFraction: 1,
-                                    builder: (context, properties) {
-                                      UserModel userModel = UserModel.fromMap(
-                                          controller.userList[properties.index]
-                                              .data() as Map<String, dynamic>);
-                                      double datainMeter =
-                                          GetLocation.DistanceInMeters(
-                                        double.parse(
-                                            userModel.latitude.toString()),
-                                        double.parse(
-                                            userModel.longitude.toString()),
-                                        double.parse(controller.userModel.latitude
-                                            .toString()),
-                                        double.parse(controller
-                                            .userModel.longitude
-                                            .toString()),
-                                      );
-                                      double kilomter = datainMeter / 1000;
-                                      print("datainMeter: " +
-                                          datainMeter.toString());
-                                      print("datainKiloMeter: " +
-                                          kilomter.toString());
-                                      return Column(
-                                        children: [
-                                          Expanded(
-                                            child: InkWell(
-                                              onTap: () {
-                                                Get.to(() => ProfileDetails(
-                                                  caste: userModel.caste,
-                                                  salary: userModel.income,
-                                                  children: userModel.childerns,
-                                                  r_practice: userModel.religious_practice,
-                                                    religion: userModel.religion,
-                                                    latitude: userModel.latitude,
-                                                    longitude:
-                                                        userModel.longitude,
-                                                    blur: userModel.blur,
-                                                    interests:
-                                                        userModel.hobbies ?? [],
-                                                    name: userModel.name.toString() ??
-                                                        "",
-                                                    martial_status: userModel
-                                                            .martial_status
-                                                            .toString() ??
-                                                        "",
-                                                    work:
-                                                        userModel.work.toString() ??
-                                                            "",
-                                                    email: userModel.email
-                                                            .toString() ??
-                                                        "",
-                                                    address: userModel.address
-                                                            .toString() ??
-                                                        "",
-                                                    age: userModel.age.toString() ??
-                                                        "",
-                                                    model: userModel,
-                                                    propertiesindex:
-                                                        properties.index,
-                                                    height:
-                                                        userModel.height.toString() ?? "",
-                                                    gender: userModel.gender.toString() ?? "",
-                                                    image: userModel.imageUrl.toString() ?? "",
-                                                    industry: userModel.industry.toString() ?? "",
-                                                    education: userModel.education.toString() ?? "",
-                                                    imgeList: userModel.imagesList ?? [],
-                                                    about: userModel.about.toString() ?? "",
-                                                    phone: userModel.phone_number.toString() ?? "",
-                                                    jobtitle: userModel.job_title ?? ""));
-                                              },
-                                              child: Card(
-                                                clipBehavior: Clip.antiAlias,
-                                                elevation: 4.0,
-                                                margin: EdgeInsets.zero,
-                                                shape: defaultCardBorder(),
-                                                child: Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration: BoxDecoration(
-                                                          image: DecorationImage(
-                                                            image: NetworkImage(
-                                                                userModel.imageUrl
-                                                                    .toString()),
-                                                            fit: BoxFit.cover,
-                                                          ),
+                        controller.purchasekar? Container(
+                          height: MediaQuery.of(context)
+                              .size
+                              .height ,
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment:
+                            MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text('No Subscription yet',
+                                  style: k20styleblack),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 30),
+                                child: Text(
+                                  'Your daily limit is exceed',
+                                  style: k14styleblack,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ) :
+                        controller.homeLoader == true
+                            ? Center(child: CircularProgressIndicator())
+                            : controller.userList.length > 0
+                                ? Positioned(
+                                    left: 30,
+                                    right: 30,
+                                    top: 100,
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height -
+                                              180,
+                                      child: SwipableStack(
+                                        detectableSwipeDirections: const {
+                                          SwipeDirection.right,
+                                          SwipeDirection.left,
+                                        },
+                                        swipeAssistDuration: Duration(milliseconds: 10),
+                                        itemCount: appData.entitlementIsActive ? controller.userList.length : 25,
+                                        controller: stackController,
+                                        stackClipBehaviour: Clip.none,
+                                        allowVerticalSwipe: true,
+                                        viewFraction: 1,
+                                        builder: (context, properties) {
+                                          if(appData.entitlementIsActive){
+                                          if(properties.index== controller.userList.length ){
+                                            openSubscriptionSheetMethod();
+                                            controller.getData();
+                                          }
+                                          }
+                                          else{
+                                            if(properties.index== 25 ){
+                                              openSubscriptionSheetMethod();
+                                              controller.getData();
+                                            }
+                                          }
+                                          UserModel userModel =
+                                              UserModel.fromMap(
+                                                  controller.userList[
+                                                              properties.index]
+                                                          .data()
+                                                      as Map<String, dynamic>);
+                                          double datainMeter =
+                                              GetLocation.DistanceInMeters(
+                                            double.parse(
+                                                userModel.latitude.toString() ==
+                                                        "null"
+                                                    ? "33.6664701"
+                                                    : userModel.latitude
+                                                        .toString()),
+                                            double.parse(userModel.longitude
+                                                        .toString() ==
+                                                    "null"
+                                                ? "73.0407053"
+                                                : userModel.longitude
+                                                    .toString()),
+                                            double.parse(controller
+                                                        .userModel.latitude
+                                                        .toString() ==
+                                                    "null"
+                                                ? "33.6664701"
+                                                : controller.userModel.latitude
+                                                    .toString()),
+                                            double.parse(controller
+                                                        .userModel.longitude
+                                                        .toString() ==
+                                                    "null"
+                                                ? "73.0407053"
+                                                : controller.userModel.longitude
+                                                    .toString()),
+                                          );
+                                          double kilomter = datainMeter / 1000;
+                                          print("datainMeter: " +
+                                              datainMeter.toString());
+                                          print("datainKiloMeter: " +
+                                              kilomter.toString());
+                                          return Column(
+                                            children: [
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Get.to(() => ProfileDetails(
+                                                      id: userModel.uid,
+                                                        caste: userModel.caste,
+                                                        salary:
+                                                            userModel.income,
+                                                        children:
+                                                            userModel.childerns,
+                                                        r_practice: userModel
+                                                            .religious_practice,
+                                                        religion:
+                                                            userModel.religion,
+                                                        latitude: userModel
+                                                                    .latitude
+                                                                    .toString() ==
+                                                                "null"
+                                                            ? "33.6664701"
+                                                            : userModel.latitude
+                                                                .toString(),
+                                                        longitude: userModel
+                                                                    .longitude
+                                                                    .toString() ==
+                                                                "null"
+                                                            ? "73.0407053"
+                                                            : userModel.longitude
+                                                                .toString(),
+                                                        blur: userModel.blur,
+                                                        interests:
+                                                            userModel.hobbies ??
+                                                                [],
+                                                        name: userModel.name.toString() ?? "",
+                                                        martial_status: userModel.martial_status.toString() ?? "",
+                                                        work: userModel.work.toString() ?? "",
+                                                        email: userModel.email.toString() ?? "",
+                                                        address: userModel.address.toString() ?? "",
+                                                        age: userModel.age.toString() ?? "",
+                                                        model: userModel,
+                                                        propertiesindex: properties.index,
+                                                        height: userModel.height.toString() ?? "",
+                                                        gender: userModel.gender.toString() ?? "",
+                                                        image: userModel.imageUrl.toString() ?? "",
+                                                        industry: userModel.industry.toString() ?? "",
+                                                        education: userModel.education.toString() ?? "",
+                                                        imgeList: userModel.imagesList ?? [],
+                                                        about: userModel.about.toString() ?? "",
+                                                        phone: userModel.phone_number.toString() ?? "",
+                                                        jobtitle: userModel.job_title ?? ""));
+                                                  },
+                                                  child: Card(
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    elevation: 4.0,
+                                                    margin: EdgeInsets.zero,
+                                                    shape: defaultCardBorder(),
+                                                    child: Container(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              userModel.imageUrl
+                                                                  .toString()),
+                                                          fit: BoxFit.cover,
                                                         ),
-                                                        child: Stack(
-                                                          children: [
-                                                           userModel.blur==true?
-                                                           Positioned(
-                                                             top: 0,
-                                                             left: 0,
-                                                             right: 0,
-                                                             child: BlurryContainer(
-                                                               blur: 20,
-                                                               height: MediaQuery.of(context).size.height,
-                                                               elevation: 0,
-                                                               borderRadius:
-                                                               BorderRadius
-                                                                   .circular(
-                                                                   0),
-                                                               color: Colors
-                                                                   .black
-                                                                   .withOpacity(
-                                                                   0.5),
-                                                               child: Text(""),
-                                                             ),
-                                                           ): Positioned(top: 0,left: 0,right: 0,child: Text(""),),
-                                                            Positioned(
-                                                              top: 15,
-                                                              left: 15,
-                                                              child:
-                                                                  BlurryContainer(
-                                                                blur: 8,
-                                                                height: 34,
-                                                                width: 86,
-                                                                elevation: 0,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            6),
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                                child: Padding(
-                                                                  padding: EdgeInsets
-                                                                      .only(
-                                                                          left:
-                                                                              2),
-                                                                  child: Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                    children: [
-                                                                      Image.asset(
-                                                                        "assets/locnew.png",
-                                                                        height:
-                                                                            12,
-                                                                        width: 12,
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                                      SizedBox(width: 3,),
-                                                                      Expanded(
-                                                                          child:
-                                                                              Row(
-                                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                                children: [
-                                                                                  Text(
-                                                                        kilomter
-                                                                                    .round()
-                                                                                    .toString() +
-                                                                            " km"
-                                                                                    .toString(),
-                                                                        style:
-                                                                            k12styleWhite,
-                                                                      ),
-                                                                                ],
-                                                                              ))
-                                                                    ],
+                                                      ),
+                                                      child: Stack(
+                                                        children: [
+                                                          userModel.blur == true
+                                                              ? Positioned(
+                                                                  top: 0,
+                                                                  left: 0,
+                                                                  right: 0,
+                                                                  child:
+                                                                      BlurryContainer(
+                                                                    blur: 20,
+                                                                    height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height,
+                                                                    elevation:
+                                                                        0,
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(0),
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                    child: Text(
+                                                                        ""),
                                                                   ),
+                                                                )
+                                                              : Positioned(
+                                                                  top: 0,
+                                                                  left: 0,
+                                                                  right: 0,
+                                                                  child:
+                                                                      Text(""),
                                                                 ),
-                                                              ),
-                                                            ),
-                                                            Positioned(
-                                                              bottom: 0,
-                                                              left: 0,
-                                                              right: 0,
-                                                              child:
-                                                                  BlurryContainer(
-                                                                blur: 8,
-                                                                height: 90,
-                                                                elevation: 0,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            0),
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
+                                                          Positioned(
+                                                            top: 15,
+                                                            left: 15,
+                                                            child:
+                                                                BlurryContainer(
+                                                              blur: 8,
+                                                              height: 34,
+                                                              width: 86,
+                                                              elevation: 0,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          6),
+                                                              color: Colors
+                                                                  .black
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                              child: Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            2),
+                                                                child: Row(
                                                                   mainAxisAlignment:
                                                                       MainAxisAlignment
-                                                                          .center,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
+                                                                          .spaceBetween,
                                                                   children: [
-                                                                    Expanded(
-                                                                      child: Padding(
-                                                                        padding: const EdgeInsets
-                                                                                .only(
-                                                                            left:
-                                                                                10),
-                                                                        child: Text.rich(
-                                                                            TextSpan(
-                                                                                children: [
-                                                                              TextSpan(
-                                                                                text:
-                                                                                    userModel.name.toString(),
-                                                                                style:
-                                                                                    k18styleWhite,
-                                                                              ),
-                                                                              if (userModel.age.toString() !=
-                                                                                  "null")
-                                                                                TextSpan(
-                                                                                  text: ", " + userModel.age.toString(),
-                                                                                  style: k18styleWhite,
-                                                                                )
-                                                                            ])),
-                                                                      ),
+                                                                    Image.asset(
+                                                                      "assets/locnew.png",
+                                                                      height:
+                                                                          12,
+                                                                      width: 12,
+                                                                      color: Colors
+                                                                          .white,
                                                                     ),
                                                                     SizedBox(
-                                                                      height: 5,
+                                                                      width: 3,
                                                                     ),
                                                                     Expanded(
-                                                                      child: Padding(
-                                                                        padding: const EdgeInsets
-                                                                                .only(
-                                                                            left:
-                                                                                10),
-                                                                        child: Text(
-                                                                          userModel
-                                                                              .job_title
-                                                                              .toString(),
-                                                                          overflow: TextOverflow.ellipsis,
+                                                                        child:
+                                                                            Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Text(
+                                                                          kilomter.round().toString() +
+                                                                              " km".toString(),
                                                                           style:
-                                                                              k16styleWhite,
+                                                                              k12styleWhite,
                                                                         ),
-                                                                      ),
-                                                                    ),
-                                                                    AppComponents().sizedBox5,
-                                                                    Expanded(
-                                                                      child: Padding(
-                                                                        padding: const EdgeInsets
-                                                                            .only(
-                                                                            left:
-                                                                            10),
-                                                                        child: Text(
-                                                                          userModel
-                                                                              .address
-                                                                              .toString(),
-                                                                          overflow: TextOverflow.ellipsis,
-                                                                          style:
-                                                                          k16styleWhite,
-                                                                        ),
-                                                                      ),
-                                                                    )
+                                                                      ],
+                                                                    ))
                                                                   ],
                                                                 ),
                                                               ),
                                                             ),
-                                                          ],
-                                                        ),
+                                                          ),
+                                                          Positioned(
+                                                            bottom: 0,
+                                                            left: 0,
+                                                            right: 0,
+                                                            child:
+                                                                BlurryContainer(
+                                                              blur: 8,
+                                                              height: 90,
+                                                              elevation: 0,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          0),
+                                                              color: Colors
+                                                                  .black
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                              child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Expanded(
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              10),
+                                                                      child: Text.rich(
+                                                                          TextSpan(
+                                                                              children: [
+                                                                            TextSpan(
+                                                                              text: userModel.name.toString(),
+                                                                              style: k18styleWhite,
+                                                                            ),
+                                                                            if (userModel.age.toString() !=
+                                                                                "null")
+                                                                              TextSpan(
+                                                                                text: ", " + userModel.age.toString(),
+                                                                                style: k18styleWhite,
+                                                                              )
+                                                                          ])),
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  Expanded(
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              10),
+                                                                      child:
+                                                                          Text(
+                                                                        userModel
+                                                                            .job_title
+                                                                            .toString(),
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        style:
+                                                                            k16styleWhite,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  AppComponents()
+                                                                      .sizedBox5,
+                                                                  Expanded(
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              10),
+                                                                      child:
+                                                                          Text(
+                                                                        userModel
+                                                                            .address
+                                                                            .toString(),
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        style:
+                                                                            k16styleWhite,
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          AppComponents().sizedBox20,
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  Future.delayed(Duration(
-                                                          milliseconds: 800))
-                                                      .then((value) => {
-                                                            print("asd"),
-                                                            _ignore_it(),
-                                                            controller.ignorswap(
-                                                              visitType: "passed",
-                                                                opponent_user:
-                                                                    userModel)
-                                                          });
-                                                  return Future.value();
-                                                },
-                                                child: Container(
-                                                    height: 60,
-                                                    width: 60,
-                                                    margin: EdgeInsets.only(
-                                                        bottom: 20),
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: Colors.white,
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors
-                                                                .grey.shade300
-                                                                .withOpacity(0.6),
-                                                            spreadRadius: 3,
-                                                            blurRadius: 12,
-                                                            offset: Offset(0,
-                                                                10), // changes position of shadow
-                                                          ),
-                                                        ]),
-                                                    child: Image.asset(
-                                                      "assets/dislikenew.png",
-                                                      height: 15,
-                                                      width: 15,
-                                                    )),
-                                              ),
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  Future.delayed(Duration(
-                                                          milliseconds: 800))
-                                                      .then((value) => {
-                                                            print("asd"),
-                                                            _update_like(),
-                                                            controller.likeswap(
-                                                                context,
-                                                                opponent_user:
-                                                                    userModel)
-                                                          });
-                                                  return Future.value();
-                                                },
-                                                child: Container(
-                                                    height: 80,
-                                                    width: 80,
-                                                    margin: EdgeInsets.only(
-                                                        bottom: 20),
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: Color(0xFFE94057),
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors
-                                                                .red.shade200
-                                                                .withOpacity(
-                                                                    0.25),
-                                                            spreadRadius: 5,
-                                                            blurRadius: 10,
-                                                            offset: Offset(0,
-                                                                4), // changes position of shadow
-                                                          ),
-                                                        ]),
-                                                    child: Image.asset(
-                                                      "assets/heartnew.png",
-                                                      height: 25,
-                                                      width: 30,
-                                                      fit: BoxFit.fill,
-                                                    )),
-                                              ),
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  Future.delayed(Duration(
-                                                          milliseconds: 800))
-                                                      .then((value) => {
-                                                            print("asd"),
-                                                            _update_favourite(),
-                                                            controller
-                                                                .addtofavourite(
+                                              AppComponents().sizedBox20,
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      Future.delayed(Duration(
+                                                              milliseconds:
+                                                                  800))
+                                                          .then((value) => {
+                                                                print("asd"),
+                                                                _ignore_it(),
+                                                                controller.ignorswap(
+                                                                    visitType:
+                                                                        "passed",
                                                                     opponent_user:
                                                                         userModel)
-                                                          });
+                                                              });
+                                                      return Future.value();
+                                                    },
+                                                    child: Container(
+                                                        height: 60,
+                                                        width: 60,
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 20),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: Colors
+                                                                    .white,
+                                                                boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .shade300
+                                                                    .withOpacity(
+                                                                        0.6),
+                                                                spreadRadius: 3,
+                                                                blurRadius: 12,
+                                                                offset: Offset(
+                                                                    0,
+                                                                    10), // changes position of shadow
+                                                              ),
+                                                            ]),
+                                                        child: Image.asset(
+                                                          "assets/dislikenew.png",
+                                                          height: 15,
+                                                          width: 15,
+                                                        )),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      Future.delayed(Duration(
+                                                              milliseconds:
+                                                                  800))
+                                                          .then((value) => {
+                                                                print("asd"),
+                                                                _update_like(),
+                                                                controller.likeswap(
+                                                                    context,
+                                                                    opponent_user:
+                                                                        userModel)
+                                                              });
+                                                      return Future.value();
+                                                    },
+                                                    child: Container(
+                                                        height: 80,
+                                                        width: 80,
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 20),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: Color(
+                                                                    0xFFE94057),
+                                                                boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors
+                                                                    .red
+                                                                    .shade200
+                                                                    .withOpacity(
+                                                                        0.25),
+                                                                spreadRadius: 5,
+                                                                blurRadius: 10,
+                                                                offset: Offset(
+                                                                    0,
+                                                                    4), // changes position of shadow
+                                                              ),
+                                                            ]),
+                                                        child: Image.asset(
+                                                          "assets/heartnew.png",
+                                                          height: 25,
+                                                          width: 30,
+                                                          fit: BoxFit.fill,
+                                                        )),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      Future.delayed(Duration(
+                                                              milliseconds:
+                                                                  800))
+                                                          .then((value) => {
+                                                                print("asd"),
+                                                                _update_favourite(),
+                                                                controller.addtofavourite(
+                                                                    opponent_user:
+                                                                        userModel)
+                                                              });
 
-                                                  return Future.value();
-                                                },
-                                                child: Container(
-                                                    height: 60,
-                                                    width: 60,
-                                                    margin: EdgeInsets.only(
-                                                        bottom: 20),
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: Colors.white,
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors
-                                                                .grey.shade300
-                                                                .withOpacity(0.6),
-                                                            spreadRadius: 3,
-                                                            blurRadius: 12,
-                                                            offset: Offset(0,
-                                                                10), // changes position of shadow
-                                                          ),
-                                                        ]),
-                                                    child: Image.asset(
-                                                      "assets/starnew.png",
-                                                      height: 20,
-                                                      width: 20,
-                                                    )),
-                                              ),
+                                                      return Future.value();
+                                                    },
+                                                    child: Container(
+                                                        height: 60,
+                                                        width: 60,
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 20),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: Colors
+                                                                    .white,
+                                                                boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .shade300
+                                                                    .withOpacity(
+                                                                        0.6),
+                                                                spreadRadius: 3,
+                                                                blurRadius: 12,
+                                                                offset: Offset(
+                                                                    0,
+                                                                    10), // changes position of shadow
+                                                              ),
+                                                            ]),
+                                                        child: Image.asset(
+                                                          "assets/starnew.png",
+                                                          height: 20,
+                                                          width: 20,
+                                                        )),
+                                                  ),
+                                                ],
+                                              )
                                             ],
-                                          )
-                                        ],
-                                      );
-                                    },
-                                    onWillMoveNext: (index, swipeDirection) {
-                                      if (length < controller.userList.length) {
-                                        setState(() {
-                                          length++;
-                                        });
-                                      }
+                                          );
+                                        },
+                                        onWillMoveNext:
+                                            (index, swipeDirection) {
+                                          if (length <
+                                              controller.userList.length) {
+                                            setState(() {
+                                              length++;
+                                            });
+                                          }
 // Return true for the desired swipe direction.
-                                      switch (swipeDirection) {
-                                        case SwipeDirection.left:
-                                          {
-                                            UserModel userModel =
-                                                UserModel.fromMap(controller
-                                                        .userList[index]
-                                                        .data()
-                                                    as Map<String, dynamic>);
-                                            controller.ignorswap(
-                                              visitType: "passed",
-                                                opponent_user: userModel,);
-                                            return true;
-                                          }
-                                        case SwipeDirection.right:
-                                          {
-                                            print("====> right");
-                                            UserModel userModel =
-                                                UserModel.fromMap(controller
-                                                        .userList[index]
-                                                        .data()
-                                                    as Map<String, dynamic>);
-                                            controller.likeswap(context,
-                                                opponent_user: userModel,
-                                            );
-                                            return true;
-                                          }
-                                        case SwipeDirection.up:
-                                          {
-                                            print("====> up");
+                                          switch (swipeDirection) {
+                                            case SwipeDirection.left:
+                                              {
+                                                UserModel userModel =
+                                                    UserModel.fromMap(controller
+                                                            .userList[index]
+                                                            .data()
+                                                        as Map<String,
+                                                            dynamic>);
+                                                controller.ignorswap(
+                                                  visitType: "passed",
+                                                  opponent_user: userModel,
+                                                );
+                                                return true;
+                                              }
+                                            case SwipeDirection.right:
+                                              {
+                                                print("====> right");
+                                                UserModel userModel =
+                                                    UserModel.fromMap(controller
+                                                            .userList[index]
+                                                            .data()
+                                                        as Map<String,
+                                                            dynamic>);
+                                                controller.likeswap(
+                                                  context,
+                                                  opponent_user: userModel,
+                                                );
+                                                return true;
+                                              }
+                                            case SwipeDirection.up:
+                                              {
+                                                print("====> up");
 
-                                            return true;
+                                                return true;
+                                              }
+                                            case SwipeDirection.down:
+                                              return false;
                                           }
-                                        case SwipeDirection.down:
-                                          return false;
-                                      }
-                                    },
-                                    horizontalSwipeThreshold: 0.8,
-                                    verticalSwipeThreshold: 1,
-                                    overlayBuilder: (
-                                      context,
-                                      properties,
-                                    ) =>
-                                        CardOverlay(
-                                      swipeProgress: properties.swipeProgress,
-                                      direction: properties.direction,
+                                        },
+                                        horizontalSwipeThreshold: 0.8,
+                                        verticalSwipeThreshold: 1,
+                                        overlayBuilder: (
+                                          context,
+                                          properties,
+                                        ) =>
+                                            CardOverlay(
+                                          swipeProgress:
+                                              properties.swipeProgress,
+                                          direction: properties.direction,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "No Matches Found",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                              color: textcolor),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                              )
-                            :  Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                  Text("No Matches Found",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,color: textcolor),),
-                                ],),
-                              ),
                       ],
                     ),
                   );
@@ -594,60 +827,44 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
   Positioned buildFilterWidget(BuildContext context) {
     return Positioned(
       top: 30,
-      left: 0,
+      left: 30,
       right: 30,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
             onTap: () {
-              Get.to(()=> FilterScreen());
-             /* showMaterialModalBottomSheet(
-                context: context,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(50),
-                        topRight: Radius.circular(50))),
-                builder: (context) => SingleChildScrollView(
-                  controller: ModalScrollController.of(context),
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(top: 50),
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(50),
-                                topRight: Radius.circular(50))),
-                        child: FilterScreen(),
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(top: 10),
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage("assets/crop.png"),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(50),
-                                topRight: Radius.circular(50))),
-                        child: FilterScreen(),
-                      ),
-                      Center(
-                        child: Image.asset(
-                          "assets/c.png",
-                          width: 47,
-                          height: 25,
-                        ),
-                      )
-                    ],
+              openSubscriptionSheetMethod();
+            },
+            child: Container(
+              height: 45,
+              width: 45,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey.shade300)),
+              child: Padding(
+                padding: const EdgeInsets.all(9),
+                child: Center(
+                  child: Image.asset(
+                    "assets/vip.png",
+                    height: 45,
+                    width: 45,
                   ),
                 ),
-              );*/
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(5),
+              //   child: Center(
+              //     // child: Text("✨",style: TextStyle(fontSize: 22),),
+              //     child: Text("🛒",style: TextStyle(fontSize: 22),),
+              //   ),
+              // ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Get.to(() => FilterScreen());
             },
             child: Container(
               height: 45,

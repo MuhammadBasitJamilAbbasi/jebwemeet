@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -5,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Models/chatroom.model.dart';
@@ -14,7 +16,9 @@ import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/inbox.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/Home_Components.dart';
 import 'package:jabwemeet/Views/Home/Screens/Profile/profilewithid.dart';
 import 'package:jabwemeet/Views/Home/Screens/Tabbar.dart';
+import 'package:jabwemeet/testing_sub.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class LikesView extends StatefulWidget {
   const LikesView({Key? key}) : super(key: key);
@@ -27,13 +31,79 @@ class _LikesViewState extends State<LikesView> {
   Stream<QuerySnapshot>? snapShotData;
   List docId = [];
   var getFriendRequests;
+  bool _isLoading = false;
 
+  /*
+    We should check if we can magically change the weather
+    (subscription active) and if not, display the paywall.
+  */
+  void openSubscriptionSheetMethod() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+
+    if (customerInfo.entitlements.all[entitlementID] != null &&
+        customerInfo.entitlements.all[entitlementID]!.isActive == true ||  customerInfo.entitlements.all[entitlementID2] != null &&
+        customerInfo.entitlements.all[entitlementID2]!.isActive == true) {
+      appData.currentData = WeatherData.generateData();
+
+      setState(() {
+        _isLoading = false;
+      });
+    } else {
+      Offerings? offerings;
+      try {
+        offerings = await Purchases.getOfferings();
+      } on PlatformException catch (e) {
+        await showDialog(
+            context: context,
+            builder: (BuildContext context) => ShowDialogToDismiss(
+                title: "Error", content: e.message!, buttonText: 'OK'));
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (offerings == null || offerings.current == null) {
+        // offerings are empty, show a message to your user
+      } else {
+        // current offering is available, show paywall
+        await showModalBottomSheet(
+          useRootNavigator: true,
+          isDismissible: true,
+          isScrollControlled: true,
+          backgroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+          ),
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(
+                builder: (BuildContext context, StateSetter setModalState) {
+                  return Paywall(
+                    offering: offerings!.current!,
+                  );
+                });
+          },
+        );
+      }
+    }
+  }
+  Timer? timer;
   @override
   void initState() {
     // getFriendRequests = getRequests();
+    timer = Timer.periodic(Duration(minutes: 15), (Timer t) => openSubscriptionSheetMethod());
     super.initState();
   }
-
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     log("Inside Likes View:");

@@ -53,7 +53,6 @@ class Add_RangePractice extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child:  kAppButton(
                         buttonText: "Save",
-                        buttonstyleSmall: true,
                         onButtonPressed: () {
                           Get.find<GetSTorageController>().box.write(
                               kReligiousPractice,

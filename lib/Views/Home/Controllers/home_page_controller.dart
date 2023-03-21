@@ -13,6 +13,7 @@ import 'package:jabwemeet/Views/Auth/Controllers/GetStorag_Controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/match_screen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
 import 'package:jabwemeet/Views/Home/Screens/Likes/Likes_screens.dart';
+import 'package:jabwemeet/testing_sub.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../Services/notification/notification_api/notification_api.dart';
@@ -27,7 +28,7 @@ class Home_page_controller extends GetxController {
     await getUserDetails();
     // await getData();
   }
-
+bool purchasekar=false;
   int selectedIndex = 0;
   String? selectedMartialStatus = "Select Status";
   String? selectedReligion = "Select Religion";
@@ -48,7 +49,7 @@ class Home_page_controller extends GetxController {
     await FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('visits').limit(50)
+        .collection('visits')
         .get()
         .then((value) {
       value.docs.forEach((element) {
@@ -60,48 +61,66 @@ class Home_page_controller extends GetxController {
     await FirebaseFirestore.instance
         .collection("users")
         .get()
-        .then((snapshot) {
-      snapshot.docs.forEach((element) {
-        if(element.get('age')!=null || element.get('gender')!=null) {
-          if (visitedList!.contains(element.id) == false) {
-            // if(filterReligion==null && element.get('age') >= filterlowerValue.round() &&
-            //     element.get('gender') == gender &&
-            //     element.get('age') < filterupperValue.round()){
-            //   filterReligion= element.get('religion');
-            //   update();
-            // }
-            filterReligion= element.get('religion');
-            update();
-            if (element.get('age') >= filterlowerValue.round() &&
-                element.get('gender') == gender &&
-                element.get('age') < filterupperValue.round() &&
-                element.get('religion') == filterReligion) {
-
-              double datainMeter = GetLocation.DistanceInMeters(
-                  double.parse(element.get('latitude').toString()=="null"? "0" : element.get('latitude').toString() ),
-                  double.parse(element.get('longitude').toString()=="null"?"0": element.get('longitude').toString() ),
-                  double.parse(userModel.latitude.toString()),
-                  double.parse(userModel.longitude.toString()));
-              double kilomter = datainMeter / 1000;
-
-              if (kilomter < selectedMilesRangeDefault) {
-                if (userList.contains(element.id) == true) {
-                  userList.remove(element);
-                  update();
-                  print("remove element");
-                } else {
-                  userList.add(element);
-                  update();
-                  print("Add element");
-                }
-              }
+        .then((snapshot) async{
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('visits').where("date",isEqualTo: Timestamp.fromDate(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)))
+          .get().then((value)  {
+            if(appData.entitlementIsActive==false && value.size>=25){
+              print("aj ky visits: ${value.size} ");
+              purchasekar=true;
+              update();
             }
-          }
-        }
+            else{
+              purchasekar=false;
+              update();
+              snapshot.docs.forEach((element) {
+                if(element.get('age')!=null || element.get('gender')!=null) {
+                  if (visitedList!.contains(element.id) == false) {
+                    // if(filterReligion==null && element.get('age') >= filterlowerValue.round() &&
+                    //     element.get('gender') == gender &&
+                    //     element.get('age') < filterupperValue.round()){
+                    //   filterReligion= element.get('religion');
+                    //   update();
+                    // }
+                    filterReligion= element.get('religion');
+                    filterMartialStatus= element.get('martial_status');
+                    update();
+                    if (element.get('age') >= filterlowerValue.round() &&
+                        element.get('gender') == gender &&
+                        element.get('martial_status') == filterMartialStatus &&
+                        element.get('age') < filterupperValue.round() &&
+                        element.get('religion') == filterReligion) {
+
+                      double datainMeter = GetLocation.DistanceInMeters(
+                          double.parse(element.get('latitude').toString()=="null"? "0" : element.get('latitude').toString() ),
+                          double.parse(element.get('longitude').toString()=="null"?"0": element.get('longitude').toString() ),
+                          double.parse(userModel.latitude.toString()),
+                          double.parse(userModel.longitude.toString()));
+                      double kilomter = datainMeter / 1000;
+
+                      if (kilomter < selectedMilesRangeDefault) {
+                        if (userList.contains(element.id) == true) {
+                          userList.remove(element);
+                          update();
+                          print("remove element");
+                        } else {
+                          userList.add(element);
+                          update();
+                          print("Add element");
+                        }
+                      }
+                    }
+                  }
+                }
+              });
+              homeLoader=false;
+              update();
+              print("Length: " + userList.length.toString());
+            }
       });
-      homeLoader=false;
-      update();
-      print("Length: " + userList.length.toString());
+
     });
     return userList;
   }
@@ -173,32 +192,6 @@ class Home_page_controller extends GetxController {
   var filterupperValue = 70.0;
   var filterlowerValueMiles = 300.0;
   var filterupperValueMiles = 700.0;
-  query() async {
-    if (filterMartialStatus == "Select Status" ||
-        filterReligion == "Select Religion" ||
-        filterCaste == "Select Caste" ||
-        filterCity == "Select City") {
-      filterMartialStatus = null;
-      filterReligion = null;
-      gender = "Female";
-      filterCaste = null;
-      filterCity = null;
-      update();
-    }
-    log("in Query Check gender " + gender.toString());
-    queryValue = FirebaseFirestore.instance
-        .collection("users")
-        .where("age", isGreaterThanOrEqualTo: filterlowerValue.round())
-        .where("age", isLessThanOrEqualTo: filterupperValue.round())
-        .where("gender", isEqualTo: gender)
-        .where("martial_status", isEqualTo: filterMartialStatus)
-        .where("address", isEqualTo: filterCity)
-        .where("religion", isEqualTo: filterReligion)
-        .snapshots();
-    update();
-    log("in Query Check gender " + gender.toString());
-    return queryValue;
-  }
 
   selectedMartialFunction(String? value) {
     selectedMartialStatus = value;
@@ -265,6 +258,45 @@ class Home_page_controller extends GetxController {
     } else {
       snackBar(context, "You don't match each other", Colors.pink);
     }
+    return chatRoom;
+  }
+
+  Future<ChatRoomModel?> getchatRoomPremium(
+      var opponent_id, BuildContext context) async {
+    ChatRoomModel chatRoom = ChatRoomModel();
+    User? user = FirebaseAuth.instance.currentUser;
+    QuerySnapshot snapshotData = await FirebaseFirestore.instance
+        .collection('chatrooms')
+        .where('participants.${user!.uid}', isEqualTo: true)
+        .where('participants.${opponent_id}', isEqualTo: true)
+        .get();
+      if (snapshotData.docs.length > 0) {
+        var chatRoomData = snapshotData.docs[0].data();
+        ChatRoomModel exisitingChatRoom =
+        ChatRoomModel.fromMap(chatRoomData as Map<String, dynamic>);
+
+        chatRoom = exisitingChatRoom;
+
+        log('you have already a chatromm');
+      } else {
+        ChatRoomModel newChatRoom = ChatRoomModel(
+            chatRoomId: Uuid().v1(),
+            typing: [],
+            participants: {
+              user.uid: true,
+              opponent_id: true,
+            },
+            isReadSender: true,
+            isReadReceiver: false,
+            lastMessage: '',
+            lastMesgUserId: FirebaseAuth.instance.currentUser!.uid.toString());
+        await FirebaseFirestore.instance
+            .collection('chatrooms')
+            .doc(newChatRoom.chatRoomId)
+            .set(newChatRoom.toMap());
+        chatRoom = newChatRoom;
+        log('Hurrah!new chat room created!');
+      }
     return chatRoom;
   }
 
@@ -585,6 +617,7 @@ class Home_page_controller extends GetxController {
       "uid": opponent_user
           .uid
           .toString(),
+      "date": Timestamp.fromDate(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)),
       "image":opponent_user.imageUrl,
       "name":opponent_user.name,
       "visitType":visitType
@@ -605,6 +638,7 @@ class Home_page_controller extends GetxController {
         .set({
       "uid":opponent_userid,
       "image":image,
+      "date": Timestamp.fromDate(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)),
       "name":name,
       "visitType":visitType
     });

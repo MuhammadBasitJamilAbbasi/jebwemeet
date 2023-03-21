@@ -52,7 +52,6 @@ class Add_Height extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: kAppButton(
                               buttonText: "Save",
-                              buttonstyleSmall: true,
                               onButtonPressed: () {
                                 if (controller.selectedHeight.toString() !=
                                     "Select height") {

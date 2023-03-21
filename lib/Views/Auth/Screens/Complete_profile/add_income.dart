@@ -60,7 +60,6 @@ class Add_Income extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: kAppButton(
                               buttonText: "Save",
-                              buttonstyleSmall: true,
                               onButtonPressed: () {
                                 if (controller.selectedIncome.toString() !=
                                     "Select income") {

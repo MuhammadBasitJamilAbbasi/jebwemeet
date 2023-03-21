@@ -56,7 +56,6 @@ class _Add_CasteState extends State<Add_Caste> {
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: kAppButton(
                               buttonText: "Save",
-                                buttonstyleSmall: true,
                               onButtonPressed: () {
                                 if (controller.selectedValue
                                         .toString()

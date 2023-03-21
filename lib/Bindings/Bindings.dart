@@ -11,13 +11,13 @@ import 'package:jabwemeet/Views/Home/Controllers/message_controller.dart';
 class InitialBindings implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => LoginController(),);
-    Get.lazyPut(() => GetSTorageController(), );
-    Get.lazyPut(() => HelpersFunctions(), );
-    Get.lazyPut(() => RegisterController(),);
-    Get.lazyPut(() => ProfileController(),);
-    Get.lazyPut(() => MessageController(),);
-    Get.lazyPut(() => Home_page_controller(),);
-    Get.lazyPut(() => NotificationController(),);
+    Get.lazyPut(() => LoginController(), fenix: true);
+    Get.lazyPut(() => GetSTorageController(), fenix: true);
+    Get.lazyPut(() => HelpersFunctions(), fenix: true);
+    Get.lazyPut(() => RegisterController(), fenix: true);
+    Get.lazyPut(() => ProfileController(), fenix: true);
+    Get.lazyPut(() => MessageController(), fenix: true);
+    Get.lazyPut(() => Home_page_controller(), fenix: true);
+    Get.lazyPut(() => NotificationController(), fenix: true);
   }
 }
