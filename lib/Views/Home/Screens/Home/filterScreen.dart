@@ -51,10 +51,10 @@ class _FilterScreenState extends State<FilterScreen> {
     if (customerInfo.entitlements.all[entitlementID] != null &&
         customerInfo.entitlements.all[entitlementID]!.isActive == true ||  customerInfo.entitlements.all[entitlementID2] != null &&
         customerInfo.entitlements.all[entitlementID2]!.isActive == true) {
-      appData.currentData = WeatherData.generateData();
 
       setState(() {
         _isLoading = false;
+          appData.entitlementIsActive = true;
       });
     } else {
       Offerings? offerings;

@@ -79,10 +79,10 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
     if (customerInfo.entitlements.all[entitlementID] != null &&
         customerInfo.entitlements.all[entitlementID]!.isActive == true ||  customerInfo.entitlements.all[entitlementID2] != null &&
         customerInfo.entitlements.all[entitlementID2]!.isActive == true) {
-      appData.currentData = WeatherData.generateData();
 
       setState(() {
         _isLoading = false;
+        appData.entitlementIsActive = true;
       });
     } else {
       Offerings? offerings;
@@ -163,9 +163,6 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
     });
     pagecontroller = PageController(initialPage: 0);
     controllerrrr.getData();
-    if(controllerrrr.purchasekar){
-      openSubscriptionSheetMethod();
-    }
   }
 
   @override
@@ -258,7 +255,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                           SwipeDirection.left,
                                         },
                                         swipeAssistDuration: Duration(milliseconds: 10),
-                                        itemCount: appData.entitlementIsActive ? controller.userList.length : 25,
+                                        itemCount: appData.entitlementIsActive ? controller.userList.length : controller.userList.length>25 ? 25 : controller.userList.length ,
                                         controller: stackController,
                                         stackClipBehaviour: Clip.none,
                                         allowVerticalSwipe: true,
@@ -276,12 +273,12 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                               controller.getData();
                                             }
                                           }
-                                          UserModel userModel =
-                                              UserModel.fromMap(
-                                                  controller.userList[
-                                                              properties.index]
-                                                          .data()
-                                                      as Map<String, dynamic>);
+                                            UserModel  userModel =
+                                            UserModel.fromMap(
+                                                controller.userList[
+                                                properties.index]
+                                                    .data()
+                                                as Map<String, dynamic>);
                                           double datainMeter =
                                               GetLocation.DistanceInMeters(
                                             double.parse(

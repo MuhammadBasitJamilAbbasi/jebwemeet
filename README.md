@@ -1,6 +1,8 @@
 # jabwemeet
 
-A new Flutter project.
+A new Flutter project
+flutter sdk version 3.3.4
+
 
 ## Getting Started
 

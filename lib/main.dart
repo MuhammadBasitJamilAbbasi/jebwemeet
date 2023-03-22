@@ -5,12 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Bindings/Bindings.dart';
-import 'package:jabwemeet/Services/api/purchase_api.dart';
-import 'package:jabwemeet/Services/api/subscription_page.dart';
-import 'package:jabwemeet/Utils/constants.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Splash_Screen.dart';
-import 'package:jabwemeet/testing_sub.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 import 'Services/notification/firebase_notifications/notification_service.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 Future<void> main() async {
