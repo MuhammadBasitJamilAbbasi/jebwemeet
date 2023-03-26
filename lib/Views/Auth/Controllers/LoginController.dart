@@ -266,6 +266,8 @@ class LoginController extends GetxController {
               Get.find<GetSTorageController>()
                   .box
                   .write(kPhone, user.phoneNumber.toString());
+              isLoaderGoogle = false;
+              update();
               if (value.get("age") == null) {
                 await addUserdetails().then((value) =>    Get.to(() => Register_screen()));
               } else {
@@ -281,6 +283,8 @@ class LoginController extends GetxController {
             Get.find<GetSTorageController>().box.write("loggedin", "loggedin");
           });
         } catch (e) {
+          isLoaderGoogle = false;
+          update();
           log(e.toString());
         }
       });

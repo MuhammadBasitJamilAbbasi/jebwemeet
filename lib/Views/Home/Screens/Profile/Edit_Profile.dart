@@ -4,6 +4,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
@@ -322,6 +323,107 @@ class Edit_Profile extends StatelessWidget {
                     ),
                   ),
                   AppComponents().sizedBox30,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: kAppButton(
+                        buttonstyleSmall: true,
+                        buttonText: "Delete your account", onButtonPressed: (){
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: Container(
+                                height: 180,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      "assets/appicon.png",
+                                      height: 45,
+                                      width: 45,
+                                    ),
+                                    SizedBox(height: 20),
+                                    Center(child: Text("Are you sure you want to delete your account?")),
+                                    SizedBox(height: 20),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            onPressed: () async{
+                                              User current=FirebaseAuth.instance.currentUser!;
+                                              bool step1 = true ;
+                                              bool step2 = false ;
+                                              bool step3 = false ;
+                                              bool step4 = false ;
+                                              while(true){
+
+                                                if(step1){
+                                                  //delete user info in the database
+                                                  var delete = await FirebaseFirestore.instance
+                                                      .collection('users')
+                                                      .doc(current.uid)
+                                                      .delete();
+                                                  step1 = false;
+                                                  step2 = true;
+                                                }
+
+                                                if(step2){
+                                                  //delete user
+                                                  current.delete();
+                                                  step2 = false ;
+                                                  step3 = true;
+                                                }
+
+                                                if(step3){
+                                                  await FirebaseAuth.instance.signOut();
+                                                  step3 = false;
+                                                  step4 = true ;
+
+                                                }
+
+                                                if(step4){
+                                                  //go to sign up log in page
+                                                  Get.find<GetSTorageController>().removeStorage();
+                                                  step4 = false ;
+                                                }
+
+                                                if(!step1 && !step2 && !step3 && !step4 ) {
+                                                  break;
+                                                }
+                                              }
+                                            },
+                                            child: Container(
+                                                height: 35,
+                                                child: Center(child: Text("Yes"))),
+                                            style: ElevatedButton.styleFrom(primary: textcolor),
+                                          ),
+                                        ),
+                                        SizedBox(width: 15),
+                                        Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                print('no selected');
+                                                Navigator.of(context).pop();
+                                              },
+                                              child:
+                                              Container(
+                                                  height:35,
+                                                  child: Center(child: Text("No", style: TextStyle(color: Colors.white)))),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: textcolor,
+                                              ),
+                                            ))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                    }),
+                  ),
+                  AppComponents().sizedBox20,
                 ],
               );
             },
