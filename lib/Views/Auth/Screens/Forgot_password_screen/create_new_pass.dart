@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
 import 'package:jabwemeet/Utils/constants.dart';
@@ -129,6 +130,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                               child: kAppButton(
                                 buttonText: 'Create New Password',
                                 onButtonPressed: () async {
+                                  Fluttertoast.showToast(msg: "msg"+controller.emailController.value.text);
                                   if (controller.createPasswordKey.currentState!
                                       .validate()) {
                                     await controller.updatePassword(context);

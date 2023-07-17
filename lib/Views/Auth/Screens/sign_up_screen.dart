@@ -87,7 +87,7 @@ class SignUpScreen extends StatelessWidget {
                               child: kAppButton(
                                   buttonText: "Sign Up",
                                   onButtonPressed: () {
-                                    controller.signup(context);
+                                    controller.sendVerificationEmail(controller.emailController.value.text, controller.generateCode(6), "1");
                                   }),
                             );
                     }),
@@ -127,19 +127,19 @@ class SignUpScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          width: 64,
-                          height: 64,
-                          padding: EdgeInsets.all(18),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey.shade200),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Image.asset(
-                            "assets/facebook.png",
-                          ),
-                        ),
+                        // Container(
+                        //   width: 64,
+                        //   height: 64,
+                        //   padding: EdgeInsets.all(18),
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.white,
+                        //     border: Border.all(color: Colors.grey.shade200),
+                        //     borderRadius: BorderRadius.circular(15),
+                        //   ),
+                        //   child: Image.asset(
+                        //     "assets/facebook.png",
+                        //   ),
+                        // ),
                         SizedBox(
                           width: 20,
                         ),
@@ -171,19 +171,19 @@ class SignUpScreen extends StatelessWidget {
                         SizedBox(
                           width: 20,
                         ),
-                        Container(
-                          width: 64,
-                          height: 64,
-                          padding: EdgeInsets.all(18),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey.shade200),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Image.asset(
-                            "assets/apple.png",
-                          ),
-                        ),
+                        // Container(
+                        //   width: 64,
+                        //   height: 64,
+                        //   padding: EdgeInsets.all(18),
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.white,
+                        //     border: Border.all(color: Colors.grey.shade200),
+                        //     borderRadius: BorderRadius.circular(15),
+                        //   ),
+                        //   child: Image.asset(
+                        //     "assets/apple.png",
+                        //   ),
+                        // ),
                       ],
                     ),
                     AppComponents().sizedBox30,

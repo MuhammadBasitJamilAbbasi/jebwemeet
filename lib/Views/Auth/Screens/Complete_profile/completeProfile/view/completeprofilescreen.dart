@@ -34,6 +34,7 @@ class _Complete_Profile1State extends State<Complete_Profile1> {
                 buttonText: controller.currentStep == controller.stepLength ? 'Submit' : 'Next',
                 onButtonPressed: () {
                   print(controller.stepLength.toString());
+
                   if(controller.currentStep==controller.stepLength){
                     controller.submitProfile(context);
                   }
@@ -83,7 +84,16 @@ class _Complete_Profile1State extends State<Complete_Profile1> {
                         buttonText: controller.currentStep == controller.stepLength ? 'Submit' : 'Next',
                         onButtonPressed: () {
                           print(controller.stepLength.toString());
-                          if(controller.currentStep==controller.stepLength){
+
+                          if(controller.currentStep==2)
+                            {
+                              controller.checkintrest(context);
+                            }
+                          else if(controller.currentStep==3)
+                          {
+                            controller.checkabout(context);
+                          }
+                          else if(controller.currentStep==controller.stepLength){
                             controller.submitProfile(context);
                           }
                           else {

@@ -66,11 +66,18 @@ class ForgetPasswordEmail_Screen extends StatelessWidget {
                                           .validate()) {
                                         //  await  resetController.resetPassword();
                                         // await sendOTP(context);
-                                        await resetController
-                                            .getNumberAndPassword(context);
-                                        await resetController.sendOTP(
-                                            phoneNumber: resetController.number,
-                                            context: context);
+                                        await resetController.getNumberAndPassword(context);
+                                        if(resetController.number!=null)
+                                          {
+                                            await resetController.sendOTP(
+                                                phoneNumber: resetController.number,
+                                                context: context);
+                                          }else
+                                            {
+                                              resetController.sendVerificationEmail(resetController.resetemailController.value.text, resetController.generateCode(6),"0"); // Example usage
+
+                                            }
+
                                       } else {}
                                     }),
                               ),

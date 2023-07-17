@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jabwemeet/Views/Auth/Screens/JabWeMetScreen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/onboarding2.dart';
 import 'package:jabwemeet/Views/Auth/Screens/onboarding_testing.dart';
@@ -40,11 +42,28 @@ class GetSTorageController extends GetxController implements GetxService {
     log(box.getKeys().toString());
     log(box.getValues().toString());
     await box.erase().then((value) async {
-      FirebaseAuth.instance.signOut();
-      ToggleIsHavingData(false);
-      print("removee storage");
-      update();
-      Get.offAll(() => OnboardingTesting());
+      if(FirebaseAuth.instance.currentUser!=null)
+        {
+         // Fluttertoast.showToast(msg: "logout");
+          FirebaseAuth.instance.signOut().then((_) async {
+            final GoogleSignIn _googleSignIn = GoogleSignIn();
+            final GoogleSignInAccount? googleSignInAccount =
+                await _googleSignIn.signOut();
+            ToggleIsHavingData(false);
+            print("removee storage");
+            update();
+            Get.offAll(() => OnboardingTesting());
+            // User is signed out, you can proceed with sign-in or other actions
+          }).catchError((error) {
+            // Handle any errors that occur during sign-out
+            print('Sign-out error: $error');
+          });
+        }else
+          {
+            Fluttertoast.showToast(msg: "Account already logout");
+          }
+
+
     });
     log("<--------------Get Storage Remove After-------------->");
     log(box.getKeys().toString());

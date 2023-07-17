@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
@@ -152,19 +154,19 @@ class LoginScreen2 extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          width: 64,
-                          height: 64,
-                          padding: EdgeInsets.all(18),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey.shade200),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Image.asset(
-                            "assets/facebook.png",
-                          ),
-                        ),
+                        // Container(
+                        //   width: 64,
+                        //   height: 64,
+                        //   padding: EdgeInsets.all(18),
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.white,
+                        //     border: Border.all(color: Colors.grey.shade200),
+                        //     borderRadius: BorderRadius.circular(15),
+                        //   ),
+                        //   child: Image.asset(
+                        //     "assets/facebook.png",
+                        //   ),
+                        // ),
                         SizedBox(
                           width: 20,
                         ),
@@ -175,7 +177,23 @@ class LoginScreen2 extends StatelessWidget {
                                 )
                               : InkWell(
                             onTap: (){
-                              controller.signInwithGoogle();
+
+                              if(FirebaseAuth.instance.currentUser!=null)
+                              {
+                                // Fluttertoast.showToast(msg: "logout");
+                                FirebaseAuth.instance.signOut().then((_) {
+                                  controller.signInwithGoogle();
+
+                                  // User is signed out, you can proceed with sign-in or other actions
+                                }).catchError((error) {
+                                  // Handle any errors that occur during sign-out
+                                  print('Sign-out error: $error');
+                                });
+                              }else
+                              {
+                                controller.signInwithGoogle();
+                              }
+
                             },
                                 child: Container(
                                     width: 64,
@@ -196,19 +214,19 @@ class LoginScreen2 extends StatelessWidget {
                         SizedBox(
                           width: 20,
                         ),
-                        Container(
-                          width: 64,
-                          height: 64,
-                          padding: EdgeInsets.all(18),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey.shade200),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Image.asset(
-                            "assets/apple.png",
-                          ),
-                        ),
+                        // Container(
+                        //   width: 64,
+                        //   height: 64,
+                        //   padding: EdgeInsets.all(18),
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.white,
+                        //     border: Border.all(color: Colors.grey.shade200),
+                        //     borderRadius: BorderRadius.circular(15),
+                        //   ),
+                        //   child: Image.asset(
+                        //     "assets/apple.png",
+                        //   ),
+                        // ),
                       ],
                     ),
                     AppComponents().sizedBox30,

@@ -7,7 +7,7 @@ import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/inbox.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
 import 'package:jabwemeet/Views/Home/Screens/Likes/Likes_screens.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 
 class MatchScreen extends StatelessWidget {
   final opponent_image;

@@ -16,22 +16,22 @@ class LocalNotificationApiImplementation {
     const InitializationSettings initializationSettings =
         InitializationSettings(
             android: AndroidInitializationSettings("@mipmap/ic_launcher"),
-            iOS: IOSInitializationSettings(
-              requestAlertPermission: true,
-              requestBadgePermission: true,
-              requestSoundPermission: true,
-            ));
+            // iOS: IOSInitializationSettings(
+            //   requestAlertPermission: true,
+            //   requestBadgePermission: true,
+            //   requestSoundPermission: true,
+            // ));
 
-    _notificationsPlugin.initialize(
-      initializationSettings,
-      onSelectNotification: (String? message) async {
-        log("Inside onSelectNotification");
-        if (message!.isNotEmpty) {
-          log("Message is $message");
-          Get.to(() => LikesView());
-        }
-      },
-    );
+    // _notificationsPlugin.initialize(
+    //   initializationSettings,
+    //   onSelectNotification: (String? message) async {
+    //     log("Inside onSelectNotification");
+    //     if (message!.isNotEmpty) {
+    //       log("Message is $message");
+    //       Get.to(() => LikesView());
+    //     }
+    //   },
+     );
   }
 
   //Create Channel

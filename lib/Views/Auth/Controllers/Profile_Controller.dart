@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -243,38 +246,118 @@ class ProfileController extends GetxController {
   }
 
   int imagelistlength=0;
-  // createPostController.images
-  //     .addAll(files.map((e) => File(e.path)).toList());
   Future<List<String>?> uploadImages(BuildContext context) async {
     multipleImagesDownloadLinks = [];
-    imagelistlength=filesImages.length;
+    imagelistlength = filesImages.length;
     try {
-       for(var img in filesImages){
-         print(img);
-         print(img.path);
-         Reference ref;
-         ref = FirebaseStorage.instance
-             .ref()
-             .child('profilePics')
-             .child(img.path);
-         await ref.putFile(File(img.path)).whenComplete(() async {
-           await ref.getDownloadURL().then((value) {
-             multipleImagesDownloadLinks!.add(value);
-             debugPrint("multiple images are ${multipleImagesDownloadLinks.toString()}");
+      for (var img in filesImages) {
+        print(img);
+        print(img.path);
+        Reference ref;
+        ref = FirebaseStorage.instance.ref().child('profilePics').child(img.path);
 
-           });
-         });
-       }
-        log(" uploading images succesffully");
+        File compressedFile = await compressFile(File(img.path)); // Compress the image
+
+        await ref.putFile(compressedFile).whenComplete(() async {
+          await ref.getDownloadURL().then((value) {
+            multipleImagesDownloadLinks!.add(value);
+            debugPrint("multiple images are ${multipleImagesDownloadLinks.toString()}");
+          });
+        });
+      }
+      log("Uploading images successfully");
     } catch (e) {
       log(e.toString());
       log("Error in uploading images");
     }
+
     update();
     debugPrint("multiple images are ${multipleImagesDownloadLinks.toString()}");
     return multipleImagesDownloadLinks;
   }
 
+  Future<File> compressFile(File file) async {
+    try {
+      var result = await FlutterImageCompress.compressWithFile(
+        file.absolute.path,
+        quality: 70, // Adjust the quality as per your requirement
+      );
+
+      // Create a new file and write the compressed data into it
+      final compressedFile = File('${file.path}_compressed.jpg');
+      await compressedFile.writeAsBytes(result!);
+
+      return compressedFile;
+    } catch (e) {
+      // Handle the error appropriately
+      print(e);
+      throw Exception('Failed to compress file');
+    }
+  }
+
+
+
+
+
+  checkintrest(BuildContext context)
+  {
+    if (selectedImagePath.toString() == "") {
+      snackBar(context, "Please Add your image in step 1", Colors.pink);
+    } else if (Get.find<GetSTorageController>().box.read(kHeight).toString() ==
+        "" ||
+        Get.find<GetSTorageController>().box.read(kHeight).toString() ==
+            "null") {
+      snackBar(context, "Please Enter your Height", Colors.pink);
+    }else if (Get.find<GetSTorageController>().box.read(kMartial_Statius).toString() ==
+        "" ||
+        Get.find<GetSTorageController>().box.read(kMartial_Statius).toString() ==
+            "null") {
+      snackBar(context, "Please Select Martial Status", Colors.pink);
+    }
+    else if(getList!.isEmpty){
+      snackBar(context, "Please add interests", Colors.pink);
+    }else
+      {
+        next();
+      }
+  }
+  checkabout( BuildContext context)
+  {
+    if (Get.find<GetSTorageController>().box.read(kAbout).toString() ==
+        "" ||
+        Get.find<GetSTorageController>().box.read(kAbout).toString() ==
+            "null") {
+      snackBar(context, "Please enter about", Colors.pink);
+    }
+    else if (Get.find<GetSTorageController>().box.read(kReligion).toString() ==
+        "" ||
+        Get.find<GetSTorageController>().box.read(kReligion).toString() ==
+            "null") {
+      snackBar(context, "Please Select Your Religion", Colors.pink);
+    }
+    else if (Get.find<GetSTorageController>().box.read(kCaste).toString() ==
+        "" ||
+        Get.find<GetSTorageController>().box.read(kCaste).toString() ==
+            "null") {
+      snackBar(context, "Please Select Caste", Colors.pink);
+    } else if (kList!.length == 0) {
+      snackBar(context, "Please add your Language", Colors.pink);
+    }else if (Get.find<GetSTorageController>()
+        .box
+        .read(kReligiousPractice)
+        .toString() ==
+        "" ||
+        Get.find<GetSTorageController>()
+            .box
+            .read(kReligiousPractice)
+            .toString() ==
+            "null") {
+      snackBar(context, "Please add your Religious Practice", Colors.pink);
+    }else{
+      next();
+    }
+
+  }
   submitProfile(BuildContext context) async {
     print(getList!.toString());
     for (var i in getList!) {

@@ -1,13 +1,11 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badge;
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Utils/constants.dart';
-import 'package:jabwemeet/Views/Home/Controllers/home_page_controller.dart';
 import 'package:jabwemeet/Views/Home/Controllers/message_controller.dart';
 import 'package:jabwemeet/Views/Home/Screens/Chat/messaging/chatlist.dart';
-import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
 import 'package:jabwemeet/Views/Home/Screens/Likes/Likes_screens.dart';
 import 'package:jabwemeet/Views/Home/Screens/Profile/Profile.dart';
@@ -155,7 +153,7 @@ class _kCustomBottomNavBarState extends State<kCustomBottomNavBar> {
                           builder: (context, snapshot) {
                             return GetBuilder<MessageController>(
                               builder: (provider) {
-                                return Badge(
+                                return badge.Badge(
                                   showBadge: provider.unreadMessagesAvailable,
                                   child: Image.asset(
                                     "assets/message.png",

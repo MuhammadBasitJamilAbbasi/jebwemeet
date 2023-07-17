@@ -100,7 +100,6 @@ class _ForgetPassword_OTP_viewState extends State<ForgetPassword_OTP_view> {
                 onSubmit: (text) {
                   if (text.length == 6) {
                     controller.getotpPassword(text);
-
                   }
                 },
                 otpPinFieldStyle: OtpPinFieldStyle(

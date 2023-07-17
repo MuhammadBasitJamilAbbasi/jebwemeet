@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:jabwemeet/Components/App_Components.dart';
+import 'package:jabwemeet/Models/Hobbies_Model.dart';
 import 'package:jabwemeet/Models/UserModel.dart';
 import 'package:jabwemeet/Models/likes_model.dart';
 import 'package:jabwemeet/Utils/Dialouge_Boxes.dart';
@@ -22,7 +23,7 @@ import 'package:jabwemeet/Views/Home/Screens/Home/filterScreen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Tabbar.dart';
 import 'package:jabwemeet/testing_sub.dart';
 import 'package:like_button/like_button.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:swipable_stack/swipable_stack.dart';
 
@@ -344,9 +345,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                             : userModel.longitude
                                                                 .toString(),
                                                         blur: userModel.blur,
-                                                        interests:
-                                                            userModel.hobbies ??
-                                                                [],
+                                                        interests: userModel.hobbies,
                                                         name: userModel.name.toString() ?? "",
                                                         martial_status: userModel.martial_status.toString() ?? "",
                                                         work: userModel.work.toString() ?? "",
@@ -423,7 +422,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                                 BlurryContainer(
                                                               blur: 8,
                                                               height: 34,
-                                                              width: 86,
+                                                              width: 92,
                                                               elevation: 0,
                                                               borderRadius:
                                                                   BorderRadius
@@ -452,7 +451,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                                           .white,
                                                                     ),
                                                                     SizedBox(
-                                                                      width: 3,
+                                                                      width: 1,
                                                                     ),
                                                                     Expanded(
                                                                         child:
@@ -507,8 +506,7 @@ class _HomeSwapNewState extends State<HomeSwapNew> {
                                                                         Padding(
                                                                       padding: const EdgeInsets
                                                                               .only(
-                                                                          left:
-                                                                              10),
+                                                                          left: 10),
                                                                       child: Text.rich(
                                                                           TextSpan(
                                                                               children: [

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:math'as a;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +8,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,12 +23,16 @@ import 'package:jabwemeet/Views/Auth/Controllers/Password_encyption.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Complete_profile/completeProfile/view/completeprofilescreen.dart';
 
 import 'package:jabwemeet/Views/Auth/Screens/Forgot_password_screen/Forgot_pass_Otp.dart';
+import 'package:jabwemeet/Views/Auth/Screens/Forgot_password_screen/Forgot_pass_Otp_email.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Forgot_password_screen/create_new_pass.dart';
 import 'package:jabwemeet/Views/Auth/Screens/LoginScreen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/Bismillah_Screen.dart';
 import 'package:jabwemeet/Views/Auth/Screens/Register_screns/register_screen.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/home_swap.dart';
 import 'package:jabwemeet/Views/Home/Screens/Home/new_home_swapable.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 
 class RegisterController extends GetxController {
   final resetFormKey = GlobalKey<FormState>();
@@ -215,6 +221,17 @@ class RegisterController extends GetxController {
     return setPage;
   }
 
+
+  String generateCode(int length) {
+    a.Random random = a.Random();
+    String code = '';
+
+    for (int i = 0; i < length; i++) {
+      code += random.nextInt(10).toString();
+    }
+
+    return code;
+  }
   Future signup(BuildContext context) async {
     try {
       loading = true;
@@ -268,7 +285,7 @@ class RegisterController extends GetxController {
               shape: Border.all(
                 color: Colors.red,
               ),
-              title: const Text('Registeration failed!'),
+              // title: const Text('Registeration failed!'),
               content: Text(errorMessage ?? ''),
               icon: Image.asset(
                 "assets/appicon.png",
@@ -305,7 +322,7 @@ class RegisterController extends GetxController {
             context: context,
             builder: (builder) {
               return AlertDialog(
-                title: const Text('Registeration failed!'),
+                // title: const Text('Registeration failed!'),
                 content: Text('Email already exist'),
               );
             });
@@ -617,9 +634,10 @@ class RegisterController extends GetxController {
             update();
             verification_Id = verificationId;
             update();
+            Get.off(()=> ForgetPassword_OTP_view());
             isResetLoad = false;
             update();
-            Get.to(() => ForgetPassword_OTP_view());
+
           },
           codeAutoRetrievalTimeout: (verificationId) {},
           timeout: Duration(seconds: 60));
@@ -632,6 +650,80 @@ class RegisterController extends GetxController {
       snackBar(context, e.code.toString(), Colors.deepOrange);
     }
   }
+
+
+
+
+  Future<void> sendVerificationEmail(String recipientEmail, String verificationCode, String c) async {
+
+    final smtpServerd = SmtpServer(
+      'smtp.livemail.co.uk',
+      port: 465,
+      username: 'hello@jabwemeet.net',
+      password: 'Jab*We*M33T@App!2022',
+      ssl: true, // Set to true if your SMTP server requires SSL
+    );
+    final smtpServer =smtpServerd ; // Replace with your Gmail credentials
+
+    final message = Message()
+      ..from = Address('hello@jabwemeet.net', 'OTP') // Replace with your name and email
+      ..recipients.add(recipientEmail) // Email address of the recipient
+      ..subject = 'Email Verification'
+      ..html = '''
+    <html>
+      <head>
+        <style>
+          /* CSS styles for the email template */
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+          }
+          h1 {
+            color: #333333;
+          }
+          p {
+            color: #555555;
+          }
+          .otp {
+            font-weight: bold;
+            font-size: 24px;
+            color: #0088cc;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Dear</h1>
+          <p>Thank you for using our service. Here is your OTP:</p>
+          <p class="otp">$verificationCode</p>
+          <p>Please use this OTP to complete your verification process.</p>
+          <p>If you didn't request this OTP, please ignore this email.</p>
+          <p>Regards,</p>
+          <p>JabWeMeet</p>
+        </div>
+      </body>
+    </html>
+  '''; // Body of the email
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+      Get.off(()=> ForgetPassword_OTP_email(verificationcode: verificationCode,Condition: c,));
+
+    } catch (e) {
+      print('Error occurred while sending email: $e');
+    }
+  }
+
+
+
+
   var otp;
   getotpPassword(value){
     otp=value;
@@ -713,38 +805,94 @@ class RegisterController extends GetxController {
 
   User? user = FirebaseAuth.instance.currentUser;
   bool isUpdatePassLoad = false;
-  Future updatePassword(BuildContext context) async {
+  // Future updatePassword(BuildContext context) async {
+  //   var token = await FirebaseMessaging.instance.getToken();
+  //   try {
+  //     isUpdatePassLoad = true;
+  //     update();
+  //     log("<------------------earlier true----------------->");
+  //     var pass = EncryptData.decryptData(encryptedPassword: oldPassword);
+  //     log("<Decrypt from login>");
+  //     log(pass);
+  //     await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //         email: resetemailController.value.text, password: pass);
+  //     await FirebaseAuth.instance.currentUser!
+  //         .updatePassword(ConfirmPassController.value.text.toString());
+  //     log("<------------------second earlier true----------------->");
+  //     await FirebaseFirestore.instance.collection('users').doc(uiddd).update({
+  //       'fcm_token': token,
+  //       'password':
+  //           EncryptData.encryptData(password: ConfirmPassController.value.text)
+  //               .toString()
+  //     });
+  //     log("<------------------Final earlier true----------------->");
+  //     ConfirmPassController.clear();
+  //     passController.clear();
+  //     isUpdatePassLoad = false;
+  //     update();
+  //     showDialog(
+  //         context: context,
+  //         builder: (builder) {
+  //           return const Center(
+  //             child: CircularProgressIndicator(),
+  //           );
+  //         });
+  //     Get.offAll(() => LoginScreen2());
+  //   } catch (e) {
+  //     isUpdatePassLoad = false;
+  //     update();
+  //     log(e.toString());
+  //     snackBar(context, 'Something went wrong!', Colors.pink);
+  //   }
+  // }
+  Future<void> updatePassword(BuildContext context) async {
     var token = await FirebaseMessaging.instance.getToken();
     try {
       isUpdatePassLoad = true;
       update();
-      log("<------------------earlier true----------------->");
-      var pass = EncryptData.decryptData(encryptedPassword: oldPassword);
-      log("<Decrypt from login>");
-      log(pass);
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: resetemailController.value.text, password: pass);
-      await FirebaseAuth.instance.currentUser!
-          .updatePassword(ConfirmPassController.value.text.toString());
-      log("<------------------second earlier true----------------->");
-      await FirebaseFirestore.instance.collection('users').doc(uiddd).update({
-        'fcm_token': token,
-        'password':
-            EncryptData.encryptData(password: ConfirmPassController.value.text)
-                .toString()
-      });
-      log("<------------------Final earlier true----------------->");
+
+      var user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        // User is not signed in, so sign in with the provided email and password
+        var email = resetemailController.value.text;
+        var password = ConfirmPassController.value.text.toString();
+        await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+        user = FirebaseAuth.instance.currentUser;
+      }
+
+      if (user != null) {
+        // User is signed in
+        if (user.providerData.any((userInfo) => userInfo.providerId == 'password')) {
+          // User already has a password, update it
+          await user.updatePassword(ConfirmPassController.value.text.toString());
+        } else {
+          // User doesn't have a password, create one and link it to the account
+          await user.linkWithCredential(EmailAuthProvider.credential(
+            email: resetemailController.value.text,
+            password: ConfirmPassController.value.text.toString(),
+          ));
+        }
+
+        await FirebaseFirestore.instance.collection('users').doc(uiddd).update({
+          'fcm_token': token,
+          'password': EncryptData.encryptData(password: ConfirmPassController.value.text).toString(),
+        });
+      }
+
       ConfirmPassController.clear();
       passController.clear();
       isUpdatePassLoad = false;
       update();
+
       showDialog(
-          context: context,
-          builder: (builder) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          });
+        context: context,
+        builder: (builder) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
+
       Get.offAll(() => LoginScreen2());
     } catch (e) {
       isUpdatePassLoad = false;
@@ -753,6 +901,8 @@ class RegisterController extends GetxController {
       snackBar(context, 'Something went wrong!', Colors.pink);
     }
   }
+
+
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth auth = FirebaseAuth.instance;

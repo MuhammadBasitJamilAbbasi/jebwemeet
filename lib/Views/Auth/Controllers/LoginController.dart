@@ -104,9 +104,7 @@ class LoginController extends GetxController {
       )
           .then((value) async {
         Get.find<GetSTorageController>().box.write(kEmail, email.value.text);
-        Get.find<GetSTorageController>()
-            .box
-            .write(kPassword, password.value.text);
+        Get.find<GetSTorageController>().box.write(kPassword, password.value.text);
         await FirebaseFirestore.instance
             .collection('users')
             .doc(value.user!.uid)
@@ -218,8 +216,12 @@ class LoginController extends GetxController {
               shape: Border.all(
                 color: Colors.red,
               ),
-              title: const Text('Login failed'),
-              content: Text(message ?? 'No internet'),
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(message ?? 'No internet'),
+                ],
+              ),
               icon: Image.asset(
                 "assets/appicon.png",
                 height: 40,
@@ -329,7 +331,7 @@ class LoginController extends GetxController {
         income: null,
         religious_practice: null,
         uid: FirebaseAuth.instance.currentUser!.uid,
-        password: null);
+        password: "123456");
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
@@ -391,9 +393,7 @@ class LoginController extends GetxController {
     update();
    verifyOtp(context);
   }
-
   bool isVerifyLoad = false;
-
   Future<bool> verifyOtp(BuildContext context) async {
     log("<=============================================>");
     log("Inside Phone Authentication verifyOtp Service origiNAL");
@@ -426,8 +426,6 @@ class LoginController extends GetxController {
       return verificationStatus;
     }
   }
-
-
   resendOtp() async {
     log("<=============================================>");
     log("Inside Phone Authentication resendOtp Service");

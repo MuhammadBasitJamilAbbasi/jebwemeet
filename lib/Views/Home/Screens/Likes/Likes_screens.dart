@@ -17,7 +17,7 @@ import 'package:jabwemeet/Views/Home/Screens/Home/Home_Components.dart';
 import 'package:jabwemeet/Views/Home/Screens/Profile/profilewithid.dart';
 import 'package:jabwemeet/Views/Home/Screens/Tabbar.dart';
 import 'package:jabwemeet/testing_sub.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class LikesView extends StatefulWidget {

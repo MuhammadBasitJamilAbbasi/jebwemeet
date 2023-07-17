@@ -6,7 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import cloud_firestore
-import connectivity_plus_macos
+import connectivity_plus
 import firebase_auth
 import firebase_core
 import firebase_messaging
@@ -14,7 +14,7 @@ import firebase_storage
 import flutter_local_notifications
 import geolocator_apple
 import in_app_purchase_storekit
-import path_provider_macos
+import path_provider_foundation
 import purchases_flutter
 import sqflite
 import url_launcher_macos

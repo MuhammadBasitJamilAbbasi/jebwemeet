@@ -360,10 +360,10 @@ class Edit_Profile extends StatelessWidget {
 
                                                 if(step1){
                                                   //delete user info in the database
-                                                  var delete = await FirebaseFirestore.instance
-                                                      .collection('users')
-                                                      .doc(current.uid)
-                                                      .delete();
+                                                  // var delete = await FirebaseFirestore.instance
+                                                  //     .collection('users')
+                                                  //     .doc(current.uid)
+                                                  //     .delete();
                                                   step1 = false;
                                                   step2 = true;
                                                 }
